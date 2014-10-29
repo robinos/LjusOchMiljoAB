@@ -1,0 +1,96 @@
+﻿@model LjusOchMiljoAB.Models.Produkter
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Produkter</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Namn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Namn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Pris)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Pris)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Typ)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Typ)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Farg)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Farg)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Bildfilnamn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Bildfilnamn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Ritningsfilnamn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ritningsfilnamn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RefID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RefID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Beskrivning)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Beskrivning)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Montering)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Montering)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

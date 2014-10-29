@@ -1,0 +1,29 @@
+Version 0.13
+- Huvudsidan nu heter Hem och inte Home
+	-> i Controller mappen heter koden HemController.cs 
+	-> i Views->Hem mappen heter vyn Hem.cshtml
+- La till en länk på huvudsidan som går till prislistan
+- La till Prislistan vy
+- Gjorde Prislista metoden i ProdukterController
+- Kommenterad ut onödig kod i ProdukterController
+
+Version 0.12
+- Huvudsidans vy nu heter Index.cshtml igen 
+- Vid kategori eller sök syns bara namn och bildfilnamn
+- För varje namn och bildfilnamn par kan man kolla på detaljer
+- Detaljer har alla produktdetaljer
+
+Version 0.11
+- Huvudsidans vy nu heter Home.cshtml 
+- På huvudsidan visas upp länkar till alla kategorier (typer)
+- Genom Inomhus länken hittar man bara Inomhus armaturer
+- Genom Utomhus länken hittar man bara Utomhus armaturer
+- Genom Tillbehör länken hittar man bara Tillbehör 
+
+Version 0.1
+- På huvudsidan visas upp en länk till Produkter sidan
+- På Produkter sidan visas upp alla produkter med egenskapar i textform
+- På Produkter sidan visas upp en sök fält där man kan skriva i delen av ett produkt
+namn och tryck på knappen skicka för att se bara produkter med den texten i namnet
+- På Produkter sidan visas upp en typ combobox där man kan leta efter typ (du måste
+fortfarande trycka knappen skicka) och alla produkter av den typen visas

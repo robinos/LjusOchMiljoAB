@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "Hem";
+}
+
+<h2>Hem</h2>
+
+<div>
+    <br />
+    @Html.ActionLink("Inomhus", "Index", "Produkter", new { produktTyp = "inomhus" }, null)
+    @Html.ActionLink("Utomhus", "Index", "Produkter", new { produktTyp = "utomhus" }, null)
+    @Html.ActionLink("Tillbehör", "Index", "Produkter", new { produktTyp = "tillbehör" }, null)
+    <br />
+</div>
+
+
+<div>
+    <br />@Html.ActionLink("Lista av produkter", "Index", "Produkter")<br />
+</div>
+
+<div>
+    <br />@Html.ActionLink("Prislista", "Prislista", "Produkter")<br />
+</div>

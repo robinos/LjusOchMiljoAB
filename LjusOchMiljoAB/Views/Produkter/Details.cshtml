@@ -1,0 +1,90 @@
+﻿@model LjusOchMiljoAB.Models.Produkter
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Produkter</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Namn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Namn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Pris)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Pris)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Typ)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Typ)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Farg)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Farg)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Bildfilnamn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Bildfilnamn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Ritningsfilnamn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ritningsfilnamn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RefID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RefID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Beskrivning)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Beskrivning)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Montering)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Montering)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @*@Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |*@
+    @Html.ActionLink("Back to List", "Index")
+</p>
