@@ -19,6 +19,18 @@ namespace LjusOchMiljoAB
 				defaults: new { controller = "Hem", action = "Index", id = UrlParameter.Optional }
 			);
 
+			routes.MapRoute(
+				name: "Om",
+				url: "{controller}/{action}/{id}",
+				defaults: new { controller = "Hem", action = "Om", id = UrlParameter.Optional }
+			);
+
+			routes.MapRoute(
+				name: "Kontakt",
+				url: "{controller}/{action}/{id}",
+				defaults: new { controller = "Hem", action = "Kontakt", id = UrlParameter.Optional }
+			);
+
 			//routes.MapRoute(
 			//	name: "Produkter",
 			//	url: "{controller}/{action}/{id}",

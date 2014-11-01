@@ -13,7 +13,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 	public class HemControllerTest
 	{
 		[TestMethod]
-		public void Index()
+		public void HemIndexNotNull()
 		{
 			// Arrange
 			HemController controller = new HemController();
@@ -26,29 +26,29 @@ namespace LjusOchMiljoAB.Tests.Controllers
 		}
 
 		[TestMethod]
-		public void About()
+		public void HemOmHarDefaultText()
 		{
 			// Arrange
 			HemController controller = new HemController();
 
 			// Act
-			ViewResult result = controller.About() as ViewResult;
+			ViewResult result = controller.Om() as ViewResult;
 
 			// Assert
-			Assert.AreEqual("Your application description page.", result.ViewBag.Message);
+			Assert.AreEqual("Om hemsidan och Ljus och Miljö AB", result.ViewBag.Message);
 		}
 
 		[TestMethod]
-		public void Contact()
+		public void HemKontaktHarDefaultText()
 		{
 			// Arrange
 			HemController controller = new HemController();
 
 			// Act
-			ViewResult result = controller.Contact() as ViewResult;
+			ViewResult result = controller.Kontakt() as ViewResult;
 
 			// Assert
-			Assert.IsNotNull(result);
+			Assert.AreEqual("Kontaktsidan", result.ViewBag.Message);
 		}
 	}
 }

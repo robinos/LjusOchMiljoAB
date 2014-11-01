@@ -12,20 +12,29 @@ namespace LjusOchMiljoAB.Controllers
 {
 	public class ProdukterController : Controller
 	{
-		private LOM_DBEntities db = new LOM_DBEntities();
+		//private LOM_DBEntities db = new LOM_DBEntities();
+
+        IProdukterRepository repository;
+
+        public ProdukterController() : this(new EntityProdukterManagerRepository()) { }
+		public ProdukterController(IProdukterRepository repository)
+		{
+            this.repository = repository;
+        }
 
 		public ActionResult Index(string produktTyp, string sökSträng)
 		{
 			var TypLst = new List<string>();
+			var produkter = repository.HämtaProduktlista();
 
-			var TypQry = from d in db.Produkter
+			var TypQry = from d in produkter
 						 orderby d.Typ
 						 select d.Typ;
 
 			TypLst.AddRange(TypQry.Distinct());
 			ViewBag.produktTyp = new SelectList(TypLst);
 
-			var produkter = from m in db.Produkter
+			var produktLista = from m in produkter
 							select m;
 
 			if (!String.IsNullOrEmpty(sökSträng))
@@ -48,7 +57,7 @@ namespace LjusOchMiljoAB.Controllers
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
-			Produkter produkter = db.Produkter.Find(id);
+			Produkter produkter = repository.HämtaProduktMedID(id);
 			if (produkter == null)
 			{
 				return HttpNotFound();
@@ -59,7 +68,7 @@ namespace LjusOchMiljoAB.Controllers
 		// GET: Produkter/Prislista
 		public ActionResult Prislista()
 		{
-			return View(db.Produkter.ToList());
+			return View(repository.HämtaProduktlista());
 		}
 
 		/*
@@ -78,8 +87,7 @@ namespace LjusOchMiljoAB.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				db.Produkter.Add(produkter);
-				db.SaveChanges();
+				repository.SkapaProdukt(produkter);
 				return RedirectToAction("Index");
 			}
 
@@ -93,7 +101,7 @@ namespace LjusOchMiljoAB.Controllers
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
-			Produkter produkter = db.Produkter.Find(id);
+			Produkter produkter = repository.HämtaProduktMedID(id);
 			if (produkter == null)
 			{
 				return HttpNotFound();
@@ -110,8 +118,7 @@ namespace LjusOchMiljoAB.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				db.Entry(produkter).State = EntityState.Modified;
-				db.SaveChanges();
+				repository.RedigeraProdukt(produkter);
 				return RedirectToAction("Index");
 			}
 			return View(produkter);
@@ -124,7 +131,7 @@ namespace LjusOchMiljoAB.Controllers
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
-			Produkter produkter = db.Produkter.Find(id);
+			Produkter produkter = repository.HämtaProduktMedID(id);
 			if (produkter == null)
 			{
 				return HttpNotFound();
@@ -137,17 +144,16 @@ namespace LjusOchMiljoAB.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult DeleteConfirmed(string id)
 		{
-			Produkter produkter = db.Produkter.Find(id);
-			db.Produkter.Remove(produkter);
-			db.SaveChanges();
+			repository.TaBortProdukt(id);
 			return RedirectToAction("Index");
-		}*/
-
+		}
+		*/
+		  
 		protected override void Dispose(bool disposing)
 		{
 			if (disposing)
 			{
-				db.Dispose();
+				repository.Förstör();
 			}
 			base.Dispose(disposing);
 		}

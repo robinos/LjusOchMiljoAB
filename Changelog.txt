@@ -1,3 +1,35 @@
+Version 0.14
+- I huvudapplikation LjusOchMiljoAB
+- I Models -> 
+	- IProdukterRespository.cs blev implementerad som en interface för implementering
+		av kontakt med databasen
+	- EntityProdukterManagerRepository.cs blev självs implementationen av ovan interface
+- I Controllers ->
+	- ProdukterController.cs ändrades så den använder EntityProdukterManagerRepository
+		istället för direkt kontakt med database (det är menad att hjälpa vid testning)
+	- HemController.cs ändrades så About och Contact metoder nu heter Om och Kontakt och
+		bastexten är ändrat
+- I Views ->
+		Hem ->
+	- About.cshtml nu heter Om.cshtml
+	- Contact.cshtml nu heter Kontakt.cshtml
+		Shared ->
+	- _Layout.cshtml är ändrat så det står Om och Kontakt nu i menyn istället för About
+		och Contact
+
+- I testprojektet LjusOchMiljoAB.Tests
+- I Models ->
+	- InMemoryProdukterRepository.cs implementerar IProdukterRepository för att testa mot
+		en mock databas.
+- I Controllers ->
+	- HemControllerTest.cs ändrades så testmetoder nu heter HemIndexNotNull,
+		HemOmHarDefaultText och HemKontaktHarDefaultText.  Testar för Om och Kontakt
+		testar mot den nya svenska text i både vyn.		
+	- ProdukterControllerTest.cs lades till med metoder HämtaProdukt och ProdukterController,
+		och inre klassen MockHttpContext, för att påbörja testning, med en första
+		testmetod ProdukterIndexNotNull 
+
+
 Version 0.13
 - Huvudsidan nu heter Hem och inte Home
 	-> i Controller mappen heter koden HemController.cs 

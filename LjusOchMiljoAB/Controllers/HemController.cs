@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using LjusOchMiljoAB.Models;
 
 namespace LjusOchMiljoAB.Controllers
 {
+	[HandleError]
 	public class HemController : Controller
 	{
 		public ActionResult Index()
@@ -13,16 +15,16 @@ namespace LjusOchMiljoAB.Controllers
 			return View();
 		}
 
-		public ActionResult About()
+		public ActionResult Om()
 		{
-			ViewBag.Message = "Your application description page.";
+			ViewBag.Message = "Om hemsidan och Ljus och Miljö AB";
 
 			return View();
 		}
 
-		public ActionResult Contact()
+		public ActionResult Kontakt()
 		{
-			ViewBag.Message = "Your contact page.";
+			ViewBag.Message = "Kontaktsidan";
 
 			return View();
 		}
