@@ -40,12 +40,12 @@ namespace LjusOchMiljoAB.Controllers
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
-                message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
-                : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
-                : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
-                : message == ManageMessageId.Error ? "An error has occurred."
-                : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
-                : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
+                message == ManageMessageId.ChangePasswordSuccess ? "Ditt lösenord har ändrats."
+                : message == ManageMessageId.SetPasswordSuccess ? "Ditt lösenord har sätts."
+                : message == ManageMessageId.SetTwoFactorSuccess ? "Din två-steg autentiseringsform har sätts."
+                : message == ManageMessageId.Error ? "Ett fel inträffade."
+                : message == ManageMessageId.AddPhoneSuccess ? "Ditt telefonnummer är tillaggt."
+                : message == ManageMessageId.RemovePhoneSuccess ? "Ditt telefonnummer har tagits bort."
                 : "";
 
             var model = new IndexViewModel
@@ -116,7 +116,7 @@ namespace LjusOchMiljoAB.Controllers
                 var message = new IdentityMessage
                 {
                     Destination = model.Number,
-                    Body = "Your security code is: " + code
+                    Body = "Din säkerhetskod är: " + code
                 };
                 await UserManager.SmsService.SendAsync(message);
             }
@@ -181,7 +181,7 @@ namespace LjusOchMiljoAB.Controllers
                 return RedirectToAction("Index", new { Message = ManageMessageId.AddPhoneSuccess });
             }
             // If we got this far, something failed, redisplay form
-            ModelState.AddModelError("", "Failed to verify phone");
+            ModelState.AddModelError("", "Misslyckade att bekräfta telefon");
             return View(model);
         }
 
@@ -270,8 +270,8 @@ namespace LjusOchMiljoAB.Controllers
         public async Task<ActionResult> ManageLogins(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
-                message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
-                : message == ManageMessageId.Error ? "An error has occurred."
+                message == ManageMessageId.RemoveLoginSuccess ? "En extern inloggning har tagits bort."
+                : message == ManageMessageId.Error ? "Ett fel har inträffat."
                 : "";
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             if (user == null)

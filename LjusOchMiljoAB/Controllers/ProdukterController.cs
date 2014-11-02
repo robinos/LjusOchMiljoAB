@@ -47,7 +47,7 @@ namespace LjusOchMiljoAB.Controllers
 				produkter = produkter.Where(x => x.Typ == produktTyp);
 			}
 
-			return View(produkter);
+			return View("Index", produkter);
 		}
 
 		// GET: Produkter/Details/5
@@ -55,20 +55,22 @@ namespace LjusOchMiljoAB.Controllers
 		{
 			if (id == null)
 			{
-				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+				var result = new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+				return result;
 			}
 			Produkter produkter = repository.HämtaProduktMedID(id);
 			if (produkter == null)
 			{
-				return HttpNotFound();
+				var result = new HttpNotFoundResult("Kan inte hitta produkten");
+				return result;
 			}
-			return View(produkter);
+			return View("Details", produkter);
 		}
 
 		// GET: Produkter/Prislista
 		public ActionResult Prislista()
 		{
-			return View(repository.HämtaProduktlista());
+			return View("Prislista", repository.HämtaProduktlista());
 		}
 
 		/*

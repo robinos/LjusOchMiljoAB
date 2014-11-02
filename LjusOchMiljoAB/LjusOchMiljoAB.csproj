@@ -194,7 +194,6 @@
     <Compile Include="Models\Produkter.cs">
       <DependentUpon>LOMDB_Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ProduktMD.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

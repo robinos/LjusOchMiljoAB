@@ -37,7 +37,7 @@ namespace LjusOchMiljoAB.Models
 
 		public IEnumerable<Produkter> HämtaProduktlista()
 		{
-			return db.Produkter.ToList();
+			return db.Produkter.ToList<Produkter>();
 		}
 
 		public int SparaÄndringar()

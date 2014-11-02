@@ -84,7 +84,7 @@ namespace LjusOchMiljoAB.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
+                    ModelState.AddModelError("", "Ogiltig inloggningsförsök.");
                     return View(model);
             }
         }
@@ -132,7 +132,7 @@ namespace LjusOchMiljoAB.Controllers
                     return View("Lockout");
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid code.");
+                    ModelState.AddModelError("", "Ogiltig kod.");
                     return View(model);
             }
         }
@@ -166,7 +166,7 @@ namespace LjusOchMiljoAB.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Hem");
                 }
                 AddErrors(result);
             }
@@ -395,7 +395,7 @@ namespace LjusOchMiljoAB.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Hem");
         }
 
         //
