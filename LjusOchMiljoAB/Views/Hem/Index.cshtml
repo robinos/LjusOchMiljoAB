@@ -1,9 +1,15 @@
-﻿@{
+﻿	 @** Grupp 2
+	 * Senast ändrat: 2014 11 04
+	 * Version: 0.16b*@
+
+@{
     ViewBag.Title = "Hem";
 }
 
 <h2>Hem</h2>
 
+@*Länkar till kategorier i textform - kallar Index metoden i ProdukterController för
+    att visa med filtrering för typ*@
 <div>
     <br />
     @Html.ActionLink("Inomhus", "Index", "Produkter", new { Ordning = "", produktTyp = "inomhus", sökSträng = "", filterVärde = "", sida = 1 }, null)
@@ -12,10 +18,14 @@
     <br />
 </div>
 
+@*Länk till produktlistan - kallar Index metoden i ProdukterController för att visa
+    alla produkter.*@
 <div>
     @Html.ActionLink("Lista av produkter", "Index", "Produkter", new { Ordning = "", produktTyp = "", sökSträng = "", filterVärde = "", sida = 1 }, null)
 </div>
 
+@*Länk till prislistan - kallar Prislista metoden i ProdukterController för att visa
+    prislistan*@
 <div>
     <br />
     @Html.ActionLink("Prislista", "Prislista", "Produkter", new { Ordning = "", produktTyp = "", sökSträng = "", filterVärde = "", sida = 1 }, null)

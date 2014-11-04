@@ -7,9 +7,21 @@ using LjusOchMiljoAB.Models;
 
 namespace LjusOchMiljoAB.Controllers
 {
+	/*
+	 * HemController har hand om alla metoder för huvudsidan inklusive Om
+	 * och Kontakt undersidor.
+	 * 
+	 * Grupp 2
+	 * Senast ändrat: 2014 11 04
+	 * Version: 0.16b
+	 */
 	[HandleError]
 	public class HemController : Controller
 	{
+		/*
+		 * Index är själva huvudsidan av applikationen (med vy Views ->
+		 * Hem -> Index.cshtml).
+		 */
 		public ActionResult Index()
 		{
 			return View();

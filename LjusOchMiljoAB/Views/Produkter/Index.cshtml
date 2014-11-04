@@ -1,4 +1,9 @@
-﻿@*@model IEnumerable<LjusOchMiljoAB.Models.Produkter>*@
+﻿  @** Grupp 2
+    * Senast ändrat: 2014 11 04
+    * Version: 0.16b*@
+
+@*Lägg till PagedList css objektet*@
+
 @model PagedList.IPagedList<LjusOchMiljoAB.Models.Produkter>
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" />
@@ -9,18 +14,21 @@
 
 <h2>Produkter</h2>
 
-@*<p>
-        @Html.ActionLink("Create New", "Create")
-    </p>*@
-
+@*Med Html.BeginForm gör man det lätt att ladda om sig själv vid sökningar*@
 @using (Html.BeginForm("Index", "Produkter", FormMethod.Get))
 {
+    //DropDownList hantera val av kategori för visning
+    //Html.TextBox är textboxen som tar emot söksträngen vid sökning
+    //Sök knappen kör val/sökningen (sökning och val kan användas tillsammans)
     <p>
         Kategori: @Html.DropDownList("produktTyp", "All")
         Namn: @Html.TextBox("sökSträng", ViewBag.filterVärde as string) <br />
         <input type="submit" value="Sök" />
     </p>
 
+    //Kolumner för tabellen - bara ID, Namn, och Bild användas
+    //ID och Namn kan användas för att ordna om listan (ordning över alla sidor) 
+    //genom att kalla på Index metoden i ProdukterController.
 <table class="table">
     <tr>
         <th>
@@ -31,32 +39,16 @@
             @Html.ActionLink("Namn", "Index",
         new { Ordning = ViewBag.NamnOrdning, produktTyp = ViewBag.ProduktType, sökSträng = ViewBag.SökSträng, filterVärde = ViewBag.filterVärde })
         </th>
-        @*<th>
-                @Html.DisplayNameFor(model => model.Pris)
-            </th>*@
-        @*<th>
-                @Html.DisplayNameFor(model => model.Typ)
-            </th>*@
-        @*<th>
-                @Html.DisplayNameFor(model => model.Farg)
-            </th>*@
         <th>
             Bild
         </th>
-        @*<th>
-                @Html.DisplayNameFor(model => model.Ritningsfilnamn)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RefID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Beskrivning)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Montering)
-            </th>*@
         <th></th>
     </tr>
+
+    @*Raderna i tabellen tas fram med en foreach loop (mha bootstap)
+      Just nu är 'Detaljer' en länk för att nå produktsidan.  Man kan
+      ändra det sedan för att hända när man klicka på bilden (bilder
+      finns inte med än med kommer att ersätta Bildfilnamn).*@ 
 
     @foreach (var item in Model) {
         <tr>
@@ -66,43 +58,23 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Namn)
             </td>
-            @*<td>
-                    @Html.DisplayFor(modelItem => item.Pris)
-                </td>*@
-            @*<td>
-                    @Html.DisplayFor(modelItem => item.Typ)
-                </td>*@
-            @*<td>
-                    @Html.DisplayFor(modelItem => item.Farg)
-                </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.Bildfilnamn)
             </td>
-            @*<td>
-                    @Html.DisplayFor(modelItem => item.Ritningsfilnamn)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RefID)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Beskrivning)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Montering)
-                </td>*@
             <td>
-                @*@Html.ActionLink("Edit", "Edit", new { id=item.ID }) |*@
                 @Html.ActionLink("Detailjer", "Details", new { id = item.ID })
-                @*@Html.ActionLink("Delete", "Delete", new { id=item.ID })*@
             </td>
         </tr>
 }
 </table>
 <br />
+    //Här är PagedList css objektet som hanterar att flytta sig genom sidor baserad
+    //på hur många produkter borde visas samtidigt.  Den anväder sig av Index metoden
+    //i ProdukterController för att ladda om sidan.
 <div id='Paging' style="text-align:center">
     Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
     @Html.PagedListPager(Model, sida => Url.Action("Index",
-                                    new { Ordning = ViewBag.OrdningNu, produktTyp = ViewBag.ProduktType, sökSträng = ViewBag.SökSträng, filterVärde = ViewBag.filterVärde, sida }))
+                                    new { Ordning = ViewBag.OrdningNu, filterVärde = ViewBag.filterVärde, sida }))
 </div>
 }
 

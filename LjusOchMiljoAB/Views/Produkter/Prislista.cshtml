@@ -1,4 +1,9 @@
-﻿@*@model IEnumerable<LjusOchMiljoAB.Models.Produkter>*@
+﻿  @** Grupp 2
+    * Senast ändrat: 2014 11 04
+    * Version: 0.16b*@
+
+@*Lägg till PagedList css objektet*@
+
 @model PagedList.IPagedList<LjusOchMiljoAB.Models.Produkter>
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" />
@@ -9,14 +14,21 @@
 
 <h2>Pristlista</h2>
 
+@*Med Html.BeginForm gör man det lätt att ladda om sig själv vid sökningar*@
 @using (Html.BeginForm("Prislista", "Produkter", FormMethod.Get))
 {
+    //DropDownList hantera val av kategori för visning
+    //Html.TextBox är textboxen som tar emot söksträngen vid sökning
+    //Sök knappen kör val/sökningen (sökning och val kan användas tillsammans)    
     <p>
         Kategori: @Html.DropDownList("produktTyp", "All")
         Namn: @Html.TextBox("sökSträng", ViewBag.filterVärde as string) <br />
         <input type="submit" value="Sök" />
     </p>
     
+    //Kolumner för tabellen - bara ID, Namn, Pris, och Typ (som kategori) användas.
+    //Alla kolumner kan användas för att ordna om listan (ordning över alla sidor) 
+    //genom att kalla på Prislista metoden i ProdukterController.    
 <table class="table">
     <tr>
         <th>
@@ -37,6 +49,10 @@
         </th>
         <th></th>
     </tr>
+
+    @*Raderna i tabellen tas fram med en foreach loop (mha bootstap)
+        Just nu är 'Detaljer' en länk för att nå produktsidan. Prislistan
+        har inga bilder med visar pris och typ utöver namn och id.*@
 
 @foreach (var item in Model) {
     <tr>
@@ -59,6 +75,9 @@
 }
 </table>
 <br />
+//Här är PagedList css objektet som hanterar att flytta sig genom sidor baserad
+//på hur många produkter borde visas samtidigt.  Den anväder sig av Prislista metoden
+//i ProdukterController för att ladda om sidan.    
 <div id='Paging' style="text-align:center">
     Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
     @Html.PagedListPager(Model, sida => Url.Action("Prislista",

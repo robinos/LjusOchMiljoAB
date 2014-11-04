@@ -9,9 +9,20 @@ using LjusOchMiljoAB.Controllers;
 
 namespace LjusOchMiljoAB.Tests.Controllers
 {
+	/*
+	 * HemControllerTest testar controllern till huvudsidan Hem, med undersidor 
+	 * Om och Kontakt.
+	 * 
+	 * Grupp 2
+	 * Senast ändrat: 2014 11 04
+	 * Version: 0.16b
+	 */
 	[TestClass]
 	public class HemControllerTest
 	{
+		/*
+		 * Testar att Index (huvudsidan) är inte null
+		 */
 		[TestMethod]
 		public void HemIndexNotNull()
 		{
@@ -25,6 +36,9 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			Assert.IsNotNull(result);
 		}
 
+		/*
+		 * Testar att Om-sidan returnerar default text om företaget/hemsidan
+		 */
 		[TestMethod]
 		public void HemOmHarDefaultText()
 		{
@@ -38,6 +52,9 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			Assert.AreEqual("Om hemsidan och Ljus och Miljö AB", result.ViewBag.Message);
 		}
 
+		/*
+		 * Testar att Kontakt-sidan returnerar default text om företagkontakt
+		 */
 		[TestMethod]
 		public void HemKontaktHarDefaultText()
 		{

@@ -1,3 +1,6 @@
+Version 0.16b
+- Satt kommentar i koden
+
 Version 0.16
 - I huvudapplikation LjusOchMiljoAB
 - La till resultatsidor för produktsökningar

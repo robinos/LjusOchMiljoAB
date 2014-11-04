@@ -14,14 +14,33 @@ using LjusOchMiljoAB.Tests.Models;
 
 namespace LjusOchMiljoAB.Tests.Controllers
 {
+	/*
+	 * ProdukterControllerTest testar controllern till produktlistorna.  Den
+	 * använder en databas så lösas (mock) databaskontakt uppnås med hjälp av
+	 * InMemoryProdukterRepository som implementerar IProdukterRespository.
+	 * Även en inre klass MockHttpContext används för testerna.
+	 * 
+	 * Metoder/sidor som testas är Index (produktlistan), Prislistan, och
+	 * Details (produktsidan). 
+	 * 
+	 * Grupp 2
+	 * Senast ändrat: 2014 11 04
+	 * Version: 0.16b
+	 */
 	[TestClass]
 	public class ProdukterControllerTest
 	{
+		/*
+		 * Default hämtning
+		 */
 		Produkter HämtaProduktMedID()
 		{
 			return HämtaProduktMedID("00000");
 		}
 
+		/*
+		 * Default produkt
+		 */
 		Produkter HämtaProduktMedID(string id)
 		{
 			return new Produkter
@@ -39,6 +58,9 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			};
 		}
 
+		/*
+		 * Skapa en ProdukterController och koppla det till MockHttpContext för tester
+		 */
 		private static ProdukterController GetProdukterController(IProdukterRepository repository)
 		{
 			ProdukterController controller = new ProdukterController(repository);
@@ -52,6 +74,10 @@ namespace LjusOchMiljoAB.Tests.Controllers
 		}
 
 
+		/*
+		 * Inre klass som kopplas till en ProduktController för testning för
+		 * lösas HTTP Context
+		 */
 		private class MockHttpContext : HttpContextBase
 		{
 			private readonly IPrincipal _user = new GenericPrincipal(
@@ -70,6 +96,9 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			}
 		}
 
+		/*
+		 * ProdukterIndexNotNull testar att sidan är inte null.
+		 */
 		[TestMethod]
 		public void ProdukterIndexNotNull()
 		{
@@ -83,6 +112,10 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			Assert.IsNotNull(result);
 		}
 
+		/*
+		 * ProdukterIndexHämtarVyn testar att sidan hämtar vyn mha text som
+		 * skickas från ProdukterController för testning.
+		 */
 		[TestMethod]
 		public void ProdukterIndexHämtarVyn()
 		{
@@ -94,6 +127,10 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			Assert.AreEqual("Index", result.ViewName);
 		}
 
+		/*
+		 * ProdukterIndexHämtarAllaProdukterFrånRepository testar att vyn för
+		 * alla produkter verkligen visas alla produkter som finns.
+		 */
 		[TestMethod]
 		public void ProdukterIndexHämtarAllaProdukterFrånRepository()
 		{
@@ -114,6 +151,9 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			CollectionAssert.Contains(model.ToList(), produkt2);
 		}
 
+		/*
+		 * ProdukterDetailsNotNull testar att sidan är inte null.
+		 */
 		[TestMethod]
 		public void ProdukterDetailsNotNull()
 		{
@@ -130,6 +170,10 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			Assert.IsNotNull(result);
 		}
 
+		/*
+		 * ProdukterDetailsHämtarVyn testar att sidan hämtar vyn mha text som
+		 * skickas från ProdukterController för testning.
+		 */
 		[TestMethod]
 		public void ProdukterDetailsHämtarVyn()
 		{
@@ -146,6 +190,10 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			Assert.AreEqual("Details", result.ViewName);
 		}
 
+		/*
+		 * ProdukterDetailsHämtarProdukt00000 testar att just produkter 00000
+		 * hittas och visas och inte någon annan produkt.
+		 */
 		[TestMethod]
 		public void ProdukterDetailsHämtarProdukt00000()
 		{
@@ -166,6 +214,10 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			Assert.AreNotEqual(model, produkt2);
 		}
 
+		/*
+		 * ProdukterDetailsHämtarInteObefintligProdukt testar att details hämtar
+		 * INTE en produkt som inte finns.
+		 */
 		[TestMethod]
 		public void ProdukterDetailsHämtarInteObefintligProdukt()
 		{
@@ -184,6 +236,9 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			//Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
 		}
 
+		/*
+		 * ProdukterPrislistaNotNull testar att sidan är inte null.
+		 */
 		[TestMethod]
 		public void ProdukterPrislistaNotNull()
 		{
@@ -197,6 +252,10 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			Assert.IsNotNull(result);
 		}
 
+		/*
+		 * ProdukterPrislistaHämtarVyn testar att sidan hämtar vyn mha text som
+		 * skickas från ProdukterController för testning.
+		 */
 		[TestMethod]
 		public void ProdukterPrislistaHämtarVyn()
 		{
@@ -210,6 +269,10 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			Assert.AreEqual("Prislista", result.ViewName);
 		}
 
+		/*
+		 * ProdukterPrislistaHämtarAllaProdukterFrånRepository testar att vyn för
+		 * priser på alla produkter verkligen visas alla produkter som finns.
+		 */
 		[TestMethod]
 		public void ProdukterPrislistaHämtarAllaProdukterFrånRepository()
 		{
