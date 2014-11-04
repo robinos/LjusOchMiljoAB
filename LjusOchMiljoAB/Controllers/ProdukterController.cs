@@ -258,7 +258,7 @@ namespace LjusOchMiljoAB.Controllers
 			//söksträngen
 			if (!String.IsNullOrEmpty(sökSträng))
 			{
-				produkter = produkter.Where(s => s.Namn.Contains(sökSträng));
+				produkter = produkter.Where(s => s.Namn.ToUpper().Contains(sökSträng.ToUpper()));
 			}
 
 			//Om där finns en vald produktyp (där All är en speciellfall), filtreras
