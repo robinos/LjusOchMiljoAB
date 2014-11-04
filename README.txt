@@ -1,7 +1,4 @@
-**Jag tror INTE det kräver något ändring så databasen fungerar på andra datorer men jag
-är inte 100% säker.
-
--APPLIKATION---------------------------------------------------------------------------
+-APPLIKATION, LjusOchMiljoAB-----------------------------------------------------------
 Huvudsidan har
 	Controllers -> HemController.cs som kodfil
 	Views -> Hem -> Hem.cshtml som vy
@@ -27,7 +24,30 @@ Vi behöver inte använda oss av den om vi hittar en annan lösning.
 	Views -> Anvandare -> (automatgenererad Create, Delete, Details, Edit, Index.cshtml)
 
 
--TESTNING-----------------------------------------------------------------------------
+-OVRIGT--------------------------------------------------------------------------------
+Övriga automatgenererad filer av betydelse
+
+Som default startas ett MVC basprojekt med registrering och inloggningsformer
+- Controllers ->
+	- AccountController
+	- ManageController
+- Views -> Account ->
+	- en massa vyn för registrering och login
+	- form för att byta lösenord, mm
+
+Den har även vyer som är delad för alla vyn (meny)
+- Views -> Shared ->
+	- _Layout.cshtml (meny layout)
+	- _LoginPartial.cshtml (som visar om man är inloggad eller inte)
+	- Error.cshtml (något gick snett)
+	- Lockout.cshtml (banad konto)
+
+App_Start mappen innehåller några configurationsfiler
+- RouteConfig.cs hanterar giltiga addresser (som man inte kommer till med länkar)
+- FilterConfig.cs är en inbyggt datafilter
+
+
+-TESTNING, LjusOchMiljoAB.Tests--------------------------------------------------------
 LjusOchMiljoAB.Tests bara innehåller några automatgenererad tester plus början på
 testningen
 
@@ -52,25 +72,3 @@ Controllers ->
 
 För ändringar sedan sist, ser Changelog.txt
 
-
--OVRIGT--------------------------------------------------------------------------------
-Övriga automatgenererad filer av betydelse
-
-Som default startas ett MVC basprojekt med registrering och inloggningsformer
-- Controllers ->
-	- AccountController
-	- ManageController
-- Views -> Account ->
-	- en massa vyn för registrering och login
-	- form för att byta lösenord, mm
-
-Den har även vyer som är delad för alla vyn (meny)
-- Views -> Shared ->
-	- _Layout.cshtml (meny layout)
-	- _LoginPartial.cshtml (som visar om man är inloggad eller inte)
-	- Error.cshtml (något gick snett)
-	- Lockout.cshtml (banad konto)
-
-App_Start mappen innehåller några configurationsfiler
-- RouteConfig.cs hanterar giltiga addresser (som man inte kommer till med länkar)
-- FilterConfig.cs är en inbyggt datafilter

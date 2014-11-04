@@ -6,17 +6,18 @@
 
 <div>
     <br />
-    @Html.ActionLink("Inomhus", "Index", "Produkter", new { produktTyp = "inomhus" }, null)
-    @Html.ActionLink("Utomhus", "Index", "Produkter", new { produktTyp = "utomhus" }, null)
-    @Html.ActionLink("Tillbehör", "Index", "Produkter", new { produktTyp = "tillbehör" }, null)
+    @Html.ActionLink("Inomhus", "Index", "Produkter", new { Ordning = "", produktTyp = "inomhus", sökSträng = "", filterVärde = "", sida = 1 }, null)
+    @Html.ActionLink("Utomhus", "Index", "Produkter", new { Ordning = "", produktTyp = "utomhus", sökSträng = "", filterVärde = "", sida = 1 }, null)
+    @Html.ActionLink("Tillbehör", "Index", "Produkter", new { Ordning = "", produktTyp = "tillbehör", sökSträng = "", filterVärde = "", sida = 1 }, null)
     <br />
 </div>
 
-
 <div>
-    <br />@Html.ActionLink("Lista av produkter", "Index", "Produkter")<br />
+    @Html.ActionLink("Lista av produkter", "Index", "Produkter", new { Ordning = "", produktTyp = "", sökSträng = "", filterVärde = "", sida = 1 }, null)
 </div>
 
 <div>
-    <br />@Html.ActionLink("Prislista", "Prislista", "Produkter")<br />
+    <br />
+    @Html.ActionLink("Prislista", "Prislista", "Produkter", new { Ordning = "", produktTyp = "", sökSträng = "", filterVärde = "", sida = 1 }, null)
+    <br />
 </div>

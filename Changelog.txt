@@ -1,3 +1,11 @@
+Version 0.16
+- I huvudapplikation LjusOchMiljoAB
+- La till resultatsidor för produktsökningar
+- La till omordning genom kolumner vid produktsökningar
+- La till resultatsidor för pristlistan
+- La till omordning genom kolumner för pristlistan
+- Lätt sök/kategorifunktioner även användas på prislistan
+
 Version 0.15
 - I huvudapplikation LjusOchMiljoAB
 - Mindre ändring i Controllers -> ProdukterController.cs för att returnera vy namn

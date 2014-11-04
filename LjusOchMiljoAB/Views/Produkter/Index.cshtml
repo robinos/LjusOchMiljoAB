@@ -1,4 +1,7 @@
-﻿@model IEnumerable<LjusOchMiljoAB.Models.Produkter>
+﻿@*@model IEnumerable<LjusOchMiljoAB.Models.Produkter>*@
+@model PagedList.IPagedList<LjusOchMiljoAB.Models.Produkter>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" />
 
 @{
     ViewBag.Title = "Produkter";
@@ -7,85 +10,100 @@
 <h2>Produkter</h2>
 
 @*<p>
-    @Html.ActionLink("Create New", "Create")
-</p>*@
+        @Html.ActionLink("Create New", "Create")
+    </p>*@
 
 @using (Html.BeginForm("Index", "Produkter", FormMethod.Get))
 {
     <p>
-        Typ: @Html.DropDownList("produktTyp", "All")
-        Namn: @Html.TextBox("sökSträng") <br />
+        Kategori: @Html.DropDownList("produktTyp", "All")
+        Namn: @Html.TextBox("sökSträng", ViewBag.filterVärde as string) <br />
         <input type="submit" value="Sök" />
     </p>
-}
 
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Namn)
-        </th>
-        @*<th>
-            @Html.DisplayNameFor(model => model.Pris)
-        </th>*@
-        @*<th>
-            @Html.DisplayNameFor(model => model.Typ)
-        </th>*@
-        @*<th>
-            @Html.DisplayNameFor(model => model.Farg)
-        </th>*@
-        <th>
-            @Html.DisplayNameFor(model => model.Bildfilnamn)
-        </th>
-        @*<th>
-            @Html.DisplayNameFor(model => model.Ritningsfilnamn)
+            @Html.ActionLink("ID", "Index",
+          new { Ordning = ViewBag.IDOrdning, produktTyp = ViewBag.ProduktType, sökSträng = ViewBag.SökSträng, filterVärde = ViewBag.filterVärde })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.RefID)
+            @Html.ActionLink("Namn", "Index",
+        new { Ordning = ViewBag.NamnOrdning, produktTyp = ViewBag.ProduktType, sökSträng = ViewBag.SökSträng, filterVärde = ViewBag.filterVärde })
         </th>
+        @*<th>
+                @Html.DisplayNameFor(model => model.Pris)
+            </th>*@
+        @*<th>
+                @Html.DisplayNameFor(model => model.Typ)
+            </th>*@
+        @*<th>
+                @Html.DisplayNameFor(model => model.Farg)
+            </th>*@
         <th>
-            @Html.DisplayNameFor(model => model.Beskrivning)
+            Bild
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Montering)
-        </th>*@
+        @*<th>
+                @Html.DisplayNameFor(model => model.Ritningsfilnamn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RefID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Beskrivning)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Montering)
+            </th>*@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Namn)
-        </td>
-        @*<td>
-            @Html.DisplayFor(modelItem => item.Pris)
-        </td>*@
-        @*<td>
-            @Html.DisplayFor(modelItem => item.Typ)
-        </td>*@
-        @*<td>
-            @Html.DisplayFor(modelItem => item.Farg)
-        </td>*@
-        <td>
-            @Html.DisplayFor(modelItem => item.Bildfilnamn)
-        </td>
-        @*<td>
-            @Html.DisplayFor(modelItem => item.Ritningsfilnamn)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.RefID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Beskrivning)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Montering)
-        </td>*@
-        <td>
-            @*@Html.ActionLink("Edit", "Edit", new { id=item.ID }) |*@
-            @Html.ActionLink("Details", "Details", new { id=item.ID })
-            @*@Html.ActionLink("Delete", "Delete", new { id=item.ID })*@
-        </td>
-    </tr>
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Namn)
+            </td>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.Pris)
+                </td>*@
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.Typ)
+                </td>*@
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.Farg)
+                </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.Bildfilnamn)
+            </td>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.Ritningsfilnamn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RefID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Beskrivning)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Montering)
+                </td>*@
+            <td>
+                @*@Html.ActionLink("Edit", "Edit", new { id=item.ID }) |*@
+                @Html.ActionLink("Detailjer", "Details", new { id = item.ID })
+                @*@Html.ActionLink("Delete", "Delete", new { id=item.ID })*@
+            </td>
+        </tr>
+}
+</table>
+<br />
+<div id='Paging' style="text-align:center">
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, sida => Url.Action("Index",
+                                    new { Ordning = ViewBag.OrdningNu, produktTyp = ViewBag.ProduktType, sökSträng = ViewBag.SökSträng, filterVärde = ViewBag.filterVärde, sida }))
+</div>
 }
 
-</table>
+

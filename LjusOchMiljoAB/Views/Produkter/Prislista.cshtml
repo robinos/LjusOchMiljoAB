@@ -1,4 +1,7 @@
-﻿@model IEnumerable<LjusOchMiljoAB.Models.Produkter>
+﻿@*@model IEnumerable<LjusOchMiljoAB.Models.Produkter>*@
+@model PagedList.IPagedList<LjusOchMiljoAB.Models.Produkter>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" />
 
 @{
     ViewBag.Title = "Produkter";
@@ -6,22 +9,40 @@
 
 <h2>Pristlista</h2>
 
+@using (Html.BeginForm("Prislista", "Produkter", FormMethod.Get))
+{
+    <p>
+        Kategori: @Html.DropDownList("produktTyp", "All")
+        Namn: @Html.TextBox("sökSträng", ViewBag.filterVärde as string) <br />
+        <input type="submit" value="Sök" />
+    </p>
+    
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Namn)
+            @Html.ActionLink("ID", "Prislista",
+          new { Ordning = ViewBag.IDOrdning, filterVärde = ViewBag.filterVärde })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Pris)
+            @Html.ActionLink("Namn", "Prislista",
+        new { Ordning = ViewBag.NamnOrdning, filterVärde = ViewBag.filterVärde })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Typ)
+            @Html.ActionLink("Pris", "Prislista",
+       new { Ordning = ViewBag.PrisOrdning, filterVärde = ViewBag.filterVärde })
+        </th>
+        <th>
+            @Html.ActionLink("Kategori", "Prislista",
+       new { Ordning = ViewBag.TypOrdning, filterVärde = ViewBag.filterVärde })
         </th>
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ID)
+        </td>
         <td>
             @Html.DisplayFor(modelItem => item.Namn)
         </td>
@@ -32,9 +53,15 @@
             @Html.DisplayFor(modelItem => item.Typ)
         </td>
         <td>
-            @Html.ActionLink("Details", "Details", new { id=item.ID })
+            @Html.ActionLink("Detailjer", "Details", new { id=item.ID })
         </td>
     </tr>
 }
-
 </table>
+<br />
+<div id='Paging' style="text-align:center">
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, sida => Url.Action("Prislista",
+        new { Ordning = ViewBag.OrdningNu, filterVärde = ViewBag.filterVärde, sida }))
+</div>
+}

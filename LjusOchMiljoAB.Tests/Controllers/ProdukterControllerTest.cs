@@ -77,7 +77,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			ProdukterController controller = GetProdukterController(new InMemoryProdukterRepository());
 
 			// Act
-			ViewResult result = controller.Index("", "") as ViewResult;
+			ViewResult result = controller.Index("Namn_Ordning", "", "", "", 1) as ViewResult;
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -89,7 +89,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			// Arrange
 			ProdukterController controller = GetProdukterController(new InMemoryProdukterRepository());
 			// Act
-			ViewResult result = controller.Index("", "") as ViewResult;
+			ViewResult result = controller.Index("Namn_Ordning", "", "", "", 1) as ViewResult;
 			// Assert
 			Assert.AreEqual("Index", result.ViewName);
 		}
@@ -106,7 +106,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			ProdukterController controller = GetProdukterController(repository);
 
 			// Act
-			ViewResult result = controller.Index("", "") as ViewResult;
+			ViewResult result = controller.Index("Namn_Ordning", "", "", "", 1) as ViewResult;
 
 			// Assert
 			var model = (IEnumerable<Produkter>)result.ViewData.Model;
@@ -191,7 +191,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			ProdukterController controller = GetProdukterController(new InMemoryProdukterRepository());
 
 			// Act
-			ViewResult result = controller.Prislista() as ViewResult;
+			ViewResult result = controller.Prislista("Namn_Ordning", "", "", "", 1) as ViewResult;
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -204,7 +204,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			ProdukterController controller = GetProdukterController(new InMemoryProdukterRepository());
 
 			// Act
-			ViewResult result = controller.Prislista() as ViewResult;
+			ViewResult result = controller.Prislista("Namn_Ordning", "", "", "", 1) as ViewResult;
 
 			// Assert
 			Assert.AreEqual("Prislista", result.ViewName);
@@ -222,7 +222,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			ProdukterController controller = GetProdukterController(repository);
 
 			// Act
-			ViewResult result = controller.Prislista() as ViewResult;
+			ViewResult result = controller.Prislista("Namn_Ordning", "", "", "", 1) as ViewResult;
 
 			// Assert
 			var model = (IEnumerable<Produkter>)result.ViewData.Model;
