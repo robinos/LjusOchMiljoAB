@@ -24,8 +24,8 @@ namespace LjusOchMiljoAB.Tests.Controllers
 	 * Details (produktsidan). 
 	 * 
 	 * Grupp 2
-	 * Senast ändrat: 2014 11 04
-	 * Version: 0.16b
+	 * Senast ändrat: 2014 11 09
+	 * Version: 0.17
 	 */
 	[TestClass]
 	public class ProdukterControllerTest
@@ -59,11 +59,20 @@ namespace LjusOchMiljoAB.Tests.Controllers
 		}
 
 		/*
+		 * Skapa en ProduktService
+		 */
+		private static IProduktService GetProduktService(IProduktRepository repository)
+		{
+			ProduktService produktService = new ProduktService(repository);
+			return produktService;
+		}
+
+		/*
 		 * Skapa en ProdukterController och koppla det till MockHttpContext för tester
 		 */
-		private static ProdukterController GetProdukterController(IProdukterRepository repository)
+		private static ProdukterController GetProdukterController(IProduktService produktService)
 		{
-			ProdukterController controller = new ProdukterController(repository);
+			ProdukterController controller = new ProdukterController(produktService);
 
 			controller.ControllerContext = new ControllerContext()
 			{
@@ -72,7 +81,6 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			};
 			return controller;
 		}
-
 
 		/*
 		 * Inre klass som kopplas till en ProduktController för testning för
@@ -103,10 +111,10 @@ namespace LjusOchMiljoAB.Tests.Controllers
 		public void ProdukterIndexNotNull()
 		{
 			// Arrange
-			ProdukterController controller = GetProdukterController(new InMemoryProdukterRepository());
+			ProdukterController controller = GetProdukterController(GetProduktService(new InMemoryProdukterRepository()));
 
 			// Act
-			ViewResult result = controller.Index("Namn_Ordning", "", "", "", 1) as ViewResult;
+			ViewResult result = controller.Index("Namn_Ordning", "", "", "", "", 1) as ViewResult;
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -120,9 +128,9 @@ namespace LjusOchMiljoAB.Tests.Controllers
 		public void ProdukterIndexHämtarVyn()
 		{
 			// Arrange
-			ProdukterController controller = GetProdukterController(new InMemoryProdukterRepository());
+			ProdukterController controller = GetProdukterController(GetProduktService(new InMemoryProdukterRepository()));
 			// Act
-			ViewResult result = controller.Index("Namn_Ordning", "", "", "", 1) as ViewResult;
+			ViewResult result = controller.Index("Namn_Ordning", "", "", "", "", 1) as ViewResult;
 			// Assert
 			Assert.AreEqual("Index", result.ViewName);
 		}
@@ -140,10 +148,10 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			InMemoryProdukterRepository repository = new InMemoryProdukterRepository();
 			repository.Add(produkt1);
 			repository.Add(produkt2);
-			ProdukterController controller = GetProdukterController(repository);
+			ProdukterController controller = GetProdukterController(GetProduktService(repository));
 
 			// Act
-			ViewResult result = controller.Index("Namn_Ordning", "", "", "", 1) as ViewResult;
+			ViewResult result = controller.Index("Namn_Ordning", "", "", "", "", 1) as ViewResult;
 
 			// Assert
 			var model = (IEnumerable<Produkter>)result.ViewData.Model;
@@ -161,7 +169,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			Produkter produkt1 = HämtaProduktMedID("00000"); 
 			InMemoryProdukterRepository repository = new InMemoryProdukterRepository();
 			repository.Add(produkt1);
-			ProdukterController controller = GetProdukterController(repository);
+			ProdukterController controller = GetProdukterController(GetProduktService(repository));
 
 			// Act
 			ViewResult result = controller.Details("00000") as ViewResult;
@@ -181,7 +189,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			Produkter produkt1 = HämtaProduktMedID("00000");
 			InMemoryProdukterRepository repository = new InMemoryProdukterRepository();
 			repository.Add(produkt1);
-			ProdukterController controller = GetProdukterController(repository);
+			ProdukterController controller = GetProdukterController(GetProduktService(repository));
 
 			// Act
 			ViewResult result = controller.Details("00000") as ViewResult;
@@ -203,7 +211,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			InMemoryProdukterRepository repository = new InMemoryProdukterRepository();
 			repository.Add(produkt1);
 			repository.Add(produkt2);
-			ProdukterController controller = GetProdukterController(repository);
+			ProdukterController controller = GetProdukterController(GetProduktService(repository));
 
 			// Act
 			ViewResult result = controller.Details("00000") as ViewResult;
@@ -225,7 +233,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			Produkter produkt1 = HämtaProduktMedID("00000");
 			InMemoryProdukterRepository repository = new InMemoryProdukterRepository();
 			repository.Add(produkt1);
-			ProdukterController controller = GetProdukterController(repository);
+			ProdukterController controller = GetProdukterController(GetProduktService(repository));
 
 			// Act
 			ViewResult result = controller.Details("33333") as ViewResult;
@@ -243,10 +251,10 @@ namespace LjusOchMiljoAB.Tests.Controllers
 		public void ProdukterPrislistaNotNull()
 		{
 			// Arrange
-			ProdukterController controller = GetProdukterController(new InMemoryProdukterRepository());
+			ProdukterController controller = GetProdukterController(GetProduktService(new InMemoryProdukterRepository()));
 
 			// Act
-			ViewResult result = controller.Prislista("Namn_Ordning", "", "", "", 1) as ViewResult;
+			ViewResult result = controller.Prislista("Namn_Ordning", "", "", "", "", 1) as ViewResult;
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -260,10 +268,10 @@ namespace LjusOchMiljoAB.Tests.Controllers
 		public void ProdukterPrislistaHämtarVyn()
 		{
 			// Arrange
-			ProdukterController controller = GetProdukterController(new InMemoryProdukterRepository());
+			ProdukterController controller = GetProdukterController(GetProduktService(new InMemoryProdukterRepository()));
 
 			// Act
-			ViewResult result = controller.Prislista("Namn_Ordning", "", "", "", 1) as ViewResult;
+			ViewResult result = controller.Prislista("Namn_Ordning", "", "", "", "", 1) as ViewResult;
 
 			// Assert
 			Assert.AreEqual("Prislista", result.ViewName);
@@ -282,10 +290,10 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			InMemoryProdukterRepository repository = new InMemoryProdukterRepository();
 			repository.Add(produkt1);
 			repository.Add(produkt2);
-			ProdukterController controller = GetProdukterController(repository);
+			ProdukterController controller = GetProdukterController(GetProduktService(repository));
 
 			// Act
-			ViewResult result = controller.Prislista("Namn_Ordning", "", "", "", 1) as ViewResult;
+			ViewResult result = controller.Prislista("Namn_Ordning", "", "", "", "", 1) as ViewResult;
 
 			// Assert
 			var model = (IEnumerable<Produkter>)result.ViewData.Model;

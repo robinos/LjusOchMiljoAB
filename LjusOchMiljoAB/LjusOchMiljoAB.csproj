@@ -171,6 +171,7 @@
     <Compile Include="Controllers\HemController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ProdukterController.cs" />
+    <Compile Include="Controllers\ProduktService.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -180,7 +181,8 @@
     </Compile>
     <Compile Include="Models\EntityProdukterManagerRepository.cs" />
     <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\IProdukterRepository.cs" />
+    <Compile Include="Models\IProduktRepository.cs" />
+    <Compile Include="Models\IProduktService.cs" />
     <Compile Include="Models\LOMDB_Model.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

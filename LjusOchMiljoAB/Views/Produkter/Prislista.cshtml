@@ -1,6 +1,6 @@
 ﻿  @** Grupp 2
-    * Senast ändrat: 2014 11 04
-    * Version: 0.16b*@
+    * Senast ändrat: 2014 11 09
+    * Version: 0.17*@
 
 @*Lägg till PagedList css objektet*@
 
@@ -22,7 +22,7 @@
     //Sök knappen kör val/sökningen (sökning och val kan användas tillsammans)    
     <p>
         Kategori: @Html.DropDownList("produktTyp", "All")
-        Namn: @Html.TextBox("sökSträng", ViewBag.filterVärde as string) <br />
+        Namn: @Html.TextBox("sökSträng", ViewBag.filterSträng as string) <br />
         <input type="submit" value="Sök" />
     </p>
     
@@ -33,19 +33,19 @@
     <tr>
         <th>
             @Html.ActionLink("ID", "Prislista",
-          new { Ordning = ViewBag.IDOrdning, filterVärde = ViewBag.filterVärde })
+    new { Ordning = ViewBag.IDOrdning, produktTyp = ViewBag.ProduktType, sökSträng = ViewBag.SökSträng, filterSträng = ViewBag.filterSträng, filterProdukt = ViewBag.filterProdukt })
         </th>
         <th>
             @Html.ActionLink("Namn", "Prislista",
-        new { Ordning = ViewBag.NamnOrdning, filterVärde = ViewBag.filterVärde })
+     new { Ordning = ViewBag.NamnOrdning, produktTyp = ViewBag.ProduktType, sökSträng = ViewBag.SökSträng, filterSträng = ViewBag.filterSträng, filterProdukt = ViewBag.filterProdukt })
         </th>
         <th>
             @Html.ActionLink("Pris", "Prislista",
-       new { Ordning = ViewBag.PrisOrdning, filterVärde = ViewBag.filterVärde })
+    new { Ordning = ViewBag.PrisOrdning, produktTyp = ViewBag.ProduktType, sökSträng = ViewBag.SökSträng, filterSträng = ViewBag.filterSträng, filterProdukt = ViewBag.filterProdukt })
         </th>
         <th>
             @Html.ActionLink("Kategori", "Prislista",
-       new { Ordning = ViewBag.TypOrdning, filterVärde = ViewBag.filterVärde })
+    new { Ordning = ViewBag.TypOrdning, produktTyp = ViewBag.ProduktType, sökSträng = ViewBag.SökSträng, filterSträng = ViewBag.filterSträng, filterProdukt = ViewBag.filterProdukt })
         </th>
         <th></th>
     </tr>
@@ -81,6 +81,6 @@
 <div id='Paging' style="text-align:center">
     Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
     @Html.PagedListPager(Model, sida => Url.Action("Prislista",
-        new { Ordning = ViewBag.OrdningNu, filterVärde = ViewBag.filterVärde, sida }))
+                new { Ordning = ViewBag.OrdningNu, filterSträng = ViewBag.filterSträng, filterProdukt = ViewBag.filterProdukt, sida }))
 </div>
 }

@@ -5,6 +5,7 @@ Huvudsidan har
 
 Produkter har
 	Controllers -> ProdukterController.cs som kodfil
+	Controllers -> ProduktService.cs som produkthantering tjänst
 	Views -> Produkter -> Index.cshtml som vy
 	(Create, Delete, och Edit var automatgenererad men kommer inte att användas)
 

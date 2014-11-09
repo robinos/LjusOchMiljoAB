@@ -1,3 +1,16 @@
+Version 0.17
+- La till Controllers -> ProduktService.cs som produkthanteringstjänst
+- Ändrade om i ProdukterController så att den ta en tjänst istället för en repository
+	i Constructor
+- La till Models -> IProduktService som interface för ProduktService
+- Refaktorerad i ProdukterController för att ta bort dubbelkod och använda
+	ProduktService för ordning, sökningar och för att hantera sidor
+- Allting ovan kommer att gör det lättare att testa framöver
+- Döpte om IProdukterRepository till IProduktRepository
+- sökningar efter typ sparas nu i ViewBag.filterProdukt för att bli ihågkommen vid
+	ordningsändringar
+- 
+
 Version 0.16b
 - Satt kommentar i koden
 

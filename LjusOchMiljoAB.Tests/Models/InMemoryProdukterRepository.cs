@@ -18,9 +18,9 @@ namespace LjusOchMiljoAB.Tests.Models
 	 * 
 	 * Grupp 2
 	 * Senast ändrat: 2014 11 04
-	 * Version: 0.16b
+	 * Version: 0.17
 	 */
-	class InMemoryProdukterRepository : IProdukterRepository
+	class InMemoryProdukterRepository : IProduktRepository
 	{
 		//instansvariabler
 		//Listan db blir vår lösas databas

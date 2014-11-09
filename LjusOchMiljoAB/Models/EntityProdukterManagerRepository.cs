@@ -21,9 +21,9 @@ namespace LjusOchMiljoAB.Models
 	 * 
 	 * Grupp 2
 	 * Senast ändrat: 2014 11 04
-	 * Version: 0.16b
+	 * Version: 0.17
 	 */
-	public class EntityProdukterManagerRepository : IProdukterRepository
+	public class EntityProdukterManagerRepository : IProduktRepository
 	{
 		//instansvariabler
 		//Databas objekten

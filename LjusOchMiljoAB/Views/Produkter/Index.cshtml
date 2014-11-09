@@ -1,6 +1,6 @@
 ﻿  @** Grupp 2
-    * Senast ändrat: 2014 11 04
-    * Version: 0.16b*@
+    * Senast ändrat: 2014 11 09
+    * Version: 0.17*@
 
 @*Lägg till PagedList css objektet*@
 
@@ -22,7 +22,7 @@
     //Sök knappen kör val/sökningen (sökning och val kan användas tillsammans)
     <p>
         Kategori: @Html.DropDownList("produktTyp", "All")
-        Namn: @Html.TextBox("sökSträng", ViewBag.filterVärde as string) <br />
+        Namn: @Html.TextBox("sökSträng", ViewBag.filterSträng as string) <br />
         <input type="submit" value="Sök" />
     </p>
 
@@ -33,11 +33,11 @@
     <tr>
         <th>
             @Html.ActionLink("ID", "Index",
-          new { Ordning = ViewBag.IDOrdning, produktTyp = ViewBag.ProduktType, sökSträng = ViewBag.SökSträng, filterVärde = ViewBag.filterVärde })
+    new { Ordning = ViewBag.IDOrdning, produktTyp = ViewBag.ProduktType, sökSträng = ViewBag.SökSträng, filterSträng = ViewBag.filterSträng, filterProdukt = ViewBag.filterProdukt })
         </th>
         <th>
             @Html.ActionLink("Namn", "Index",
-        new { Ordning = ViewBag.NamnOrdning, produktTyp = ViewBag.ProduktType, sökSträng = ViewBag.SökSträng, filterVärde = ViewBag.filterVärde })
+  new { Ordning = ViewBag.NamnOrdning, produktTyp = ViewBag.ProduktType, sökSträng = ViewBag.SökSträng, filterSträng = ViewBag.filterSträng, filterProdukt = ViewBag.filterProdukt })
         </th>
         <th>
             Bild
@@ -74,7 +74,7 @@
 <div id='Paging' style="text-align:center">
     Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
     @Html.PagedListPager(Model, sida => Url.Action("Index",
-                                    new { Ordning = ViewBag.OrdningNu, filterVärde = ViewBag.filterVärde, sida }))
+                                            new { Ordning = ViewBag.OrdningNu, filterSträng = ViewBag.filterVärde, filterProdukt = ViewBag.filterProdukt, sida }))
 </div>
 }
 
