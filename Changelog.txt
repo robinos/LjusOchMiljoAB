@@ -10,6 +10,7 @@ Version 0.17
 - sökningar efter typ sparas nu i ViewBag.filterProdukt för att bli ihågkommen vid
 	ordningsändringar
 - 
+hej
 
 Version 0.16b
 - Satt kommentar i koden
