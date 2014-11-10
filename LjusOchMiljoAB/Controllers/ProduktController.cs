@@ -28,7 +28,7 @@ namespace LjusOchMiljoAB.Controllers
 	 * Senast ändrat: 2014 11 09
 	 * Version: 0.17
 	 */
-	public class ProdukterController : Controller
+	public class ProduktController : Controller
 	{
 		//IProduktService hanterar kommunikation med tjänsten som hanterar
 		//produkter åt ProdukterController
@@ -36,10 +36,10 @@ namespace LjusOchMiljoAB.Controllers
 
 		//Vid tom konstruktör, gör en ny tjänst av typen som används för
 		//verklig körning
-		public ProdukterController() : this(new ProduktService()) { }
+		public ProduktController() : this(new ProduktService()) { }
 
 		//En-parameter konstruktör för testning mot en egen tjänst
-		public ProdukterController(IProduktService produktService)
+		public ProduktController(IProduktService produktService)
 		{
 			this.produktService = produktService;
 		}
@@ -87,11 +87,11 @@ namespace LjusOchMiljoAB.Controllers
 			}
 
 			//Hämta information för rad som matcher id (som är nyckeln)
-			Produkter produkter = produktService.HämtaProduktMedID(id);
+			Produkt produkt = produktService.HämtaProduktMedID(id);
 
 			//Om raden är null (id finns inte), visa en default HTTP sida för
 			//att resultatet hittades inte med medellande
-			if (produkter == null)
+			if (produkt == null)
 			{
 				var result = new HttpNotFoundResult("Kan inte hitta produkten");
 				return result;
@@ -99,7 +99,7 @@ namespace LjusOchMiljoAB.Controllers
 
 			//"Details" texten är bara för hjälp vid testning
 			//produkter skickas in för att visa för vald produkten i vyn
-			return View("Details", produkter);
+			return View("Details", produkt);
 		}
 
 		/*
@@ -125,7 +125,7 @@ namespace LjusOchMiljoAB.Controllers
 			return View("Prislista", produktService.HämtaSida(produkter, sida));
 		}
 
-		public IEnumerable<Produkter> HanteraListan(string Ordning, string produktTyp, string sökSträng, string filterSträng, string filterProdukt, int? sida)
+		public IEnumerable<Produkt> HanteraListan(string Ordning, string produktTyp, string sökSträng, string filterSträng, string filterProdukt, int? sida)
 		{
 			//Spara ordningen just nu
 			ViewBag.OrdningNu = Ordning;

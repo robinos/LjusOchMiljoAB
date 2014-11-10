@@ -11,8 +11,8 @@ namespace LjusOchMiljoAB.Models
 {
     using System;
     using System.Collections.Generic;
-
-    public partial class Produkter
+    
+    public partial class Produkt
     {
         public string ID { get; set; }
         public string Namn { get; set; }

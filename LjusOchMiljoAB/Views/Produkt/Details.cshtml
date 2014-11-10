@@ -1,14 +1,18 @@
-﻿@model LjusOchMiljoAB.Models.Produkter
+﻿@** Grupp 2
+    * Senast ändrat: 2014 11 04
+    * Version: 0.16b*@
+
+@model LjusOchMiljoAB.Models.Produkt
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Detaljer";
 }
 
-<h2>Delete</h2>
+<h2>Detaljer</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+@*Visar all information om en produkt*@
 <div>
-    <h4>Produkter</h4>
+    <h4>Produkt</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -84,13 +88,9 @@
         </dd>
 
     </dl>
-
-    @using (Html.BeginForm()) {
-        @Html.AntiForgeryToken()
-
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
-        </div>
-    }
 </div>
+<p>
+    @*Problematiskt så går det här tillbaka till produktlistan även om man kommer
+    här från prislistan, så jag tog bort det (tillbaka knappen fungerar ändå).*@
+    @*@Html.ActionLink("Back to List", "Index")*@
+</p>

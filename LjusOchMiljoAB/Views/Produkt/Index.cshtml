@@ -4,7 +4,7 @@
 
 @*Lägg till PagedList css objektet*@
 
-@model PagedList.IPagedList<LjusOchMiljoAB.Models.Produkter>
+@model PagedList.IPagedList<LjusOchMiljoAB.Models.Produkt>
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" />
 
@@ -15,7 +15,7 @@
 <h2>Produkter</h2>
 
 @*Med Html.BeginForm gör man det lätt att ladda om sig själv vid sökningar*@
-@using (Html.BeginForm("Index", "Produkter", FormMethod.Get))
+@using (Html.BeginForm("Index", "Produkt", FormMethod.Get))
 {
     //DropDownList hantera val av kategori för visning
     //Html.TextBox är textboxen som tar emot söksträngen vid sökning

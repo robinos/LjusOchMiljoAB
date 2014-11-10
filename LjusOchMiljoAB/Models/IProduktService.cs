@@ -18,12 +18,12 @@ namespace LjusOchMiljoAB.Models
 {
 	public interface IProduktService
 	{
-		IEnumerable<Produkter> HämtaProdukter();
-		SelectList HämtaValLista(IEnumerable<Produkter> produkter, string produktTyp);
-		IEnumerable<Produkter> HämtaFiltreradProduktlista(IEnumerable<Produkter> produkter, string produktTyp, string sökSträng);
-		IEnumerable<Produkter> HämtaOrdnadProduktlista(IEnumerable<Produkter> produkter, string Ordning);
-		IPagedList HämtaSida(IEnumerable<Produkter> produkter, int? sida);
-		Produkter HämtaProduktMedID(string id);
+		IEnumerable<Produkt> HämtaProdukter();
+		SelectList HämtaValLista(IEnumerable<Produkt> produkter, string produktTyp);
+		IEnumerable<Produkt> HämtaFiltreradProduktlista(IEnumerable<Produkt> produkter, string produktTyp, string sökSträng);
+		IEnumerable<Produkt> HämtaOrdnadProduktlista(IEnumerable<Produkt> produkter, string Ordning);
+		IPagedList HämtaSida(IEnumerable<Produkt> produkter, int? sida);
+		Produkt HämtaProduktMedID(string id);
 		void Förstör();
 	}
 }

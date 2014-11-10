@@ -19,11 +19,11 @@ namespace LjusOchMiljoAB.Models
 {
 	public interface IProduktRepository
 	{
-		void SkapaProdukt(Produkter produktAttSkapa);
+		void SkapaProdukt(Produkt produktAttSkapa);
 		void TaBortProdukt(string id);
-		void RedigeraProdukt(Produkter produktAttÄndra);
-		Produkter HämtaProduktMedID(string id);
-		IEnumerable<Produkter> HämtaProduktlista();
+		void RedigeraProdukt(Produkt produktAttÄndra);
+		Produkt HämtaProduktMedID(string id);
+		IEnumerable<Produkt> HämtaProduktlista();
 		int SparaÄndringar();
 		void Förstör();
 	}

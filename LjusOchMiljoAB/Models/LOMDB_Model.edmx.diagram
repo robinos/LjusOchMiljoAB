@@ -6,7 +6,7 @@
     <edmx:Diagrams>
       <Diagram DiagramId="06175b6171814ff8a7bc222d0f48af3e" Name="Diagram1">
         <EntityTypeShape EntityType="LOM_DBModel.Anvandare" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="LOM_DBModel.Produkter" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="LOM_DBModel.Produkt" Width="1.5" PointX="0.75" PointY="4.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

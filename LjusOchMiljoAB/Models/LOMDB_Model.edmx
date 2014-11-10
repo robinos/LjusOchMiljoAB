@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="LOM_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="LOM_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Anvandare">
           <Key>
             <PropertyRef Name="ID" />
@@ -13,7 +13,7 @@
           <Property Name="Anvandarnamn" Type="varchar" MaxLength="30" />
           <Property Name="Losenord" Type="varchar" MaxLength="30" />
         </EntityType>
-        <EntityType Name="Produkter">
+        <EntityType Name="Produkt">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
@@ -30,10 +30,9 @@
         </EntityType>
         <EntityContainer Name="LOM_DBModelStoreContainer">
           <EntitySet Name="Anvandare" EntityType="Self.Anvandare" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Produkter" EntityType="Self.Produkter" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Produkt" EntityType="Self.Produkt" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="LOM_DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -45,12 +44,16 @@
           <Property Name="Anvandarnamn" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="Losenord" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="Produkter">
+        <EntityContainer Name="LOM_DBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Anvandare" EntityType="Self.Anvandare" />
+          <EntitySet Name="Produkt" EntityType="LOM_DBModel.Produkt" />
+        </EntityContainer>
+        <EntityType Name="Produkt">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
-          <Property Name="Namn" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ID" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
+          <Property Name="Namn" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="Pris" Type="Decimal" Precision="10" Scale="2" />
           <Property Name="Typ" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="Farg" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
@@ -60,10 +63,6 @@
           <Property Name="Beskrivning" Type="String" MaxLength="600" FixedLength="false" Unicode="false" />
           <Property Name="Montering" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityContainer Name="LOM_DBEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Anvandare" EntityType="Self.Anvandare" />
-          <EntitySet Name="Produkter" EntityType="Self.Produkter" />
-        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -79,19 +78,19 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Produkter">
-            <EntityTypeMapping TypeName="LOM_DBModel.Produkter">
-              <MappingFragment StoreEntitySet="Produkter">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Namn" ColumnName="Namn" />
-                <ScalarProperty Name="Pris" ColumnName="Pris" />
-                <ScalarProperty Name="Typ" ColumnName="Typ" />
-                <ScalarProperty Name="Farg" ColumnName="Farg" />
-                <ScalarProperty Name="Bildfilnamn" ColumnName="Bildfilnamn" />
-                <ScalarProperty Name="Ritningsfilnamn" ColumnName="Ritningsfilnamn" />
-                <ScalarProperty Name="RefID" ColumnName="RefID" />
-                <ScalarProperty Name="Beskrivning" ColumnName="Beskrivning" />
+          <EntitySetMapping Name="Produkt">
+            <EntityTypeMapping TypeName="LOM_DBModel.Produkt">
+              <MappingFragment StoreEntitySet="Produkt">
                 <ScalarProperty Name="Montering" ColumnName="Montering" />
+                <ScalarProperty Name="Beskrivning" ColumnName="Beskrivning" />
+                <ScalarProperty Name="RefID" ColumnName="RefID" />
+                <ScalarProperty Name="Ritningsfilnamn" ColumnName="Ritningsfilnamn" />
+                <ScalarProperty Name="Bildfilnamn" ColumnName="Bildfilnamn" />
+                <ScalarProperty Name="Farg" ColumnName="Farg" />
+                <ScalarProperty Name="Typ" ColumnName="Typ" />
+                <ScalarProperty Name="Pris" ColumnName="Pris" />
+                <ScalarProperty Name="Namn" ColumnName="Namn" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

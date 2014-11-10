@@ -91,8 +91,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\ProdukterControllerTest.cs" />
-    <Compile Include="Models\InMemoryProdukterRepository.cs" />
+    <Compile Include="Controllers\ProduktControllerTest.cs" />
+    <Compile Include="Controllers\ProduktServiceTest.cs" />
+    <Compile Include="Models\InMemoryProduktRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\HemControllerTest.cs" />
   </ItemGroup>

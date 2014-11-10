@@ -26,7 +26,7 @@ namespace LjusOchMiljoAB.Controllers
 
 		//Vid tom konstruktör, gör en ny repository av typen som används för
 		//verklig körning
-		public ProduktService() : this(new EntityProdukterManagerRepository()) { }
+		public ProduktService() : this(new EntityProduktManagerRepository()) { }
 
 		//En-parameter konstruktör för testning mot en egen repository
 		public ProduktService(IProduktRepository repository)
@@ -34,14 +34,14 @@ namespace LjusOchMiljoAB.Controllers
 			this.repository = repository;
 		}
 
-		public IEnumerable<Produkter> HämtaProdukter()
+		public IEnumerable<Produkt> HämtaProdukter()
 		{
-			IEnumerable<Produkter> produkter = repository.HämtaProduktlista();
+			IEnumerable<Produkt> produkter = repository.HämtaProduktlista();
 
 			return produkter;
 		}
 
-		public SelectList HämtaValLista(IEnumerable<Produkter> produkter, string produktTyp)
+		public SelectList HämtaValLista(IEnumerable<Produkt> produkter, string produktTyp)
 		{
 			//En lista för att hålla typer för filtrering
 			var TypLst = new List<string>();
@@ -57,7 +57,7 @@ namespace LjusOchMiljoAB.Controllers
 			return new SelectList(TypLst, produktTyp);
 		}
 
-		public IEnumerable<Produkter> HämtaFiltreradProduktlista(IEnumerable<Produkter> produkter, string produktTyp, string sökSträng)
+		public IEnumerable<Produkt> HämtaFiltreradProduktlista(IEnumerable<Produkt> produkter, string produktTyp, string sökSträng)
 		{
 			//Gör en lista med alla produkter
 			var produktLista = from m in produkter
@@ -80,7 +80,7 @@ namespace LjusOchMiljoAB.Controllers
 			return produkter;
 		}
 
-		public IEnumerable<Produkter> HämtaOrdnadProduktlista(IEnumerable<Produkter> produkter, string Ordning)
+		public IEnumerable<Produkt> HämtaOrdnadProduktlista(IEnumerable<Produkt> produkter, string Ordning)
 		{
 			//Hantera ordningen.  Det går fram och tillbaka mot ordningen
 			//högst till lägst (eller Ö->A), och lägst till högst (eller A->Ö)
@@ -121,7 +121,7 @@ namespace LjusOchMiljoAB.Controllers
 		//css model (ser PagedList.css under Content mappen) som används i
 		//vyn.  Den tar emot sin egen räkning på sidor, och ovan definition
 		//av hur många element att visa åt gången.
-		public IPagedList HämtaSida(IEnumerable<Produkter> produkter, int? sida)
+		public IPagedList HämtaSida(IEnumerable<Produkt> produkter, int? sida)
 		{
 			//En variabel som PagedList sätter själv efter vilken sida man är på 
 			int antalSidor = (sida ?? 1);
@@ -129,7 +129,7 @@ namespace LjusOchMiljoAB.Controllers
 			return produkter.ToPagedList(antalSidor, antalProdukter);
 		}
 
-		public Produkter HämtaProduktMedID(string id)
+		public Produkt HämtaProduktMedID(string id)
 		{
 			return (repository.HämtaProduktMedID(id));
 		}

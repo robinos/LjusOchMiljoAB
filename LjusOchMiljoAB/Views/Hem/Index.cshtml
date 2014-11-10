@@ -12,22 +12,22 @@
     att visa med filtrering för typ*@
 <div>
     <br />
-    @Html.ActionLink("Inomhus", "Index", "Produkter", new { Ordning = "", produktTyp = "inomhus", sökSträng = "", filterSträng = "", filterProdukt = "inomhus", sida = 1 }, null)
-    @Html.ActionLink("Utomhus", "Index", "Produkter", new { Ordning = "", produktTyp = "utomhus", sökSträng = "", filterSträng = "", filterProdukt = "utomhus", sida = 1 }, null)
-    @Html.ActionLink("Tillbehör", "Index", "Produkter", new { Ordning = "", produktTyp = "tillbehör", sökSträng = "", filterSträng = "", filterProdukt = "tillbehör", sida = 1 }, null)
+    @Html.ActionLink("Inomhus", "Index", "Produkt", new { Ordning = "", produktTyp = "inomhus", sökSträng = "", filterSträng = "", filterProdukt = "inomhus", sida = 1 }, null)
+    @Html.ActionLink("Utomhus", "Index", "Produkt", new { Ordning = "", produktTyp = "utomhus", sökSträng = "", filterSträng = "", filterProdukt = "utomhus", sida = 1 }, null)
+    @Html.ActionLink("Tillbehör", "Index", "Produkt", new { Ordning = "", produktTyp = "tillbehör", sökSträng = "", filterSträng = "", filterProdukt = "tillbehör", sida = 1 }, null)
     <br />
 </div>
 
 @*Länk till produktlistan - kallar Index metoden i ProdukterController för att visa
     alla produkter.*@
 <div>
-    @Html.ActionLink("Lista av produkter", "Index", "Produkter", new { Ordning = "", produktTyp = "", sökSträng = "", filterSträng = "", filterProdukt = "", sida = 1 }, null)
+    @Html.ActionLink("Lista av produkter", "Index", "Produkt", new { Ordning = "", produktTyp = "", sökSträng = "", filterSträng = "", filterProdukt = "", sida = 1 }, null)
 </div>
 
 @*Länk till prislistan - kallar Prislista metoden i ProdukterController för att visa
     prislistan*@
 <div>
     <br />
-    @Html.ActionLink("Prislista", "Prislista", "Produkter", new { Ordning = "", produktTyp = "", sökSträng = "", filterSträng = "", filterProdukt = "", sida = 1 }, null)
+    @Html.ActionLink("Prislista", "Prislista", "Produkt", new { Ordning = "", produktTyp = "", sökSträng = "", filterSträng = "", filterProdukt = "", sida = 1 }, null)
     <br />
 </div>

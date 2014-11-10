@@ -26,6 +26,6 @@ namespace LjusOchMiljoAB.Models
         }
     
         public virtual DbSet<Anvandare> Anvandare { get; set; }
-        public virtual DbSet<Produkter> Produkter { get; set; }
+        public virtual DbSet<Produkt> Produkt { get; set; }
     }
 }

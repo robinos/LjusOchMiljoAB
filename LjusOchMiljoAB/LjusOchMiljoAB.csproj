@@ -171,7 +171,7 @@
     <Compile Include="Controllers\AnvandareController.cs" />
     <Compile Include="Controllers\HemController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\ProdukterController.cs" />
+    <Compile Include="Controllers\ProduktController.cs" />
     <Compile Include="Controllers\ProduktService.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -180,7 +180,7 @@
     <Compile Include="Models\Anvandare.cs">
       <DependentUpon>LOMDB_Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\EntityProdukterManagerRepository.cs" />
+    <Compile Include="Models\EntityProduktManagerRepository.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\IProduktRepository.cs" />
     <Compile Include="Models\IProduktService.cs" />
@@ -200,7 +200,7 @@
       <DependentUpon>LOMDB_Model.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\Produkter.cs">
+    <Compile Include="Models\Produkt.cs">
       <DependentUpon>LOMDB_Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -289,17 +289,14 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Produkter\Create.cshtml" />
-    <Content Include="Views\Produkter\Delete.cshtml" />
-    <Content Include="Views\Produkter\Details.cshtml" />
-    <Content Include="Views\Produkter\Edit.cshtml" />
-    <Content Include="Views\Produkter\Index.cshtml" />
     <Content Include="Views\Anvandare\Create.cshtml" />
     <Content Include="Views\Anvandare\Delete.cshtml" />
     <Content Include="Views\Anvandare\Details.cshtml" />
     <Content Include="Views\Anvandare\Edit.cshtml" />
     <Content Include="Views\Anvandare\Index.cshtml" />
-    <Content Include="Views\Produkter\Prislista.cshtml" />
+    <Content Include="Views\Produkt\Details.cshtml" />
+    <Content Include="Views\Produkt\Index.cshtml" />
+    <Content Include="Views\Produkt\Prislista.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

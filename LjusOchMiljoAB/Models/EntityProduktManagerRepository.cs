@@ -8,7 +8,7 @@ using System.Data.Entity;
 namespace LjusOchMiljoAB.Models
 {
 	/*
-	 * EntityProdukterManagerRepository har hand om entiteten Produkter (dvs
+	 * EntityProdukterManagerRepository har hand om entiteten Produkt (dvs
 	 * databaskontakt för Produkt tabellen).  Den implementera interface
 	 * IProdukterRepository.  Detta görs för att göra det lättare vid testning
 	 * men även lättare för databasbytt och ändringar där huvudkoden behöver inte
@@ -16,14 +16,11 @@ namespace LjusOchMiljoAB.Models
 	 * Bara HämtaProduktMedID, HämtaProduktlista och Förstör metoder används,
 	 * resten är bara implementationer för IProdukterRepository.
 	 * 
-	 * (Tyvärr heter produktklassen Produkter fast man syftar efter en enstak objekt.
-	 * Databasen borde ändra namn på tabellen.)
-	 * 
 	 * Grupp 2
 	 * Senast ändrat: 2014 11 04
 	 * Version: 0.17
 	 */
-	public class EntityProdukterManagerRepository : IProduktRepository
+	public class EntityProduktManagerRepository : IProduktRepository
 	{
 		//instansvariabler
 		//Databas objekten
@@ -35,9 +32,9 @@ namespace LjusOchMiljoAB.Models
 		 * 
 		 * in: produktAttSkapa är produkten man vill skapa av objekttyp Produkter 
 		 */
-		public void SkapaProdukt(Produkter produktAttSkapa)
+		public void SkapaProdukt(Produkt produktAttSkapa)
 		{
-			//db.Produkter.Add(produktAttSkapa);
+			//db.Produkt.Add(produktAttSkapa);
 			//db.SaveChanges();
 		}
 
@@ -50,7 +47,7 @@ namespace LjusOchMiljoAB.Models
 		public void TaBortProdukt(string id)
 		{
 			//var conToDel = HämtaProduktMedID(id);
-			//db.Produkter.Remove(conToDel);
+			//db.Produkt.Remove(conToDel);
 			//db.SaveChanges();
 		}
 
@@ -61,7 +58,7 @@ namespace LjusOchMiljoAB.Models
 		 * in: produktAttSkapa är produkten man vill skapa av objekttyp Produkter med Bind för
 		 * säkerställning av modellen
 		 */
-		public void RedigeraProdukt([Bind(Include = "ID,Namn,Pris,Typ,Farg,Bildfilnamn,Ritningsfilnamn,RefID,Beskrivning,Montering")] Produkter produktAttÄndra)
+		public void RedigeraProdukt([Bind(Include = "ID,Namn,Pris,Typ,Farg,Bildfilnamn,Ritningsfilnamn,RefID,Beskrivning,Montering")] Produkt produktAttÄndra)
 		{
 			//db.Entry(produktAttÄndra).State = EntityState.Modified;
 			//db.SaveChanges();
@@ -74,17 +71,17 @@ namespace LjusOchMiljoAB.Models
 		 * in: strängen som representera ID för en produkt
 		 * ut: en produkt av objekttyp Produkter som har id som sin ID
 		 */
-		public Produkter HämtaProduktMedID(string id)
+		public Produkt HämtaProduktMedID(string id)
 		{
-			return db.Produkter.FirstOrDefault(d => d.ID == id);
+			return db.Produkt.FirstOrDefault(d => d.ID == id);
 		}
 
 		/*
 		 * 
 		 */
-		public IEnumerable<Produkter> HämtaProduktlista()
+		public IEnumerable<Produkt> HämtaProduktlista()
 		{
-			return db.Produkter.ToList<Produkter>();
+			return db.Produkt.ToList<Produkt>();
 		}
 
 		/*

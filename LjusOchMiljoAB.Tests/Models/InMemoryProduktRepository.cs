@@ -13,29 +13,26 @@ namespace LjusOchMiljoAB.Tests.Models
 	 * IProdukterRepository så kan en ProdukterController skapas som använder den
 	 * som databas kontakt.
 	 * 
-	 * (Tyvärr heter klassen Produkter istället för Produkt för att tabellen i
-	 * databasen hette så.  Det borde ändras sedan.)
-	 * 
 	 * Grupp 2
 	 * Senast ändrat: 2014 11 04
 	 * Version: 0.17
 	 */
-	class InMemoryProdukterRepository : IProduktRepository
+	class InMemoryProduktRepository : IProduktRepository
 	{
 		//instansvariabler
 		//Listan db blir vår lösas databas
-		private List<Produkter> db = new List<Produkter>();
+		private List<Produkt> db = new List<Produkt>();
 
 		public Exception ExceptionToThrow { get; set; }
 
 		/*
 		 * SparaÄndringar sparar ändringar till en produkt till listan db
 		 * 
-		 * in: produktAttUppdatera är en produkt av objekttypen Produkter
+		 * in: produktAttUppdatera är en produkt av objekttypen Produkt
 		 */
-		public void SparaÄndringar(Produkter produktAttUppdatera)
+		public void SparaÄndringar(Produkt produktAttUppdatera)
 		{
-			foreach (Produkter produkt in db)
+			foreach (Produkt produkt in db)
 			{
 				//Ändra bara produkten som har ändrats
 				if (produkt.ID == produktAttUppdatera.ID)
@@ -51,9 +48,9 @@ namespace LjusOchMiljoAB.Tests.Models
 		/*
 		 * Add används för att lägga till produkter till listan db
 		 * 
-		 * in: produktAttTillägga är en produkt av objekttypen Produkter
+		 * in: produktAttTillägga är en produkt av objekttypen Produkt
 		 */
-		public void Add(Produkter produktAttTillägga) {
+		public void Add(Produkt produktAttTillägga) {
 			db.Add(produktAttTillägga);
         }
 
@@ -62,9 +59,9 @@ namespace LjusOchMiljoAB.Tests.Models
 		 * strängen id, eller returnerar ett default värde om ingenting hittas.
 		 * 
 		 * in: strängen id som en ID av en produkt
-		 * ut: en produkt av objekttypen Produkter med given ID (eller default)
+		 * ut: en produkt av objekttypen Produkt med given ID (eller default)
 		 */
-		public Produkter HämtaProduktMedID(string id)
+		public Produkt HämtaProduktMedID(string id)
 		{
             return db.FirstOrDefault(d => d.ID == id);
         }
@@ -78,7 +75,7 @@ namespace LjusOchMiljoAB.Tests.Models
 		 * 
 		 * in: produktAttSkapa är en produkt av objekttypen Produkter
 		 */
-		public void SkapaProdukt(Produkter produktAttSkapa)
+		public void SkapaProdukt(Produkt produktAttSkapa)
 		{
             if (ExceptionToThrow != null)
                 throw ExceptionToThrow;
@@ -100,7 +97,7 @@ namespace LjusOchMiljoAB.Tests.Models
 		 * 
 		 * ut: IEnumerable<Produkter> innehåller alla produkter
 		 */
-		public IEnumerable<Produkter> HämtaProduktlista()
+		public IEnumerable<Produkt> HämtaProduktlista()
 		{
             return db.ToList();
         }
@@ -123,7 +120,7 @@ namespace LjusOchMiljoAB.Tests.Models
 		 * 
 		 * in: produktAttÄndra är en produkt av objekttypen Produkter
 		 */
-		public void RedigeraProdukt(Produkter produktAttÄndra)
+		public void RedigeraProdukt(Produkt produktAttÄndra)
 		{
 			SparaÄndringar(produktAttÄndra);
 		}
