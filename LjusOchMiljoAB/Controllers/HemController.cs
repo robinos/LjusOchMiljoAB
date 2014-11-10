@@ -15,6 +15,7 @@ namespace LjusOchMiljoAB.Controllers
 	 * Senast ändrat: 2014 11 04
 	 * Version: 0.17
 	 */
+	[RequireHttps]
 	[HandleError]
 	public class HemController : Controller
 	{
