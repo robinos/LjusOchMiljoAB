@@ -59,7 +59,15 @@
                 @Html.DisplayFor(modelItem => item.Namn)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Bildfilnamn)
+                @{
+                string img = @"/Content/Bilder/default.png";
+                if (File.Exists(HttpRuntime.AppDomainAppPath + @"Content/Bilder/" + item.Bildfilnamn + ".png"))
+                    {
+                        img = @"/Content/Bilder/" + item.Bildfilnamn+".png";
+                    }
+                  }
+
+                <img src=@img height="64" width="64">
             </td>
             <td>
                 @Html.ActionLink("Detailjer", "Details", new { id = item.ID })
