@@ -11,7 +11,10 @@
           </Key>
           <Property Name="ID" Type="int" Nullable="false" />
           <Property Name="Anvandarnamn" Type="varchar" MaxLength="30" />
-          <Property Name="Losenord" Type="varchar" MaxLength="30" />
+          <Property Name="LosenordHash" Type="nvarchar(max)" />
+          <Property Name="Roll" Type="varchar" MaxLength="30" />
+          <Property Name="Raknare" Type="int" />
+          <Property Name="Laste" Type="bit" />
         </EntityType>
         <EntityType Name="Produkt">
           <Key>
@@ -42,7 +45,10 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="Anvandarnamn" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="Losenord" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="LosenordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Roll" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Raknare" Type="Int32" />
+          <Property Name="Laste" Type="Boolean" />
         </EntityType>
         <EntityContainer Name="LOM_DBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Anvandare" EntityType="Self.Anvandare" />
@@ -72,9 +78,12 @@
           <EntitySetMapping Name="Anvandare">
             <EntityTypeMapping TypeName="LOM_DBModel.Anvandare">
               <MappingFragment StoreEntitySet="Anvandare">
+                <ScalarProperty Name="Laste" ColumnName="Laste" />
+                <ScalarProperty Name="Raknare" ColumnName="Raknare" />
+                <ScalarProperty Name="Roll" ColumnName="Roll" />
+                <ScalarProperty Name="LosenordHash" ColumnName="LosenordHash" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Anvandarnamn" ColumnName="Anvandarnamn" />
-                <ScalarProperty Name="Losenord" ColumnName="Losenord" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

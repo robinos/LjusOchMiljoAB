@@ -168,11 +168,11 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\AnvandareController.cs" />
+    <Compile Include="Controllers\AnvändareTjänst.cs" />
     <Compile Include="Controllers\HemController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ProduktController.cs" />
-    <Compile Include="Controllers\ProduktService.cs" />
+    <Compile Include="Controllers\ProduktTjänst.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -180,10 +180,13 @@
     <Compile Include="Models\Anvandare.cs">
       <DependentUpon>LOMDB_Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\EntityProduktManagerRepository.cs" />
+    <Compile Include="Models\AnvändareRepository.cs" />
+    <Compile Include="Models\ProduktRepository.cs" />
+    <Compile Include="Models\IAnvändareRepository.cs" />
+    <Compile Include="Models\IAnvändareTjänst.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\IProduktRepository.cs" />
-    <Compile Include="Models\IProduktService.cs" />
+    <Compile Include="Models\IProduktTjänst.cs" />
     <Compile Include="Models\LOMDB_Model.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -289,14 +292,11 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Anvandare\Create.cshtml" />
-    <Content Include="Views\Anvandare\Delete.cshtml" />
-    <Content Include="Views\Anvandare\Details.cshtml" />
-    <Content Include="Views\Anvandare\Edit.cshtml" />
-    <Content Include="Views\Anvandare\Index.cshtml" />
     <Content Include="Views\Produkt\Details.cshtml" />
     <Content Include="Views\Produkt\Index.cshtml" />
     <Content Include="Views\Produkt\Prislista.cshtml" />
+    <Content Include="Views\Hem\Inloggning.cshtml" />
+    <Content Include="Views\Hem\SkapaAnvändare.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

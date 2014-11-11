@@ -1,28 +1,32 @@
 -APPLIKATION, LjusOchMiljoAB-----------------------------------------------------------
 Huvudsidan har
 	Controllers -> HemController.cs som kodfil
-	Views -> Hem -> Hem.cshtml som vy
+	Controllers -> AnvändareTjänst.cs som användarehanteringstjänst
+	Views -> Hem -> Index.cshtml som vy
+	Views -> Inloggning -> Inloggning.cshtml som inloggning
 
 Produkter har
-	Controllers -> ProdukterController.cs som kodfil
-	Controllers -> ProduktService.cs som produkthantering tjänst
-	Views -> Produkter -> Index.cshtml som vy
-	(Create, Delete, och Edit var automatgenererad men kommer inte att användas)
+	Controllers -> ProduktController.cs som kodfil
+	Controllers -> ProduktTjänst.cs som produkthanteringstjänst
+	Views -> Produkt -> Index.cshtml som vy
 
+Annars:
 Views -> Produkter ->		
 		Details.cshtml är vyn för produktdetaljer
 		Prislista.cshtml är vyn för pristlistan
+Views -> Hem ->	
+		SkapaAnvändare.cshtml är bara för att skapa test användare
 
 Models ->
 	LOMDB_Model.edmx är automatgenererad modellen av databasen LOM_DBEntities
-	IProdukterRespository.cs är en interface för implementering av kontakt med databasen
-	EntityProdukterManagerRepository.cs är implementationen av IProdukterRespository för
-		kontakt mellan Controllers och databasen 
-
-Anvandare är tabellen för inloggningssystemet och är inte kopplad till något än.
-Vi behöver inte använda oss av den om vi hittar en annan lösning.
-	Controllers -> AnvandareController.cs är koden
-	Views -> Anvandare -> (automatgenererad Create, Delete, Details, Edit, Index.cshtml)
+	IProduktRespository.cs är en interface för implementering av kontakt med produkt
+		tabellen
+	ProduktRepository.cs är implementationen av IProdukterRespository för
+		kontakt mellan ProduktTjänst och databasen 
+	IAnvändareRespository.cs är en interface för implementering av kontakt med användare
+		tabellen
+	AnvändareRepository.cs är implementationen av IAnvändareRespository för
+		kontakt mellan AnvändareTjänst och databasen 
 
 
 -OVRIGT--------------------------------------------------------------------------------
@@ -53,23 +57,19 @@ LjusOchMiljoAB.Tests bara innehåller några automatgenererad tester plus början p
 testningen
 
 Models ->
-	InMemoryProdukterRepository.cs är en mock repository för testning som implementerar
+	IMinnetProdukterRepository.cs är en mock repository för testning som implementerar
 		IProdukterRepository
 
 Controllers ->
-	HemControllerTest.cs innehåller tester för huvudsidan (automatgenererad än så länge)
-		TestMetoder:
-			HemIndex testar 
-			HemOmHarDefaultText testar om Om-sidan har texten "Om hemsidan och Ljus och
-				Miljö AB"
-			HemKontaktHarDefaultText testar om Kontakt-sidan har textan "Kontaktsidan"	
-	ProdukterControllerTest.cs innehåller metoder HämtaProdukt och ProdukterController, och
-		inreklassen MockHttpContext, för att gör allt redo för testning.
-		TestMetoder:
-			ProdukterIndexNotNull kollar att Index vyn vid laddning med inga parameter
-				är inte noll
-			(Fler metoder kommer snart)
+	HemControllerTest.cs innehåller testar för huvudsidan (automatgenererad än så länge)
 
+	ProduktControllerTest.cs innehåller metoder HämtaProdukt och ProduktController, och
+		inreklassen MockHttpContext, för att göra allt redo för testning.  Den innehåller
+		testar för att rätt vyn visas för produktlistan och produkten.
 
-För ändringar sedan sist, ser Changelog.txt
+	ProduktTjänstTest.cs innehåller metoder HämtaProdukt och ProduktTjänst för att göra
+		allt redo för testning.  Den innehåller testar för att rätt lista av produkter
+		returneras. 
+
+För ändringar sedan sist ser Changelog.txt
 

@@ -13,10 +13,10 @@ namespace LjusOchMiljoAB.Controllers
 	 * ProduktService
 	 * 
 	 * Grupp 2
-	 * Senast ändrat: 2014 11 09
-	 * Version: 0.17
+	 * Senast ändrat: 2014 11 11
+	 * Version: 0.18
 	 */
-	public class ProduktService : IProduktService
+	public class ProduktTjänst : IProduktTjänst
 	{
 		//Hur många sidor som visas samtidigt utan att skapa en ny sida
 		public int antalProdukter = 5;
@@ -26,10 +26,10 @@ namespace LjusOchMiljoAB.Controllers
 
 		//Vid tom konstruktör, gör en ny repository av typen som används för
 		//verklig körning
-		public ProduktService() : this(new EntityProduktManagerRepository()) { }
+		public ProduktTjänst() : this(new ProduktRepository()) { }
 
 		//En-parameter konstruktör för testning mot en egen repository
-		public ProduktService(IProduktRepository repository)
+		public ProduktTjänst(IProduktRepository repository)
 		{
 			this.repository = repository;
 		}

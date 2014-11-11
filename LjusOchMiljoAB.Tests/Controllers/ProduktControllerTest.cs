@@ -61,16 +61,16 @@ namespace LjusOchMiljoAB.Tests.Controllers
 		/*
 		 * Skapa en ProduktService
 		 */
-		private static IProduktService GetProduktService(IProduktRepository repository)
+		private static IProduktTjänst GetProduktService(IProduktRepository repository)
 		{
-			ProduktService produktService = new ProduktService(repository);
+			ProduktTjänst produktService = new ProduktTjänst(repository);
 			return produktService;
 		}
 
 		/*
 		 * Skapa en ProdukterController och koppla det till MockHttpContext för tester
 		 */
-		private static ProduktController GetProduktController(IProduktService produktService)
+		private static ProduktController GetProduktController(IProduktTjänst produktService)
 		{
 			ProduktController controller = new ProduktController(produktService);
 

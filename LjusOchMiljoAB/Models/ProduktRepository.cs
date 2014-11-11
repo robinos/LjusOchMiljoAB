@@ -8,7 +8,7 @@ using System.Data.Entity;
 namespace LjusOchMiljoAB.Models
 {
 	/*
-	 * EntityProdukterManagerRepository har hand om entiteten Produkt (dvs
+	 * ProduktRepository har hand om entiteten Produkt (dvs
 	 * databaskontakt för Produkt tabellen).  Den implementera interface
 	 * IProdukterRepository.  Detta görs för att göra det lättare vid testning
 	 * men även lättare för databasbytt och ändringar där huvudkoden behöver inte
@@ -17,10 +17,10 @@ namespace LjusOchMiljoAB.Models
 	 * resten är bara implementationer för IProdukterRepository.
 	 * 
 	 * Grupp 2
-	 * Senast ändrat: 2014 11 04
-	 * Version: 0.17
+	 * Senast ändrat: 2014 11 11
+	 * Version: 0.18
 	 */
-	public class EntityProduktManagerRepository : IProduktRepository
+	public class ProduktRepository : IProduktRepository
 	{
 		//instansvariabler
 		//Databas objekten

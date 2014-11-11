@@ -8,15 +8,15 @@ using PagedList.Mvc;
 using PagedList;
 
 /* 
- * IProduktService
+ * IProduktTjänst
  * 
  * Grupp 2
- * Senast ändrat: 2014 11 09
- * Version: 0.17
+ * Senast ändrat: 2014 11 11
+ * Version: 0.18
  */
 namespace LjusOchMiljoAB.Models
 {
-	public interface IProduktService
+	public interface IProduktTjänst
 	{
 		IEnumerable<Produkt> HämtaProdukter();
 		SelectList HämtaValLista(IEnumerable<Produkt> produkter, string produktTyp);

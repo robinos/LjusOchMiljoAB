@@ -1,8 +1,29 @@
+Version 0.18
+- Bilder nu finns i produktlistan med en bild för skruvor och annars default bilden
+	De finns i Content->Bilder
+- En bas inloggningssystem (inte integrerat med menyn än) finns på plats
+(användarnamn: kund, lösenord: password)
+- Web.Config har ändrats för att använda 'authentication mode' Forms
+- Anvandare tabellen i databasen nu används och har fått fler kolumner.  Den har nu
+ID(int), Anvandarnamn(Varchar(30), LosenordHash(NVarchar(MAX)), Roll(Varchar(30),
+	Raknare(int) och Laste(bit))
+- Lagt till IAnvändareRepository, AnvändareRepository, IAnvändareTjänst och
+	AnvändareTjänst
+- Inloggning använder Controllers->HemController och Views->Hem->Inloggning och Index
+	(och SkapaAnvändare men bara för testning)	
+- HemController även kräver HTTPS nu för SSL 
+- Tabellen Produkter heter nu Produkt! En enstak produkt nu är en Produkt istället för
+	en Produkter. All produkt kod har ändrats för att använda det.   
+- ProduktService heter nu ProduktTjänst
+- EntityProdukterManagerRepository heter nu bara ProduktRepository
+- Unit testar nu finns för ProduktTjänst
+- InMemoryProduktRepository nu heter IMinnetProduktRepository
+
 Version 0.17
-- La till Controllers -> ProduktService.cs som produkthanteringstjänst
+- Lagt till Controllers -> ProduktService.cs som produkthanteringstjänst
 - Ändrade om i ProdukterController så att den ta en tjänst istället för en repository
 	i Constructor
-- La till Models -> IProduktService som interface för ProduktService
+- Lagt till Models -> IProduktService som interface för ProduktService
 - Refaktorerad i ProdukterController för att ta bort dubbelkod och använda
 	ProduktService för ordning, sökningar och för att hantera sidor
 - Allting ovan kommer att gör det lättare att testa framöver
@@ -16,10 +37,10 @@ Version 0.16b
 
 Version 0.16
 - I huvudapplikation LjusOchMiljoAB
-- La till resultatsidor för produktsökningar
-- La till omordning genom kolumner vid produktsökningar
-- La till resultatsidor för pristlistan
-- La till omordning genom kolumner för pristlistan
+- Lagt till resultatsidor för produktsökningar
+- Lagt till omordning genom kolumner vid produktsökningar
+- Lagt till resultatsidor för pristlistan
+- Lagt till omordning genom kolumner för pristlistan
 - Lätt sök/kategorifunktioner även användas på prislistan
 
 Version 0.15

@@ -13,7 +13,7 @@ using System.Web;
  * 
  * Grupp 2
  * Senast ändrat: 2014 11 09
- * Version: 0.17
+ * Version: 0.18
  */
 namespace LjusOchMiljoAB.Models
 {

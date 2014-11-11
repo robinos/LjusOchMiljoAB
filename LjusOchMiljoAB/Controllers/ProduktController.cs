@@ -26,22 +26,22 @@ namespace LjusOchMiljoAB.Controllers
 	 * 
 	 * Grupp 2
 	 * Senast ändrat: 2014 11 09
-	 * Version: 0.17
+	 * Version: 0.18
 	 */
 	public class ProduktController : Controller
 	{
-		//IProduktService hanterar kommunikation med tjänsten som hanterar
+		//IProduktTjänst hanterar kommunikation med tjänsten som hanterar
 		//produkter åt ProdukterController
-		public IProduktService produktService;
+		public IProduktTjänst produktTjänst;
 
 		//Vid tom konstruktör, gör en ny tjänst av typen som används för
 		//verklig körning
-		public ProduktController() : this(new ProduktService()) { }
+		public ProduktController() : this(new ProduktTjänst()) { }
 
 		//En-parameter konstruktör för testning mot en egen tjänst
-		public ProduktController(IProduktService produktService)
+		public ProduktController(IProduktTjänst produktTjänst)
 		{
-			this.produktService = produktService;
+			this.produktTjänst = produktTjänst;
 		}
 
 		/*
@@ -67,7 +67,7 @@ namespace LjusOchMiljoAB.Controllers
 
 			//"Index" i det här fallet är bara en medellande för testning.
 			//HämtaSida hämtar sidoinformation och skickar en IPagedList till vyn
-			return View("Index", produktService.HämtaSida(produkter, sida));
+			return View("Index", produktTjänst.HämtaSida(produkter, sida));
 		}
 
 		/*
@@ -87,7 +87,7 @@ namespace LjusOchMiljoAB.Controllers
 			}
 
 			//Hämta information för rad som matcher id (som är nyckeln)
-			Produkt produkt = produktService.HämtaProduktMedID(id);
+			Produkt produkt = produktTjänst.HämtaProduktMedID(id);
 
 			//Om raden är null (id finns inte), visa en default HTTP sida för
 			//att resultatet hittades inte med medellande
@@ -122,7 +122,7 @@ namespace LjusOchMiljoAB.Controllers
 
 			//"Pristlista" i det här fallet är bara en medellande för testning.
 			//HämtaSida hämtar sidoinformation och skickar en IPagedList till vyn
-			return View("Prislista", produktService.HämtaSida(produkter, sida));
+			return View("Prislista", produktTjänst.HämtaSida(produkter, sida));
 		}
 
 		public IEnumerable<Produkt> HanteraListan(string Ordning, string produktTyp, string sökSträng, string filterSträng, string filterProdukt, int? sida)
@@ -157,16 +157,16 @@ namespace LjusOchMiljoAB.Controllers
 			ViewBag.filterProdukt = produktTyp;
 
 			//Hämta IEnumerable produkter från tjänsten 
-			var produkter = produktService.HämtaProdukter();
+			var produkter = produktTjänst.HämtaProdukter();
 
 			//Spara typ listan för att visa upp i valjboxen på formen
-			ViewBag.produktTyp = produktService.HämtaValLista(produkter, produktTyp);
+			ViewBag.produktTyp = produktTjänst.HämtaValLista(produkter, produktTyp);
 
 			//Filtrera listan utefter söksträng och produktTyp
-			produkter = produktService.HämtaFiltreradProduktlista(produkter, produktTyp, sökSträng);
+			produkter = produktTjänst.HämtaFiltreradProduktlista(produkter, produktTyp, sökSträng);
 
 			//Ordna listan utefter Ordning strängen
-			produkter = produktService.HämtaOrdnadProduktlista(produkter, Ordning);
+			produkter = produktTjänst.HämtaOrdnadProduktlista(produkter, Ordning);
 
 			//Hantera ordningen.  Det går fram och tillbaka mot ordningen
 			//högst till lägst (eller Ö->A), och lägst till högst (eller A->Ö)
@@ -211,7 +211,7 @@ namespace LjusOchMiljoAB.Controllers
 		{
 			if (disposing)
 			{
-				produktService.Förstör();
+				produktTjänst.Förstör();
 			}
 			base.Dispose(disposing);
 		}

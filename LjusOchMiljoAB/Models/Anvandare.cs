@@ -16,6 +16,9 @@ namespace LjusOchMiljoAB.Models
     {
         public int ID { get; set; }
         public string Anvandarnamn { get; set; }
-        public string Losenord { get; set; }
+        public string LosenordHash { get; set; }
+        public string Roll { get; set; }
+        public Nullable<int> Raknare { get; set; }
+        public Nullable<bool> Laste { get; set; }
     }
 }
