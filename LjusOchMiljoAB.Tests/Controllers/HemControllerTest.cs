@@ -24,7 +24,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 		 * Testar att Index (huvudsidan) är inte null
 		 */
 		[TestMethod]
-		public void HemIndexNotNull()
+		public void TestHemIndexNotNull()
 		{
 			// Arrange
 			HemController controller = new HemController();
@@ -40,7 +40,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 		 * Testar att Om-sidan returnerar default text om företaget/hemsidan
 		 */
 		[TestMethod]
-		public void HemOmHarDefaultText()
+		public void TestHemOmHarDefaultText()
 		{
 			// Arrange
 			HemController controller = new HemController();
@@ -56,7 +56,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 		 * Testar att Kontakt-sidan returnerar default text om företagkontakt
 		 */
 		[TestMethod]
-		public void HemKontaktHarDefaultText()
+		public void TestHemKontaktHarDefaultText()
 		{
 			// Arrange
 			HemController controller = new HemController();

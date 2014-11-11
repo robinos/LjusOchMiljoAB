@@ -93,7 +93,7 @@
   <ItemGroup>
     <Compile Include="Controllers\ProduktControllerTest.cs" />
     <Compile Include="Controllers\ProduktServiceTest.cs" />
-    <Compile Include="Models\InMemoryProduktRepository.cs" />
+    <Compile Include="Models\IMinnetProduktRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\HemControllerTest.cs" />
   </ItemGroup>

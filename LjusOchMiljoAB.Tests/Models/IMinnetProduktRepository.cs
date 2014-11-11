@@ -8,7 +8,7 @@ using LjusOchMiljoAB.Models;
 namespace LjusOchMiljoAB.Tests.Models
 {
 	/*
-	 * InMemoryProdukterRepository implementerar IProdukterRepository.  Den används
+	 * IMinnetProduktRepository implementerar IProdukterRepository.  Den används
 	 * som 'mock databas' eller lösas databas vid testning.  I att den implementerar
 	 * IProdukterRepository så kan en ProdukterController skapas som använder den
 	 * som databas kontakt.
@@ -17,7 +17,7 @@ namespace LjusOchMiljoAB.Tests.Models
 	 * Senast ändrat: 2014 11 04
 	 * Version: 0.17
 	 */
-	class InMemoryProduktRepository : IProduktRepository
+	class IMinnetProduktRepository : IProduktRepository
 	{
 		//instansvariabler
 		//Listan db blir vår lösas databas
