@@ -17,7 +17,7 @@ Views -> Produkter ->
 Views -> Hem ->	
 		SkapaAnvändare.cshtml är bara för att skapa test användare
 
-Models ->
+Models ->huhu
 	LOMDB_Model.edmx är automatgenererad modellen av databasen LOM_DBEntities
 	IProduktRespository.cs är en interface för implementering av kontakt med produkt
 		tabellen
