@@ -61,6 +61,8 @@ namespace LjusOchMiljoAB.Controllers
 		 *		sida - vilken sida man är på (som bestäms är css PagedList)
 		 * ut: ActionResult (en vy eller resultat efter kodkörning)
 		 */
+		//[Authorize]
+		//[ValidateAntiForgeryToken]
 		public ActionResult Index(string Ordning, string produktTyp, string sökSträng, string filterSträng, string filterProdukt, int? sida)
 		{
 			if (!User.Identity.IsAuthenticated)
