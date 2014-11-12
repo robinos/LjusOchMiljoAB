@@ -1,0 +1,18 @@
+﻿	 @** Grupp 2
+	 * Senast ändrat: 2014 11 11
+	 * Version: 0.18*@
+
+@{
+    ViewBag.Title = "Inloggning";
+}
+
+<h2>Inloggning</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary()
+    <label for="användarnamn">Användarnamn</label>
+    <input type="text" name="användarnamn" />
+    <input type="password" name="lösenord" />
+    <input type="submit" value="Logga in" />
+}
