@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using LjusOchMiljoAB.Models;
+using LjusOchMiljoAB.Controllers;
 using PagedList.Mvc;
 using PagedList;
 
@@ -62,12 +63,17 @@ namespace LjusOchMiljoAB.Controllers
 		 */
 		public ActionResult Index(string Ordning, string produktTyp, string sökSträng, string filterSträng, string filterProdukt, int? sida)
 		{
-			//Hämta IEnumerable produkter från tjänsten 
-			var produkter = HanteraListan(Ordning, produktTyp, sökSträng, filterSträng, filterProdukt, sida);
+			if (!User.Identity.IsAuthenticated)
+				return RedirectToAction("Index", "Hem");
+			else
+			{
+				//Hämta IEnumerable produkter från tjänsten 
+				var produkter = HanteraListan(Ordning, produktTyp, sökSträng, filterSträng, filterProdukt, sida);
 
-			//"Index" i det här fallet är bara en medellande för testning.
-			//HämtaSida hämtar sidoinformation och skickar en IPagedList till vyn
-			return View("Index", produktTjänst.HämtaSida(produkter, sida));
+				//"Index" i det här fallet är bara en medellande för testning.
+				//HämtaSida hämtar sidoinformation och skickar en IPagedList till vyn
+				return View("Index", produktTjänst.HämtaSida(produkter, sida));
+			}
 		}
 
 		/*
@@ -79,27 +85,32 @@ namespace LjusOchMiljoAB.Controllers
 		 */
 		public ActionResult Details(string id)
 		{
-			//Om inskickade id är null, visa en default HTTP sida för fel
-			if (id == null)
+			if (!User.Identity.IsAuthenticated)
+				return RedirectToAction("Index", "Hem");
+			else
 			{
-				var result = new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-				return result;
+				//Om inskickade id är null, visa en default HTTP sida för fel
+				if (id == null)
+				{
+					var result = new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+					return result;
+				}
+
+				//Hämta information för rad som matcher id (som är nyckeln)
+				Produkt produkt = produktTjänst.HämtaProduktMedID(id);
+
+				//Om raden är null (id finns inte), visa en default HTTP sida för
+				//att resultatet hittades inte med medellande
+				if (produkt == null)
+				{
+					var result = new HttpNotFoundResult("Kan inte hitta produkten");
+					return result;
+				}
+
+				//"Details" texten är bara för hjälp vid testning
+				//produkter skickas in för att visa för vald produkten i vyn
+				return View("Details", produkt);
 			}
-
-			//Hämta information för rad som matcher id (som är nyckeln)
-			Produkt produkt = produktTjänst.HämtaProduktMedID(id);
-
-			//Om raden är null (id finns inte), visa en default HTTP sida för
-			//att resultatet hittades inte med medellande
-			if (produkt == null)
-			{
-				var result = new HttpNotFoundResult("Kan inte hitta produkten");
-				return result;
-			}
-
-			//"Details" texten är bara för hjälp vid testning
-			//produkter skickas in för att visa för vald produkten i vyn
-			return View("Details", produkt);
 		}
 
 		/*
@@ -117,12 +128,17 @@ namespace LjusOchMiljoAB.Controllers
 		 */
 		public ActionResult Prislista(string Ordning, string produktTyp, string sökSträng, string filterSträng, string filterProdukt, int? sida)
 		{
-			//Hämta IEnumerable produkter från tjänsten 
-			var produkter = HanteraListan(Ordning, produktTyp, sökSträng, filterSträng, filterProdukt, sida);
+			if (!User.Identity.IsAuthenticated)
+				return RedirectToAction("Index", "Hem");
+			else
+			{
+				//Hämta IEnumerable produkter från tjänsten 
+				var produkter = HanteraListan(Ordning, produktTyp, sökSträng, filterSträng, filterProdukt, sida);
 
-			//"Pristlista" i det här fallet är bara en medellande för testning.
-			//HämtaSida hämtar sidoinformation och skickar en IPagedList till vyn
-			return View("Prislista", produktTjänst.HämtaSida(produkter, sida));
+				//"Pristlista" i det här fallet är bara en medellande för testning.
+				//HämtaSida hämtar sidoinformation och skickar en IPagedList till vyn
+				return View("Prislista", produktTjänst.HämtaSida(produkter, sida));
+			}
 		}
 
 		public IEnumerable<Produkt> HanteraListan(string Ordning, string produktTyp, string sökSträng, string filterSträng, string filterProdukt, int? sida)

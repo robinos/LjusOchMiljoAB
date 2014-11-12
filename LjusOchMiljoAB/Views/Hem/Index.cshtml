@@ -12,15 +12,16 @@
 @if (User.Identity.IsAuthenticated)
 {
     <p>Du är inloggad</p>
-    <dl>
+    @*<dl>
         <dt>Användarnamn</dt>
         <dd>@User.Identity.Name</dd>
         <dt>Autentisering</dt>
         <dd>@User.Identity.AuthenticationType</dd>
         <dt>Är Administratör?</dt>
         <dd>@User.IsInRole("Administrator")</dd>
-    </dl>
-    
+    </dl>*@
+    <br />
+
 @*Länkar till kategorier i textform - kallar Index metoden i ProdukterController för
     att visa med filtrering för typ*@
     <div>
@@ -44,18 +45,21 @@
         @Html.ActionLink("Prislista", "Prislista", "Produkt", new { Ordning = "", produktTyp = "", sökSträng = "", filterSträng = "", filterProdukt = "", sida = 1 }, null)
         <br />
     </div>
+    <br />
+    <ul>
+        <li>@Html.ActionLink("Logga ut", "Utloggning")</li>
+    </ul>
 }
 else
 {
     <p>Du är inte inloggad</p>
-}
-<ul>
     <br />
+<ul>
     @*<li>@Html.ActionLink("Skapa användare", "SkapaAnvändare")</li>*@
     <li>@Html.ActionLink("Logga in", "Inloggning")</li>
-    <li>@Html.ActionLink("Logga ut", "Utloggning")</li>
     @*<li>@Html.ActionLink("Test authorized", "SimpleAuthorization")</li>
     <li>@Html.ActionLink("Test auth as kund", "AuthorizedAsFlytzen")</li>*@
     @*<li>@Html.ActionLink("Test auth as administrator role", "AuthorizedAsAdministrator")</li>*@
 </ul>
+}
 </div>
