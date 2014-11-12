@@ -11,6 +11,7 @@
 <h2>Skapa Användare</h2>
 @using (Html.BeginForm())
 {
+    @Html.AntiForgeryToken()
     <div>
         <label for="användarnamn">Användarnamn</label>
         <input type="text" name="användarnamn" />

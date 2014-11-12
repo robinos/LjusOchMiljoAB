@@ -4,11 +4,13 @@ using System.Linq;
 using System.Web;
 using LjusOchMiljoAB.Models;
 using System.Web.Helpers;
+using Microsoft.Security.Application;
 
 namespace LjusOchMiljoAB.Controllers
 {
 	/* 
-	 * AnvändareTjänst x
+	 * AnvändareTjänst är tjänsten som hantera kontakt med AnvändareRepository
+	 * för att autentisera användare.
 	 * 
 	 * Grupp 2
 	 * Senast ändrat: 2014 11 11
@@ -29,28 +31,57 @@ namespace LjusOchMiljoAB.Controllers
 			this.repository = repository;
 		}
 
+		/*
+		 * HämtaAnvändareMedNamn hämtar en Anvandare objekt (om den finns) som
+		 * har samma användarnamn.
+		 */
 		public Anvandare HämtaAnvändareMedNamn(string användarnamn)
 		{
 			return (repository.HämtaAnvändareMedNamn(användarnamn));
 		}
 
-		public bool BekräftaLösenord(Anvandare anvandare, string lösenord)
+		/*
+		 * BekräftaLösenord jämför angiven lösenordens hash med den från
+		 * databasen.
+		 */
+		public Status BekräftaLösenord(Anvandare anvandare, string lösenord)
 		{
-			return Crypto.VerifyHashedPassword(anvandare.LosenordHash, lösenord);
+			if(anvandare.Raknare != null && anvandare.Raknare > 4)
+			{
+				anvandare.Laste = true;
+
+				repository.RedigeraAnvändare(anvandare);
+				return Status.Låste;
+			}
+			else if (anvandare.LosenordHash != null && Crypto.VerifyHashedPassword(anvandare.LosenordHash, lösenord))
+			{
+				return Status.Lyckades;
+			}
+			else
+			{
+				if (anvandare.Raknare == null) anvandare.Raknare = 1;
+				else anvandare.Raknare += 1;
+
+				repository.RedigeraAnvändare(anvandare);
+				return Status.Misslyckades;
+			}
 		}
 
 		//Bara för test
 		public void SättLösenord(Anvandare anvandare, string lösenord)
 		{
-			anvandare.LosenordHash = Crypto.HashPassword(lösenord);
+			//anvandare.LosenordHash = Crypto.HashPassword(lösenord);
 		}
 
 		//Bara för test
 		public void SkapaAnvändare(Anvandare användare)
 		{
-			repository.SkapaAnvändare(användare);
+			//repository.SkapaAnvändare(användare);
 		}
 
+		/*
+		 * Förstör finns för att fria upp minne.
+		 */
 		public void Förstör()
 		{
 			repository.Förstör();

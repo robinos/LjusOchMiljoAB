@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace LjusOchMiljoAB.Models
 {
@@ -16,9 +17,11 @@ namespace LjusOchMiljoAB.Models
 	public interface IAnvändareTjänst
 	{
 		Anvandare HämtaAnvändareMedNamn(string användarnamn);
-		bool BekräftaLösenord(Anvandare anvandare, string lösenord);
+		Status BekräftaLösenord(Anvandare anvandare, string lösenord);
 		void SättLösenord(Anvandare anvandare, string lösenord);
 		void SkapaAnvändare(Anvandare anvandare);
 		void Förstör();
 	}
+
+	public enum Status { Misslyckades, Lyckades, Låste };
 }

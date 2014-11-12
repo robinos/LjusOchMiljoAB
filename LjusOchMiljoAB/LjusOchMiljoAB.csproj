@@ -187,6 +187,7 @@
       <DependentUpon>LOMDB_Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AnvändareRepository.cs" />
+    <Compile Include="Models\InloggningModell.cs" />
     <Compile Include="Models\ProduktRepository.cs" />
     <Compile Include="Models\IAnvändareRepository.cs" />
     <Compile Include="Models\IAnvändareTjänst.cs" />

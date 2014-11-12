@@ -5,12 +5,13 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using LjusOchMiljoAB.Models;
+using Microsoft.Security.Application;
 
 namespace LjusOchMiljoAB.Controllers
 {
 	/*
-	 * HemController har hand om alla metoder för huvudsidan inklusive Om
-	 * och Kontakt undersidor.
+	 * HemController har hand om alla metoder för huvudsidan och inloggning
+	 * inklusive Om, Kontakt och Inloggning undersidor.
 	 * 
 	 * Grupp 2
 	 * Senast ändrat: 2014 11 11
@@ -38,6 +39,7 @@ namespace LjusOchMiljoAB.Controllers
 		 * Index är själva huvudsidan av applikationen (med vy Views ->
 		 * Hem -> Index.cshtml).
 		 */
+		//[Authorize]
 		public ActionResult Index()
 		{
 			return View();
@@ -57,51 +59,57 @@ namespace LjusOchMiljoAB.Controllers
 			return View();
 		}
 
-		[HttpGet]
-		public ActionResult Inloggning()
+		// GET: /Hem/Inloggning
+		[AllowAnonymous]
+		public ActionResult Inloggning(string returnUrl)
 		{
-			return this.View();
+			ViewBag.ReturnUrl = returnUrl;
+			return View();
 		}
 
+		// POST: /Hem/Inloggning
 		[HttpPost]
-		public ActionResult Inloggning(string användarnamn, string lösenord, string returnUrl)
+		[AllowAnonymous]
+		[ValidateAntiForgeryToken]
+		public ActionResult Inloggning(InloggningsModell model, string returnUrl)
 		{
-			Anvandare användare = användareTjänst.HämtaAnvändareMedNamn(användarnamn);
-			if (användare != null && användareTjänst.BekräftaLösenord(användare, lösenord))
+			if (!ModelState.IsValid)
 			{
-				FormsAuthentication.SetAuthCookie(användarnamn, false);
-				if (returnUrl != null && Url.IsLocalUrl(returnUrl))
-					return Redirect(returnUrl);
-				else
-					return RedirectToAction("Index");
+				return View(model);
 			}
 
-			ModelState.AddModelError("", "Ogiltig användarnamn eller lösenord");
-			return View();
+			Anvandare användare = användareTjänst.HämtaAnvändareMedNamn(Sanitizer.GetSafeHtmlFragment(model.Anvandarnamn));
+			Status stat = Status.Misslyckades;
+
+			if (användare != null)
+			{
+				stat = användareTjänst.BekräftaLösenord(användare, Sanitizer.GetSafeHtmlFragment(model.Losenord));
+			}
+
+			switch (stat)
+			{
+				case Status.Lyckades:
+					FormsAuthentication.SetAuthCookie(Sanitizer.GetSafeHtmlFragment(model.Anvandarnamn), false);
+					return RedirectToAction("Index");
+				case Status.Låste:
+					return View("Lockout");
+				case Status.Misslyckades:
+				default:
+					ModelState.AddModelError("", "Ogiltig inloggningsförsök.");
+					return View(model);
+			}
+
+			//	if (returnUrl != null && Url.IsLocalUrl(returnUrl))
+			//		return Redirect(returnUrl);
+			//	else
+			//		return RedirectToAction("Index");
+			//}
 		}
 
 		public ActionResult Utloggning()
 		{
 			FormsAuthentication.SignOut();
 			return RedirectToAction("Index");
-		}
-
-		[Authorize]
-		public ActionResult SimpleAuthorization()
-		{
-			return this.Content("Du är autentiserad!");
-		}
-
-		[Authorize(Users = "kund")]
-		public ActionResult AuthorizedAsFlytzen()
-		{
-			return this.Content("Du är autentiserad som kund.");
-		}
-
-		[Authorize(Roles = "Administrator")]
-		public ActionResult AuthorizedAsAdministrator()
-		{
-			return this.Content("Du är autentiserad som administratör");
 		}
 
 		/*

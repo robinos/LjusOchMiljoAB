@@ -25,10 +25,13 @@ namespace LjusOchMiljoAB.Controllers
 	 * Details - produktsidan med alla data om en viss produkt (bild och ritningar
 	 * är fortfarande bara filnamn)
 	 * 
+	 * HanteraListan - 
+	 * 
 	 * Grupp 2
 	 * Senast ändrat: 2014 11 09
 	 * Version: 0.18
 	 */
+	[Authorize]
 	public class ProduktController : Controller
 	{
 		//IProduktTjänst hanterar kommunikation med tjänsten som hanterar
@@ -61,21 +64,20 @@ namespace LjusOchMiljoAB.Controllers
 		 *		sida - vilken sida man är på (som bestäms är css PagedList)
 		 * ut: ActionResult (en vy eller resultat efter kodkörning)
 		 */
-		//[Authorize]
 		//[ValidateAntiForgeryToken]
 		public ActionResult Index(string Ordning, string produktTyp, string sökSträng, string filterSträng, string filterProdukt, int? sida)
 		{
-			if (!User.Identity.IsAuthenticated)
-				return RedirectToAction("Index", "Hem");
-			else
-			{
+			//if (!User.Identity.IsAuthenticated)
+			//	return RedirectToAction("Index", "Hem");
+			//else
+			//{
 				//Hämta IEnumerable produkter från tjänsten 
 				var produkter = HanteraListan(Ordning, produktTyp, sökSträng, filterSträng, filterProdukt, sida);
 
 				//"Index" i det här fallet är bara en medellande för testning.
 				//HämtaSida hämtar sidoinformation och skickar en IPagedList till vyn
 				return View("Index", produktTjänst.HämtaSida(produkter, sida));
-			}
+			//}
 		}
 
 		/*
@@ -87,10 +89,10 @@ namespace LjusOchMiljoAB.Controllers
 		 */
 		public ActionResult Details(string id)
 		{
-			if (!User.Identity.IsAuthenticated)
-				return RedirectToAction("Index", "Hem");
-			else
-			{
+			//if (!User.Identity.IsAuthenticated)
+			//	return RedirectToAction("Index", "Hem");
+			//else
+			//{
 				//Om inskickade id är null, visa en default HTTP sida för fel
 				if (id == null)
 				{
@@ -112,7 +114,7 @@ namespace LjusOchMiljoAB.Controllers
 				//"Details" texten är bara för hjälp vid testning
 				//produkter skickas in för att visa för vald produkten i vyn
 				return View("Details", produkt);
-			}
+			//}
 		}
 
 		/*
@@ -130,17 +132,17 @@ namespace LjusOchMiljoAB.Controllers
 		 */
 		public ActionResult Prislista(string Ordning, string produktTyp, string sökSträng, string filterSträng, string filterProdukt, int? sida)
 		{
-			if (!User.Identity.IsAuthenticated)
-				return RedirectToAction("Index", "Hem");
-			else
-			{
+			//if (!User.Identity.IsAuthenticated)
+			//	return RedirectToAction("Index", "Hem");
+			//else
+			//{
 				//Hämta IEnumerable produkter från tjänsten 
 				var produkter = HanteraListan(Ordning, produktTyp, sökSträng, filterSträng, filterProdukt, sida);
 
 				//"Pristlista" i det här fallet är bara en medellande för testning.
 				//HämtaSida hämtar sidoinformation och skickar en IPagedList till vyn
 				return View("Prislista", produktTjänst.HämtaSida(produkter, sida));
-			}
+			//}
 		}
 
 		public IEnumerable<Produkt> HanteraListan(string Ordning, string produktTyp, string sökSträng, string filterSträng, string filterProdukt, int? sida)

@@ -10,6 +10,9 @@
 
 <h2>Detaljer</h2>
 
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
         @*Visar all information om en produkt*@
         <div>
             <h4>Produkt</h4>
@@ -94,3 +97,4 @@
                 här från prislistan, så jag tog bort det (tillbaka knappen fungerar ändå).*@
             @*@Html.ActionLink("Back to List", "Index")*@
         </p>
+}

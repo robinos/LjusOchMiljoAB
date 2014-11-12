@@ -1,18 +1,51 @@
-﻿	 @** Grupp 2
-	 * Senast ändrat: 2014 11 11
-	 * Version: 0.18*@
+﻿@** Grupp 2
+  * Senast ändrat: 2014 11 11
+  * Version: 0.18*@
 
+@using LjusOchMiljoAB.Models
+@model InloggningsModell
 @{
     ViewBag.Title = "Inloggning";
 }
 
-<h2>Inloggning</h2>
+<h2>@ViewBag.Title</h2>
 
-@using (Html.BeginForm())
-{
-    @Html.ValidationSummary()
-    <label for="användarnamn">Användarnamn</label>
-    <input type="text" name="användarnamn" />
-    <input type="password" name="lösenord" />
-    <input type="submit" value="Logga in" />
-}
+<div class="row">
+    <div class="col-md-8">
+        <section id="loginForm">
+            @using (Html.BeginForm("Inloggning", "Hem", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Anvandarnamn, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.Anvandarnamn, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Anvandarnamn, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Losenord, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.PasswordFor(m => m.Losenord, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Losenord, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Log in" class="btn btn-default" />
+                    </div>
+                </div>
+            }
+        </section>
+    </div>
+</div>
+    @*@using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary()
+            <label for="användarnamn">Användarnamn</label>
+            <input type="text" name="användarnamn" />
+            <input type="password" name="lösenord" />
+            <input type="submit" value="Logga in" />
+        }*@

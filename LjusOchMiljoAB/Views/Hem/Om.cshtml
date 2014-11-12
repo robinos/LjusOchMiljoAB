@@ -4,4 +4,8 @@
 <h2>@ViewBag.Title.</h2>
 <h3>@ViewBag.Message</h3>
 
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
 <p>Information om hemsidan och företaget.</p>
+}

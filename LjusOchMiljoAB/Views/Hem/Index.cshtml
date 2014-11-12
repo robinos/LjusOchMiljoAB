@@ -8,6 +8,9 @@
 
 <h2>Hem</h2>
 
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
 <div>
 @if (User.Identity.IsAuthenticated)
 {
@@ -38,3 +41,4 @@
     <br />
 }
 </div>
+}

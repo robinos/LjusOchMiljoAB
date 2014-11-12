@@ -7,7 +7,6 @@
 @model PagedList.IPagedList<LjusOchMiljoAB.Models.Produkt>
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" />
-@*<%= Html.AntiForgeryToken() %>*@
 
 @{
     ViewBag.Title = "Produkter";
@@ -18,6 +17,7 @@
 @*Med Html.BeginForm gör man det lätt att ladda om sig själv vid sökningar*@
 @using (Html.BeginForm("Index", "Produkt", FormMethod.Get))
 {
+    @Html.AntiForgeryToken()
     //DropDownList hantera val av kategori för visning
     //Html.TextBox är textboxen som tar emot söksträngen vid sökning
     //Sök knappen kör val/sökningen (sökning och val kan användas tillsammans)

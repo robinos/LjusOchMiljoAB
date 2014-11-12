@@ -4,6 +4,9 @@
 <h2>@ViewBag.Title.</h2>
 <h3>@ViewBag.Message</h3>
 
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
 <address>
     Linholmen 1<br />
     Göteborg 555 55<br />
@@ -15,3 +18,4 @@
     <strong>Tekniskt hjälp:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
     <strong>Marknadsföring:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
 </address>
+}
