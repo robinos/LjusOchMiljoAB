@@ -27,6 +27,8 @@ Models ->huhu
 		tabellen
 	AnvändareRepository.cs är implementationen av IAnvändareRespository för
 		kontakt mellan AnvändareTjänst och databasen 
+	InloggningsModell.cs är modellen för inloggningsformen och används för
+		verifikation.
 
 
 -OVRIGT--------------------------------------------------------------------------------

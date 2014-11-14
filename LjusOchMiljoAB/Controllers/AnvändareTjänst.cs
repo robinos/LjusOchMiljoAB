@@ -5,12 +5,14 @@ using System.Web;
 using LjusOchMiljoAB.Models;
 using System.Web.Helpers;
 using Microsoft.Security.Application;
+using System.Threading.Tasks;
 
 namespace LjusOchMiljoAB.Controllers
 {
 	/* 
 	 * AnvändareTjänst är tjänsten som hantera kontakt med AnvändareRepository
-	 * för att autentisera användare.
+	 * för att autentisera användare, håller koll på misslyckade lösenordsförsök
+	 * och låsa ut användare vid 5 misslyckade försök.
 	 * 
 	 * Grupp 2
 	 * Senast ändrat: 2014 11 11
@@ -32,37 +34,52 @@ namespace LjusOchMiljoAB.Controllers
 		}
 
 		/*
-		 * HämtaAnvändareMedNamn hämtar en Anvandare objekt (om den finns) som
-		 * har samma användarnamn.
+		 * BekräftaLösenord försöker hämta Anvandare objektet som har användarnamn som
+		 * namn och sedan jämför angiven lösenordets hash med den från objektet.  Om
+		 * 5 eller fler misslyckade inloggningar har inträffat blir kontot låste.
+		 * Annars om lösenordets hash matchar har det lyckats och annars har det
+		 * misslyckats.
+		 * 
+		 * in:	användarnamn som rensade sträng
+		 *		lösenord som rensade sträng
+		 * ut:	Task för att vara async och Status som enum (Lyckades, Misslyckades,
+		 *		eller Låste)
 		 */
-		public Anvandare HämtaAnvändareMedNamn(string användarnamn)
+		public async Task<Status> BekräftaLösenord(string användarnamn, string lösenord)
 		{
-			return (repository.HämtaAnvändareMedNamn(användarnamn));
-		}
+			//Hämta användare objekt från respository
+			Anvandare användare = await repository.HämtaAnvändareMedNamn(användarnamn);
 
-		/*
-		 * BekräftaLösenord jämför angiven lösenordens hash med den från
-		 * databasen.
-		 */
-		public Status BekräftaLösenord(Anvandare anvandare, string lösenord)
-		{
-			if(anvandare.Raknare != null && anvandare.Raknare > 4)
+			//Om Anvandare objektet är null misslyckas det direkt
+			if (användare == null) return Status.Misslyckades;
+
+			//Om räknaren är 5 eller högre för misslyckade inloggningar, låser kontot
+			//(just nu måste en admin låser upp den igen)
+			if (användare.Raknare != null && användare.Raknare > 4)
 			{
-				anvandare.Laste = true;
-
-				repository.RedigeraAnvändare(anvandare);
+				//Ändra Anvandare objektet så låste blir sann
+				användare.Laste = true;
+				await repository.RedigeraAnvändare(användare);
+				//Returnera status Låste
 				return Status.Låste;
 			}
-			else if (anvandare.LosenordHash != null && Crypto.VerifyHashedPassword(anvandare.LosenordHash, lösenord))
+			//Annars om lösenordet var rätt, har det lyckats  
+			else if (användare.LosenordHash != null && Crypto.VerifyHashedPassword(användare.LosenordHash, lösenord))
 			{
+				//Returnera status Lyckades
 				return Status.Lyckades;
 			}
+			//Och annars misslyckades det med inloggningen och räknaren av
+			//misslyckade inloggningar räknar uppåt +1
 			else
 			{
-				if (anvandare.Raknare == null) anvandare.Raknare = 1;
-				else anvandare.Raknare += 1;
+				//Om räknaren är null blir den 1, annars läggs till +1
+				if (användare.Raknare == null) användare.Raknare = 1;
+				else användare.Raknare += 1;
+				//Ändra Anvandare objektet så låste blir sann				
+				await repository.RedigeraAnvändare(användare);
 
-				repository.RedigeraAnvändare(anvandare);
+				//Returnera status Misslyckades
 				return Status.Misslyckades;
 			}
 		}
@@ -82,9 +99,9 @@ namespace LjusOchMiljoAB.Controllers
 		/*
 		 * Förstör finns för att fria upp minne.
 		 */
-		public void Förstör()
+		public async Task Förstör()
 		{
-			repository.Förstör();
+			await repository.Förstör();
 		}
 	}
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Threading.Tasks;
 
 /*
  * IProduktRepository är en interface som implementeras av
@@ -19,12 +20,8 @@ namespace LjusOchMiljoAB.Models
 {
 	public interface IProduktRepository
 	{
-		void SkapaProdukt(Produkt produktAttSkapa);
-		void TaBortProdukt(string id);
-		void RedigeraProdukt(Produkt produktAttÄndra);
-		Produkt HämtaProduktMedID(string id);
-		IEnumerable<Produkt> HämtaProduktlista();
-		int SparaÄndringar();
-		void Förstör();
+		Task<Produkt> HämtaProduktMedID(string id);
+		Task<IEnumerable<Produkt>> HämtaProduktlista();
+		Task Förstör();
 	}
 }

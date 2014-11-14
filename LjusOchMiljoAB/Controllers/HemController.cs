@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Web.Security;
 using LjusOchMiljoAB.Models;
 using Microsoft.Security.Application;
+using System.Threading.Tasks;
 
 namespace LjusOchMiljoAB.Controllers
 {
@@ -38,13 +39,17 @@ namespace LjusOchMiljoAB.Controllers
 		/*
 		 * Index är själva huvudsidan av applikationen (med vy Views ->
 		 * Hem -> Index.cshtml).
+		 * Alla kan se Index sidan.
 		 */
-		//[Authorize]
 		public ActionResult Index()
 		{
 			return View();
 		}
 
+		/*
+		 * Om sidan ger information om företaget och hemsidan.
+		 * Alla kan se Om sidan.
+		 */
 		public ActionResult Om()
 		{
 			ViewBag.Message = "Om hemsidan och Ljus och Miljö AB";
@@ -52,6 +57,10 @@ namespace LjusOchMiljoAB.Controllers
 			return View();
 		}
 
+		/*
+		 * Kontakt sidan ger kontaktinformation för företaget.
+		 * Alla kan se Kontakt sidan.
+		 */
 		public ActionResult Kontakt()
 		{
 			ViewBag.Message = "Kontaktsidan";
@@ -59,7 +68,11 @@ namespace LjusOchMiljoAB.Controllers
 			return View();
 		}
 
-		// GET: /Hem/Inloggning
+		/*
+		 * HttpGET för Inloggningssidan.  Visar formen.
+		 * 
+		 * in: returnUrl: sidan man borde returnera till
+		 */
 		[AllowAnonymous]
 		public ActionResult Inloggning(string returnUrl)
 		{
@@ -67,24 +80,27 @@ namespace LjusOchMiljoAB.Controllers
 			return View();
 		}
 
-		// POST: /Hem/Inloggning
+		/*
+		 * HttpPost för Inloggningssidan.  Den validerar modellen och sedan försöker
+		 * bekräfta lösenordet.  Om det lyckas fortsätter man.  Om det misslyckas
+		 * stannar man på formen.  Om man blir utlåste (för många misslyckade
+		 * försök på lösenordet) skickas man till Lockout sidan.
+		 * 
+		 * in:	model: InloggningsModell för inloggningsformen
+		 *		returnUrl: sidan man borde returnera till
+		 */
 		[HttpPost]
 		[AllowAnonymous]
 		[ValidateAntiForgeryToken]
-		public ActionResult Inloggning(InloggningsModell model, string returnUrl)
+		public async Task<ActionResult> Inloggning(InloggningsModell model, string returnUrl)
 		{
 			if (!ModelState.IsValid)
 			{
 				return View(model);
 			}
 
-			Anvandare användare = användareTjänst.HämtaAnvändareMedNamn(Sanitizer.GetSafeHtmlFragment(model.Anvandarnamn));
 			Status stat = Status.Misslyckades;
-
-			if (användare != null)
-			{
-				stat = användareTjänst.BekräftaLösenord(användare, Sanitizer.GetSafeHtmlFragment(model.Losenord));
-			}
+			stat = await användareTjänst.BekräftaLösenord(Sanitizer.GetSafeHtmlFragment(model.Anvandarnamn), Sanitizer.GetSafeHtmlFragment(model.Losenord));
 
 			switch (stat)
 			{
@@ -98,18 +114,15 @@ namespace LjusOchMiljoAB.Controllers
 					ModelState.AddModelError("", "Ogiltig inloggningsförsök.");
 					return View(model);
 			}
-
-			//	if (returnUrl != null && Url.IsLocalUrl(returnUrl))
-			//		return Redirect(returnUrl);
-			//	else
-			//		return RedirectToAction("Index");
-			//}
 		}
 
+		/*
+		 * Vid utloggning skickas man tillbaka till huvudsidan.
+		 */
 		public ActionResult Utloggning()
 		{
 			FormsAuthentication.SignOut();
-			return RedirectToAction("Index");
+			return RedirectToAction("Index", "Hem");
 		}
 
 		/*

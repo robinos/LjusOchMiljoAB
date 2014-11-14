@@ -8,7 +8,7 @@ using Microsoft.AspNet.Identity.Owin;
 namespace LjusOchMiljoAB.Models
 {
 	/*
-	 * IAnvändareTjänst x
+	 * IAnvändareTjänst är interface för inloggningssystemet.
 	 * 
 	 * Grupp 2
 	 * Senast ändrat: 2014 11 11
@@ -16,12 +16,11 @@ namespace LjusOchMiljoAB.Models
 	 */
 	public interface IAnvändareTjänst
 	{
-		Anvandare HämtaAnvändareMedNamn(string användarnamn);
-		Status BekräftaLösenord(Anvandare anvandare, string lösenord);
-		void SättLösenord(Anvandare anvandare, string lösenord);
-		void SkapaAnvändare(Anvandare anvandare);
-		void Förstör();
+		Task<Status> BekräftaLösenord(string användarnamn, string lösenord);
+		Task Förstör();
 	}
 
+	//Status enum används med BekräftaLösenord och är definerad i denna filen
+	//för att det har med inloggningssystemet att göra.
 	public enum Status { Misslyckades, Lyckades, Låste };
 }

@@ -10,6 +10,7 @@ using LjusOchMiljoAB.Models;
 using LjusOchMiljoAB.Controllers;
 using PagedList.Mvc;
 using PagedList;
+using System.Threading.Tasks;
 
 namespace LjusOchMiljoAB.Controllers
 {
@@ -64,20 +65,14 @@ namespace LjusOchMiljoAB.Controllers
 		 *		sida - vilken sida man är på (som bestäms är css PagedList)
 		 * ut: ActionResult (en vy eller resultat efter kodkörning)
 		 */
-		//[ValidateAntiForgeryToken]
-		public ActionResult Index(string Ordning, string produktTyp, string sökSträng, string filterSträng, string filterProdukt, int? sida)
+		public async Task<ActionResult> Index(string ordning, string produktTyp, string sökSträng, string filterSträng, string filterProdukt, int? sida)
 		{
-			//if (!User.Identity.IsAuthenticated)
-			//	return RedirectToAction("Index", "Hem");
-			//else
-			//{
-				//Hämta IEnumerable produkter från tjänsten 
-				var produkter = HanteraListan(Ordning, produktTyp, sökSträng, filterSträng, filterProdukt, sida);
+			//Hämta IEnumerable produkter från tjänsten 
+			var produkter = await HanteraListan(ordning, produktTyp, sökSträng, filterSträng, filterProdukt, sida);
 
-				//"Index" i det här fallet är bara en medellande för testning.
-				//HämtaSida hämtar sidoinformation och skickar en IPagedList till vyn
-				return View("Index", produktTjänst.HämtaSida(produkter, sida));
-			//}
+			//"Index" i det här fallet är bara en medellande för testning.
+			//HämtaSida hämtar sidoinformation och skickar en IPagedList till vyn
+			return View("Index", produktTjänst.HämtaSida(produkter, sida));
 		}
 
 		/*
@@ -87,34 +82,29 @@ namespace LjusOchMiljoAB.Controllers
 		 * in: sträng id som representera en produkt id
 		 * ut: ActionResult (en vy eller resultat efter kodkörning)
 		 */
-		public ActionResult Details(string id)
+		public async Task<ActionResult> Details(string id)
 		{
-			//if (!User.Identity.IsAuthenticated)
-			//	return RedirectToAction("Index", "Hem");
-			//else
-			//{
-				//Om inskickade id är null, visa en default HTTP sida för fel
-				if (id == null)
-				{
-					var result = new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-					return result;
-				}
+			//Om inskickade id är null, visa en default HTTP sida för fel
+			if (id == null)
+			{
+				var result = new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+				return result;
+			}
 
-				//Hämta information för rad som matcher id (som är nyckeln)
-				Produkt produkt = produktTjänst.HämtaProduktMedID(id);
+			//Hämta information för rad som matcher id (som är nyckeln)
+			Produkt produkt = await produktTjänst.HämtaProduktMedID(id);
 
-				//Om raden är null (id finns inte), visa en default HTTP sida för
-				//att resultatet hittades inte med medellande
-				if (produkt == null)
-				{
-					var result = new HttpNotFoundResult("Kan inte hitta produkten");
-					return result;
-				}
+			//Om raden är null (id finns inte), visa en default HTTP sida för
+			//att resultatet hittades inte med medellande
+			if (produkt == null)
+			{
+				var result = new HttpNotFoundResult("Kan inte hitta produkten");
+				return result;
+			}
 
-				//"Details" texten är bara för hjälp vid testning
-				//produkter skickas in för att visa för vald produkten i vyn
-				return View("Details", produkt);
-			//}
+			//"Details" texten är bara för hjälp vid testning
+			//produkter skickas in för att visa för vald produkten i vyn
+			return View("Details", produkt);
 		}
 
 		/*
@@ -130,29 +120,29 @@ namespace LjusOchMiljoAB.Controllers
 		 *		sida - vilken sida man är på (som bestäms är css PagedList)
 		 * ut: ActionResult (en vy eller resultat efter kodkörning)
 		 */
-		public ActionResult Prislista(string Ordning, string produktTyp, string sökSträng, string filterSträng, string filterProdukt, int? sida)
+		public async Task<ActionResult> Prislista(string ordning, string produktTyp, string sökSträng, string filterSträng, string filterProdukt, int? sida)
 		{
-			//if (!User.Identity.IsAuthenticated)
-			//	return RedirectToAction("Index", "Hem");
-			//else
-			//{
-				//Hämta IEnumerable produkter från tjänsten 
-				var produkter = HanteraListan(Ordning, produktTyp, sökSträng, filterSträng, filterProdukt, sida);
+			//Hämta IEnumerable produkter från tjänsten 
+			var produkter = await HanteraListan(ordning, produktTyp, sökSträng, filterSträng, filterProdukt, sida);
 
-				//"Pristlista" i det här fallet är bara en medellande för testning.
-				//HämtaSida hämtar sidoinformation och skickar en IPagedList till vyn
-				return View("Prislista", produktTjänst.HämtaSida(produkter, sida));
-			//}
+			//"Pristlista" i det här fallet är bara en medellande för testning.
+			//HämtaSida hämtar sidoinformation och skickar en IPagedList till vyn
+			return View("Prislista", produktTjänst.HämtaSida(produkter, sida));
 		}
 
-		public IEnumerable<Produkt> HanteraListan(string Ordning, string produktTyp, string sökSträng, string filterSträng, string filterProdukt, int? sida)
+		/*
+		 * HanteraListan
+		 * 
+		 * 
+		 */
+		public async Task<IEnumerable<Produkt>> HanteraListan(string ordning, string produktTyp, string sökSträng, string filterSträng, string filterProdukt, int? sida)
 		{
 			//Spara ordningen just nu
-			ViewBag.OrdningNu = Ordning;
+			ViewBag.OrdningNu = ordning;
 
 			//Om ordningen skulle vara null, är det bara tom som är default med
 			//namnordning A->Ö
-			if (String.IsNullOrEmpty(Ordning)) Ordning = "";
+			if (String.IsNullOrEmpty(ordning)) ordning = "";
 
 			//default ordningar för första körningen
 			ViewBag.NamnOrdning = "";
@@ -177,7 +167,7 @@ namespace LjusOchMiljoAB.Controllers
 			ViewBag.filterProdukt = produktTyp;
 
 			//Hämta IEnumerable produkter från tjänsten 
-			var produkter = produktTjänst.HämtaProdukter();
+			var produkter = await produktTjänst.HämtaProdukter();
 
 			//Spara typ listan för att visa upp i valjboxen på formen
 			ViewBag.produktTyp = produktTjänst.HämtaValLista(produkter, produktTyp);
@@ -186,12 +176,12 @@ namespace LjusOchMiljoAB.Controllers
 			produkter = produktTjänst.HämtaFiltreradProduktlista(produkter, produktTyp, sökSträng);
 
 			//Ordna listan utefter Ordning strängen
-			produkter = produktTjänst.HämtaOrdnadProduktlista(produkter, Ordning);
+			produkter = produktTjänst.HämtaOrdnadProduktlista(produkter, ordning);
 
 			//Hantera ordningen.  Det går fram och tillbaka mot ordningen
 			//högst till lägst (eller Ö->A), och lägst till högst (eller A->Ö)
 			//Default är A->Ö för namn
-			switch (Ordning)
+			switch (ordning)
 			{
 				case "DesNamn_Ordning":
 					ViewBag.NamnOrdning = "";

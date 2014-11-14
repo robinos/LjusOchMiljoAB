@@ -126,7 +126,8 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			int sida = 1;
 
 			//Act
-			List<Produkt> visadeProduktList = new List<Produkt>(controller.HanteraListan(Ordning, produktTyp, sökSträng, filterSträng, filterProdukt, sida));
+			IEnumerable<Produkt> produktEnumer = controller.HanteraListan(Ordning, produktTyp, sökSträng, filterSträng, filterProdukt, sida).Result;
+			List<Produkt> visadeProduktList = new List<Produkt>(produktEnumer);
 
 			bool sammaStorlek = (produkter.Count == visadeProduktList.Count);
 
@@ -179,7 +180,8 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			int sida = 2;
 
 			//Act
-			List<Produkt> visadeProduktList = new List<Produkt>(controller.HanteraListan(Ordning, produktTyp, sökSträng, filterSträng, filterProdukt, sida));
+			IEnumerable<Produkt> produktEnumer = controller.HanteraListan(Ordning, produktTyp, sökSträng, filterSträng, filterProdukt, sida).Result;
+			List<Produkt> visadeProduktList = new List<Produkt>(produktEnumer);
 
 			bool sammaStorlek = (produkter.Count == visadeProduktList.Count);
 
@@ -205,7 +207,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			ProduktController controller = GetProduktController(GetProduktService(new IMinnetProduktRepository()));
 
 			// Act
-			ViewResult result = controller.Index("Namn_Ordning", "", "", "", "", 1) as ViewResult;
+			ViewResult result = controller.Index("Namn_Ordning", "", "", "", "", 1).Result as ViewResult;
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -221,7 +223,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			// Arrange
 			ProduktController controller = GetProduktController(GetProduktService(new IMinnetProduktRepository()));
 			// Act
-			ViewResult result = controller.Index("Namn_Ordning", "", "", "", "", 1) as ViewResult;
+			ViewResult result = controller.Index("Namn_Ordning", "", "", "", "", 1).Result as ViewResult;
 			// Assert
 			Assert.AreEqual("Index", result.ViewName);
 		}
@@ -242,7 +244,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			ProduktController controller = GetProduktController(GetProduktService(repository));
 
 			// Act
-			ViewResult result = controller.Index("Namn_Ordning", "", "", "", "", 1) as ViewResult;
+			ViewResult result = controller.Index("Namn_Ordning", "", "", "", "", 1).Result as ViewResult;
 
 			// Assert
 			var model = (IEnumerable<Produkt>)result.ViewData.Model;
@@ -263,7 +265,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			ProduktController controller = GetProduktController(GetProduktService(repository));
 
 			// Act
-			ViewResult result = controller.Details("00000") as ViewResult;
+			ViewResult result = controller.Details("00000").Result as ViewResult;
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -283,7 +285,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			ProduktController controller = GetProduktController(GetProduktService(repository));
 
 			// Act
-			ViewResult result = controller.Details("00000") as ViewResult;
+			ViewResult result = controller.Details("00000").Result as ViewResult;
 
 			// Assert
 			Assert.AreEqual("Details", result.ViewName);
@@ -305,7 +307,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			ProduktController controller = GetProduktController(GetProduktService(repository));
 
 			// Act
-			ViewResult result = controller.Details("00000") as ViewResult;
+			ViewResult result = controller.Details("00000").Result as ViewResult;
 
 			// Assert
 			var model = result.ViewData.Model;
@@ -327,7 +329,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			ProduktController controller = GetProduktController(GetProduktService(repository));
 
 			// Act
-			ViewResult result = controller.Details("33333") as ViewResult;
+			ViewResult result = controller.Details("33333").Result as ViewResult;
 
 			// Assert
 			Assert.IsNull(result);
@@ -345,7 +347,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			ProduktController controller = GetProduktController(GetProduktService(new IMinnetProduktRepository()));
 
 			// Act
-			ViewResult result = controller.Prislista("Namn_Ordning", "", "", "", "", 1) as ViewResult;
+			ViewResult result = controller.Prislista("Namn_Ordning", "", "", "", "", 1).Result as ViewResult;
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -362,7 +364,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			ProduktController controller = GetProduktController(GetProduktService(new IMinnetProduktRepository()));
 
 			// Act
-			ViewResult result = controller.Prislista("Namn_Ordning", "", "", "", "", 1) as ViewResult;
+			ViewResult result = controller.Prislista("Namn_Ordning", "", "", "", "", 1).Result as ViewResult;
 
 			// Assert
 			Assert.AreEqual("Prislista", result.ViewName);
@@ -384,7 +386,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			ProduktController controller = GetProduktController(GetProduktService(repository));
 
 			// Act
-			ViewResult result = controller.Prislista("Namn_Ordning", "", "", "", "", 1) as ViewResult;
+			ViewResult result = controller.Prislista("Namn_Ordning", "", "", "", "", 1).Result as ViewResult;
 
 			// Assert
 			var model = (IEnumerable<Produkt>)result.ViewData.Model;

@@ -1,3 +1,12 @@
+Version 0.18a
+- InloggningsModell nu finns i Models mappen
+- inmatade strängar nu rensas av kod/annat innan användning
+- För snabbhet och bättre kompatibilitet används nu async metoder för
+	inloggningssystemet och kontakt med databas
+- [Authorize] används istället för Redirect för att kicka folk tillbaka till
+	inloggning vid utloggning i privata områden
+- Prislista och Produkter nu finns som meny val
+
 Version 0.18
 - Bilder nu finns i produktlistan med en bild för skruvor och annars default bilden
 	De finns i Content->Bilder

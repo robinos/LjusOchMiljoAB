@@ -6,6 +6,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LjusOchMiljoAB.Models
 {
+	/*
+	 * InloggningsModell används för validering av inloggningsformen.
+	 */
 	public class InloggningsModell
 	{
 		[Required]

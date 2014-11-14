@@ -130,7 +130,8 @@ namespace LjusOchMiljoAB.Tests.Controllers
 
 			string produktTyp = "";
 			string sökSträng = "";
-			List<Produkt> produkter = (List<Produkt>)produktService.HämtaProdukter();
+			IEnumerable<Produkt> produktEnumer = produktService.HämtaProdukter().Result;
+			List<Produkt> produkter = new List<Produkt>(produktEnumer);
 
 			//Act
 			List<Produkt> hämtadProdukter = (List<Produkt>)produktService.HämtaFiltreradProduktlista(produkter, produktTyp, sökSträng);
@@ -161,14 +162,15 @@ namespace LjusOchMiljoAB.Tests.Controllers
 
 			string produktTyp = "";
 			string sökSträng = "00000";
-			List<Produkt> produkter = (List<Produkt>)produktService.HämtaProdukter();
+			IEnumerable<Produkt> produktEnumer = produktService.HämtaProdukter().Result;
+			List<Produkt> produkter = new List<Produkt>(produktEnumer);
 
 			List<Produkt> baraProdukt1 = new List<Produkt>();
 			baraProdukt1.Add(produkt1);
 
 			//Act
-			IEnumerable<Produkt> produktEnumer = produktService.HämtaFiltreradProduktlista(produkter, produktTyp, sökSträng);
-			List<Produkt> hämtadProdukter = new List<Produkt>(produktEnumer);
+			IEnumerable<Produkt> produktEnumerFilter = produktService.HämtaFiltreradProduktlista(produkter, produktTyp, sökSträng);
+			List<Produkt> hämtadProdukter = new List<Produkt>(produktEnumerFilter);
 			bool sammaStorlek = (baraProdukt1.Count == hämtadProdukter.Count);
 
 			//Assert
@@ -193,7 +195,8 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			repository.Add(produkt1);
 			repository.Add(produkt2);
 			ProduktTjänst produktService = new ProduktTjänst(repository);
-			List<Produkt> produkter = (List<Produkt>)produktService.HämtaProdukter();
+			IEnumerable<Produkt> produktEnumer = produktService.HämtaProdukter().Result;
+			List<Produkt> produkter = new List<Produkt>(produktEnumer);
 			List<Produkt> ordnadProdukter = new List<Produkt>();
 			ordnadProdukter.Add(produkt2);
 			ordnadProdukter.Add(produkt1);
@@ -225,7 +228,8 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			repository.Add(produkt1);
 			repository.Add(produkt2);
 			ProduktTjänst produktService = new ProduktTjänst(repository);
-			List<Produkt> produkter = (List<Produkt>)produktService.HämtaProdukter();
+			IEnumerable<Produkt> produktEnumer = produktService.HämtaProdukter().Result;
+			List<Produkt> produkter = new List<Produkt>(produktEnumer);
 			List<Produkt> ordnadProdukter = new List<Produkt>();
 			ordnadProdukter.Add(produkt2);
 			ordnadProdukter.Add(produkt1);
@@ -254,7 +258,8 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			IMinnetProduktRepository repository = new IMinnetProduktRepository();
 			repository.Add(produkt1);
 			ProduktTjänst produktService = new ProduktTjänst(repository);
-			List<Produkt> produkter = (List<Produkt>)produktService.HämtaProdukter();
+			IEnumerable<Produkt> produktEnumer = produktService.HämtaProdukter().Result;
+			List<Produkt> produkter = new List<Produkt>(produktEnumer);
 
 			//Act
 			IPagedList pageList = produktService.HämtaSida(produkter, 1);
@@ -282,7 +287,8 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			repository.Add(produkt5);
 			repository.Add(produkt6);
 			ProduktTjänst produktService = new ProduktTjänst(repository);
-			List<Produkt> produkter = (List<Produkt>)produktService.HämtaProdukter();
+			IEnumerable<Produkt> produktEnumer = produktService.HämtaProdukter().Result;
+			List<Produkt> produkter = new List<Produkt>(produktEnumer);
 
 			//Act
 			IPagedList pageList = produktService.HämtaSida(produkter, 2);
