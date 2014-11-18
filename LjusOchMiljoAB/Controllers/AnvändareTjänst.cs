@@ -53,9 +53,10 @@ namespace LjusOchMiljoAB.Controllers
 			//Om Anvandare objektet är null misslyckas det direkt
 			if (användare == null) return Status.Misslyckades;
 
-			//Om räknaren är 5 eller högre för misslyckade inloggningar, låser kontot
-			//(just nu måste en admin låser upp den igen)
-			if (användare.Raknare != null && användare.Raknare > 4)
+			//Om räknaren är redan 4 eller högre för misslyckade inloggningar,
+			//(det här blir 5:e gången) låser kontot (just nu måste en admin
+			//låser upp den igen)
+			if (användare.Raknare != null && användare.Raknare >= 4)
 			{
 				//Ändra Anvandare objektet så låste blir sann
 				användare.Laste = true;

@@ -10,7 +10,7 @@ namespace LjusOchMiljoAB.Tests.Models
 	/*
 	 * IMinnetProduktRepository implementerar IProdukterRepository.  Den används
 	 * som 'mock databas' eller lösas databas vid testning.  I att den implementerar
-	 * IProdukterRepository så kan en ProdukterController skapas som använder den
+	 * IProdukterRepository så kan en ProduktTjänst skapas som använder den
 	 * som databas kontakt.
 	 * 
 	 * Grupp 2
