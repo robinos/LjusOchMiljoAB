@@ -1,50 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using LjusOchMiljoAB.Models;
-using System.Web.Helpers;
-using Microsoft.Security.Application;
+using System.Text;
 using System.Threading.Tasks;
-using System.Web.Security;
+using LjusOchMiljoAB.Models;
+using LjusOchMiljoAB.Tests.Models;
+using System.Web.Helpers;
 
-namespace LjusOchMiljoAB.Controllers
+namespace LjusOchMiljoAB.Tests.Controllers
 {
-	/* 
-	 * AnvändareTjänst är tjänsten som hantera kontakt med AnvändareRepository
-	 * för att autentisera användare, håller koll på misslyckade lösenordsförsök
-	 * och låsa ut användare vid 5 misslyckade försök.
-	 * 
-	 * Grupp 2
-	 * Senast ändrat: 2014 11 11
-	 * Version: 0.18
+	/*
+	 * Mock AnvändareTjänst för testning.
 	 */
-	public class AnvändareTjänst : IAnvändareTjänst
+	class IMinnetAnvändareTjänst : IAnvändareTjänst
 	{
 		//IAnvändareRepository hanterar kommunikation med databasen
 		private readonly IAnvändareRepository repository;
 
 		//Vid tom konstruktör, gör en ny repository av typen som används för
 		//verklig körning
-		public AnvändareTjänst() : this(new AnvändareRepository()) { }
+		public IMinnetAnvändareTjänst() : this(new IMinnetAnvändareRepository()) { }
 
 		//En-parameter konstruktör för testning mot en egen repository
-		public AnvändareTjänst(IAnvändareRepository repository)
+		public IMinnetAnvändareTjänst(IAnvändareRepository repository)
 		{
 			this.repository = repository;
 		}
 
 		/*
-		 * BekräftaLösenord försöker hämta Anvandare objektet som har användarnamn som
-		 * namn och sedan jämför angiven lösenordets hash med den från objektet.  Om
-		 * 5 eller fler misslyckade inloggningar har inträffat blir kontot låste.
-		 * Annars om lösenordets hash matchar har det lyckats och annars har det
-		 * misslyckats.
-		 * 
-		 * in:	användarnamn som rensade sträng
-		 *		lösenord som rensade sträng
-		 * ut:	Task för att vara async och Status som enum (Lyckades, Misslyckades,
-		 *		eller Låste)
+		 * En kopia av BekräftaLösenord från AnvändareTjänst.
 		 */
 		public async Task<Status> BekräftaLösenord(string användarnamn, string lösenord)
 		{
@@ -86,6 +70,16 @@ namespace LjusOchMiljoAB.Controllers
 			}
 		}
 
+		public void SättLösenord(Anvandare anvandare, string lösenord)
+		{
+			anvandare.LosenordHash = Crypto.HashPassword(lösenord);
+		}
+
+		public void SkapaAnvändare(Anvandare användare)
+		{
+			repository.SkapaAnvändare(användare);
+		}
+
 		/*
 		 * Förstör finns för att fria upp minne.
 		 */
@@ -94,22 +88,20 @@ namespace LjusOchMiljoAB.Controllers
 			await repository.Förstör();
 		}
 
+		/*
+		 * Tom metod utan FormsAuthentication (som funkar inte så bra med
+		 * Unit testar).
+		 */
 		public void Inloggning(string användarnamn)
 		{
-			FormsAuthentication.SetAuthCookie(användarnamn, false);
-		}
-
-		public void Utloggning()
-		{
-			FormsAuthentication.SignOut();
 		}
 
 		/*
-		 * Bara för implementation av SkapaAnvändare fär IAnvändareTjänst
+		 * Tom metod utan FormsAuthentication (som funkar inte så bra med
+		 * Unit testar).
 		 */
-		public void SkapaAnvändare(Anvandare användareAttTillägga)
+		public void Utloggning()
 		{
-			//ingenting
 		}
 	}
 }

@@ -43,7 +43,7 @@ namespace LjusOchMiljoAB.Controllers
 		 */
 		public ActionResult Index()
 		{
-			return View();
+			return View("Index");
 		}
 
 		/*
@@ -54,7 +54,7 @@ namespace LjusOchMiljoAB.Controllers
 		{
 			ViewBag.Message = "Om hemsidan och Ljus och Miljö AB";
 
-			return View();
+			return View("Om");
 		}
 
 		/*
@@ -65,7 +65,7 @@ namespace LjusOchMiljoAB.Controllers
 		{
 			ViewBag.Message = "Kontaktsidan";
 
-			return View();
+			return View("Kontakt");
 		}
 
 		/*
@@ -77,7 +77,7 @@ namespace LjusOchMiljoAB.Controllers
 		public ActionResult Inloggning(string returnUrl)
 		{
 			ViewBag.ReturnUrl = returnUrl;
-			return View();
+			return View("Inloggning");
 		}
 
 		/*
@@ -105,8 +105,9 @@ namespace LjusOchMiljoAB.Controllers
 			switch (stat)
 			{
 				case Status.Lyckades:
-					FormsAuthentication.SetAuthCookie(Sanitizer.GetSafeHtmlFragment(model.Anvandarnamn), false);
-					return RedirectToAction("Index");
+					användareTjänst.Inloggning(Sanitizer.GetSafeHtmlFragment(model.Anvandarnamn));
+					//FormsAuthentication.SetAuthCookie(Sanitizer.GetSafeHtmlFragment(model.Anvandarnamn), false);
+					return RedirectToAction("Index", "Hem");
 				case Status.Låste:
 					return View("Lockout");
 				case Status.Misslyckades:
@@ -121,7 +122,8 @@ namespace LjusOchMiljoAB.Controllers
 		 */
 		public ActionResult Utloggning()
 		{
-			FormsAuthentication.SignOut();
+			//FormsAuthentication.SignOut();
+			användareTjänst.Utloggning();
 			return RedirectToAction("Index", "Hem");
 		}
 

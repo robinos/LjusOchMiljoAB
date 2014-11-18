@@ -105,5 +105,13 @@ namespace LjusOchMiljoAB.Models
 			await Task.Delay(0);	
 			db.Dispose();			
 		}
+
+		/*
+		 * Bara för implementation av SkapaAnvändare fär IAnvändareTjänst
+		 */
+		public void SkapaAnvändare(Anvandare användareAttTillägga)
+		{
+			//ingenting
+		}
 	}
 }

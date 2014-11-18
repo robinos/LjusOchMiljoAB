@@ -27,15 +27,15 @@ namespace LjusOchMiljoAB.Tests.Controllers
 		/*
 		 * Default hämtning
 		 */
-		Anvandare HämtaAnvandareMedNamn()
+		Anvandare HämtaAnvandare()
 		{
-			return HämtaAnvandareMedNamn(1, "kund", "password");
+			return HämtaAnvandare(1, "kund", "password");
 		}
 
 		/*
 		 * Default användare att skapa nya med för testning
 		 */
-		Anvandare HämtaAnvandareMedNamn(int id, string namn, string password)
+		Anvandare HämtaAnvandare(int id, string namn, string password)
 		{
 			return new Anvandare
 			{
@@ -73,8 +73,8 @@ namespace LjusOchMiljoAB.Tests.Controllers
 		{
 			//Arrange
 			IMinnetAnvändareRepository repository = new IMinnetAnvändareRepository();
-			Anvandare användare1 = HämtaAnvandareMedNamn(1, "kund", "password");
-			repository.Add(användare1);
+			Anvandare användare1 = HämtaAnvandare(1, "kund", "password");
+			repository.SkapaAnvändare(användare1);
 
 			//Act
 			AnvändareTjänst användareTjänst = new AnvändareTjänst(repository);
@@ -96,8 +96,8 @@ namespace LjusOchMiljoAB.Tests.Controllers
 		{
 			//Arrange
 			IMinnetAnvändareRepository repository = new IMinnetAnvändareRepository();
-			Anvandare användare1 = HämtaAnvandareMedNamn(1, "kund", "password");
-			repository.Add(användare1);
+			Anvandare användare1 = HämtaAnvandare(1, "kund", "password");
+			repository.SkapaAnvändare(användare1);
 
 			//Act
 			AnvändareTjänst användareTjänst = new AnvändareTjänst(repository);
@@ -119,8 +119,8 @@ namespace LjusOchMiljoAB.Tests.Controllers
 		{
 			//Arrange
 			IMinnetAnvändareRepository repository = new IMinnetAnvändareRepository();
-			Anvandare användare1 = HämtaAnvandareMedNamn(1, "kund", "password");
-			repository.Add(användare1);
+			Anvandare användare1 = HämtaAnvandare(1, "kund", "password");
+			repository.SkapaAnvändare(användare1);
 
 			//Act
 			AnvändareTjänst användareTjänst = new AnvändareTjänst(repository);
@@ -146,10 +146,10 @@ namespace LjusOchMiljoAB.Tests.Controllers
 		{
 			//Arrange
 			IMinnetAnvändareRepository repository = new IMinnetAnvändareRepository();
-			Anvandare användare1 = HämtaAnvandareMedNamn(1, "kund", "password");
+			Anvandare användare1 = HämtaAnvandare(1, "kund", "password");
 			//Räknaren sätts till 4 misslyckade försök (på 5 blir det låste)
 			användare1.Raknare = 4;
-			repository.Add(användare1);
+			repository.SkapaAnvändare(användare1);
 
 			//Act
 			AnvändareTjänst användareTjänst = new AnvändareTjänst(repository);

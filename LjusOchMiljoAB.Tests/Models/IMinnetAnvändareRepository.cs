@@ -91,11 +91,11 @@ namespace LjusOchMiljoAB.Tests.Models
 		}
 
 		/*
-		 * Add används för att lägga till användare till listan db
+		 * SkapaAnvändare används för att lägga till användare till listan db
 		 * 
 		 * in: användareAttTillägga är en användare av objekttypen Anvandare
 		 */
-		public void Add(Anvandare användareAttTillägga)
+		public void SkapaAnvändare(Anvandare användareAttTillägga)
 		{
 			db.Add(användareAttTillägga);
 		}

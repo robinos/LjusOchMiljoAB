@@ -18,6 +18,9 @@ namespace LjusOchMiljoAB.Models
 	{
 		Task<Status> BekräftaLösenord(string användarnamn, string lösenord);
 		Task Förstör();
+		void Inloggning(string username);
+		void Utloggning();
+		void SkapaAnvändare(Anvandare användareAttTillägga);
 	}
 
 	//Status enum används med BekräftaLösenord och är definerad i denna filen
