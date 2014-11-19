@@ -14,9 +14,12 @@ namespace LjusOchMiljoAB.Controllers
 	 * HemController har hand om alla metoder för huvudsidan och inloggning
 	 * inklusive Om, Kontakt och Inloggning undersidor.
 	 * 
+	 * [RequireHttps] tvingar sidan att vara HTTPS och använder SSL säkerhet
+	 * [HandleError] är inte någonting som används i nuläget
+	 * 
 	 * Grupp 2
 	 * Senast ändrat: 2014 11 11
-	 * Version: 0.18
+	 * Version: 0.19
 	 */
 	[RequireHttps]
 	[HandleError]
@@ -40,7 +43,9 @@ namespace LjusOchMiljoAB.Controllers
 		 * Index är själva huvudsidan av applikationen (med vy Views ->
 		 * Hem -> Index.cshtml).
 		 * Alla kan se Index sidan.
+		 * [AllowAnonymous] tillåter användare som är inte inloggad att se det
 		 */
+		[AllowAnonymous]
 		public ActionResult Index()
 		{
 			return View("Index");
@@ -49,7 +54,9 @@ namespace LjusOchMiljoAB.Controllers
 		/*
 		 * Om sidan ger information om företaget och hemsidan.
 		 * Alla kan se Om sidan.
+		 * [AllowAnonymous] tillåter användare som är inte inloggad att se det
 		 */
+		[AllowAnonymous]
 		public ActionResult Om()
 		{
 			ViewBag.Message = "Om hemsidan och Ljus och Miljö AB";
@@ -60,7 +67,9 @@ namespace LjusOchMiljoAB.Controllers
 		/*
 		 * Kontakt sidan ger kontaktinformation för företaget.
 		 * Alla kan se Kontakt sidan.
+		 * [AllowAnonymous] tillåter användare som är inte inloggad att se det
 		 */
+		[AllowAnonymous]
 		public ActionResult Kontakt()
 		{
 			ViewBag.Message = "Kontaktsidan";
@@ -70,6 +79,7 @@ namespace LjusOchMiljoAB.Controllers
 
 		/*
 		 * HttpGET för Inloggningssidan.  Visar formen.
+		 * [AllowAnonymous] tillåter användare som är inte inloggad att se det
 		 * 
 		 * in: returnUrl: sidan man borde returnera till
 		 */
@@ -84,7 +94,12 @@ namespace LjusOchMiljoAB.Controllers
 		 * HttpPost för Inloggningssidan.  Den validerar modellen och sedan försöker
 		 * bekräfta lösenordet.  Om det lyckas fortsätter man.  Om det misslyckas
 		 * stannar man på formen.  Om man blir utlåste (för många misslyckade
-		 * försök på lösenordet) skickas man till Lockout sidan.
+		 * försök på lösenordet) skickas man till Utlåste sidan.
+		 * 
+		 * [AllowAnonymous] tillåter användare som är inte inloggad att se det
+		 * [ValidateAntiForgeryToken] tittar på en gömd kaka i webbformen för att
+		 * testa att det verkligen kommer från samma användaren/webbläsaren som fick
+		 * HttpGet sidan
 		 * 
 		 * in:	model: InloggningsModell för inloggningsformen
 		 *		returnUrl: sidan man borde returnera till
@@ -94,22 +109,34 @@ namespace LjusOchMiljoAB.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<ActionResult> Inloggning(InloggningsModell model, string returnUrl)
 		{
+			//Om modellen är fel (som en fält är tom, etc) går man tillbaka till
+			//inloggningsformen
 			if (!ModelState.IsValid)
 			{
 				return View(model);
 			}
 
+			//Status är en enum som finns definerad i IAnvändareTjänst. Det sätts till
+			//misslyckade som default
 			Status stat = Status.Misslyckades;
+
+			//Santizer används för att ta bort farliga tecken och kod frpn Html
+			//inmatningen
 			stat = await användareTjänst.BekräftaLösenord(Sanitizer.GetSafeHtmlFragment(model.Anvandarnamn), Sanitizer.GetSafeHtmlFragment(model.Losenord));
 
 			switch (stat)
 			{
+				//Om lösenordet stämmer (och det var mindre än 5 misslyckade
+				//inloggningar innan) logga in användaren
 				case Status.Lyckades:
 					användareTjänst.Inloggning(Sanitizer.GetSafeHtmlFragment(model.Anvandarnamn));
-					//FormsAuthentication.SetAuthCookie(Sanitizer.GetSafeHtmlFragment(model.Anvandarnamn), false);
+					//Därefter skickas användaren till hemsidan
 					return RedirectToAction("Index", "Hem");
+				//Vid 5+ misslyckade inloggningar skickas användare till Utlåste sidan
 				case Status.Låste:
-					return View("Lockout");
+					return RedirectToAction("Utlåste", "Hem");
+				//Vid Misslyckades som är också default skickas man tillbaka till
+				//inloggnings formen
 				case Status.Misslyckades:
 				default:
 					ModelState.AddModelError("", "Ogiltig inloggningsförsök.");
@@ -128,26 +155,14 @@ namespace LjusOchMiljoAB.Controllers
 		}
 
 		/*
-		[HttpGet]
-		public ActionResult SkapaAnvändare()
+		 * Utlåste visas för folk men 5 eller mer misslyckade inloggningar.
+		 * [AllowAnonymous] tillåter användare som är inte inloggad att se det
+		 */
+		[AllowAnonymous]
+		public ActionResult Utlåste()
 		{
-			return this.View();
+			return View("Utlåste");
 		}
 
-		[HttpPost]
-		public ActionResult SkapaAnvändare(string användarnamn, string lösenord, string roll)
-		{
-			var newUser = new Anvandare()
-			{
-				ID = 1,
-				Anvandarnamn = användarnamn,
-				Roll = roll,
-				Raknare = 0,
-				Laste = false
-			};
-			användareTjänst.SättLösenord(newUser, lösenord);
-			användareTjänst.SkapaAnvändare(newUser);
-			return RedirectToAction("Index");
-		}*/
 	}
 }

@@ -17,7 +17,7 @@ namespace LjusOchMiljoAB.Controllers
 	 * 
 	 * Grupp 2
 	 * Senast ändrat: 2014 11 11
-	 * Version: 0.18
+	 * Version: 0.19
 	 */
 	public class AnvändareTjänst : IAnvändareTjänst
 	{
@@ -88,17 +88,28 @@ namespace LjusOchMiljoAB.Controllers
 
 		/*
 		 * Förstör finns för att fria upp minne.
+		 * 
+		 * ut: Task för en await (behövs för async metoder)
 		 */
 		public async Task Förstör()
 		{
 			await repository.Förstör();
 		}
 
+		/*
+		 * Inloggning ger en autentiseringskaka till användaren/webbläsaren för
+		 * webbsidan.
+		 * 
+		 * in: användarnamn som rensad sträng
+		 */
 		public void Inloggning(string användarnamn)
 		{
-			FormsAuthentication.SetAuthCookie(användarnamn, false);
+			FormsAuthentication.SetAuthCookie(Crypto.Hash(användarnamn), false);
 		}
 
+		/*
+		 * Utloggning tar bort autentiseringskakan.
+		 */
 		public void Utloggning()
 		{
 			FormsAuthentication.SignOut();

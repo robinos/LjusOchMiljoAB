@@ -13,9 +13,12 @@ namespace LjusOchMiljoAB.Tests.Models
 	 * IProdukterRepository så kan en ProduktTjänst skapas som använder den
 	 * som databas kontakt.
 	 * 
+	 * Förhoppningsvis behövs det här inte alls om man kan förstå
+	 * MvcContrib.TestHelper bibliotek lite bättre.
+	 *
 	 * Grupp 2
 	 * Senast ändrat: 2014 11 04
-	 * Version: 0.17
+	 * Version: 0.19
 	 */
 	class IMinnetProduktRepository : IProduktRepository
 	{
@@ -96,7 +99,8 @@ namespace LjusOchMiljoAB.Tests.Models
 		/*
 		 * HämtaProduktlista returnerar alla produkter.
 		 * 
-		 * ut: IEnumerable<Produkter> innehåller alla produkter
+		 * ut: Task (för en await) och en IEnumerable<Produkter> som innehåller
+		 * alla produkter
 		 */
 		public async Task<IEnumerable<Produkt>> HämtaProduktlista()
 		{
@@ -130,6 +134,8 @@ namespace LjusOchMiljoAB.Tests.Models
 		/*
 		 * Förstör databasen för att fri upp minne (i det här fallet är databasen
 		 * listan db).
+		 * 
+		 * ut: Task för en await (behövs för async metoder)
 		 */
 		public async Task Förstör()
 		{

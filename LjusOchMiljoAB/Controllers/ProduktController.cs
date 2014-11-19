@@ -26,11 +26,12 @@ namespace LjusOchMiljoAB.Controllers
 	 * Details - produktsidan med alla data om en viss produkt (bild och ritningar
 	 * är fortfarande bara filnamn)
 	 * 
-	 * HanteraListan - 
+	 * HanteraListan - sätter alla temporär variabel i vyn (ViewBag variabler)
+	 * och anropar de viktiga metoder i ProduktTjänst för sortering och filtrering
 	 * 
 	 * Grupp 2
 	 * Senast ändrat: 2014 11 09
-	 * Version: 0.18
+	 * Version: 0.19
 	 */
 	[Authorize]
 	public class ProduktController : Controller
@@ -131,9 +132,24 @@ namespace LjusOchMiljoAB.Controllers
 		}
 
 		/*
-		 * HanteraListan
+		 * HanteraListan sätter alla temporär variabel i vyn (ViewBag variabler)
+		 * och anropar de viktiga metoder i ProduktTjänst
+		 *		produktTjänst.HämtaProdukter() - hämta alla produkter i databasen
+		 *		produktTjänst.HämtaValLista(produkter, produktTyp) - hämta sträng
+		 *			listan av alla produkttyper för DropDownList med vald produktTyp
+		 *		produktTjänst.HämtaFiltreradProduktlista(produkter, produktTyp,
+		 *			sökSträng) - filtrera produktlistan efter val produkt typ och
+		 *			söksträngen
+		 *		produktTjänst.HämtaOrdnadProduktlista(produkter, ordning) - ordnar
+		 *			produktlistan efter ordning
 		 * 
-		 * 
+		 * in:	ordning - ordning typ (default "" är vid namn A-Ö/0-9)
+		 *		produktTyp - vald typ av produkt att visa (default alla)
+		 *		sökSträng - namn söksträng att filtrera med (defaul "")
+		 *		filterSträng - för att spara sökSträng mellan sidor
+		 *		filterProdukt - för att spara produktType mellan sidor
+		 *		sida - sida man kommer att visa som int
+		 * ut:	Task för async och en IEnumerable av Produkt objekt som är resultatet
 		 */
 		public async Task<IEnumerable<Produkt>> HanteraListan(string ordning, string produktTyp, string sökSträng, string filterSträng, string filterProdukt, int? sida)
 		{

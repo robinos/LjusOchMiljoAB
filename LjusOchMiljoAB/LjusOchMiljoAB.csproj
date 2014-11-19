@@ -316,6 +316,7 @@
     <Content Include="Views\Produkt\Prislista.cshtml" />
     <Content Include="Views\Hem\Inloggning.cshtml" />
     <Content Include="Views\Hem\SkapaAnvändare.cshtml" />
+    <Content Include="Views\Hem\Utlåste.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -14,7 +14,7 @@ namespace LjusOchMiljoAB.Models
 	 * 
 	 * Grupp 2
 	 * Senast ändrat: 2014 11 11
-	 * Version: 0.18
+	 * Version: 0.19
 	 */
 	public class AnvändareRepository : IAnvändareRepository
 	{

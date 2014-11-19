@@ -18,11 +18,11 @@ namespace LjusOchMiljoAB.Tests.Controllers
 {
 	/*
 	 * HemControllerTest testar controllern till huvudsidan Hem, med undersidor 
-	 * Om och Kontakt.
+	 * Om, Kontakt, Inloggning och Utlåste.
 	 * 
 	 * Grupp 2
-	 * Senast ändrat: 2014 11 04
-	 * Version: 0.17
+	 * Senast ändrat: 2014 11 18
+	 * Version: 0.19
 	 */
 	[TestClass]
 	public class HemControllerTest
@@ -187,6 +187,35 @@ namespace LjusOchMiljoAB.Tests.Controllers
 
 			// Assert
 			result.AssertActionRedirect().ToAction<HemController>(c => c.Index());
+		}
+
+		/*
+		 * Testar att Inlognning (inloggningssidan) gör en Redirect till
+		 * Utlåste i HemController vid 5:e+ misslyckade inloggning.
+		 * 
+		 * *För att använda Inloggning som är async använder man .Result i
+		 *		slutet och inte 'await'.
+		 * 
+		 * AssertViewRendered kommer från MvcContrib.TestHelper
+		 */
+		[TestMethod]
+		public void TestHemInloggningMisslyckades5GångerSkickaTillUtlåsteView()
+		{
+			// Arrange
+			IMinnetAnvändareTjänst användareTjänst = new IMinnetAnvändareTjänst();
+			Anvandare användare1 = HämtaAnvandare(1, "testkund", "testlösenord");
+			användare1.Raknare = 4;
+			användareTjänst.SkapaAnvändare(användare1);
+			var controller = CreateController(användareTjänst);
+
+			string returnUrl = "Index";
+			InloggningsModell modell = new InloggningsModell() { Anvandarnamn = "testkund", Losenord = "lösenord" };
+
+			// Act
+			var result = controller.Inloggning(modell, returnUrl).Result;
+
+			// Assert
+			result.AssertActionRedirect().ToAction<HemController>(c => c.Utlåste());
 		}
 	}
 }

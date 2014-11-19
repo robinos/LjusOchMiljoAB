@@ -14,7 +14,7 @@ using System.Threading.Tasks;
  * 
  * Grupp 2
  * Senast ändrat: 2014 11 09
- * Version: 0.18
+ * Version: 0.19
  */
 namespace LjusOchMiljoAB.Models
 {

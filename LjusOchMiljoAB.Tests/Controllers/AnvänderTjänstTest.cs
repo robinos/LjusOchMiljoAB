@@ -19,7 +19,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 	 * 
 	 * Grupp 2
 	 * Senast ändrat: 2014 11 18
-	 * Version: 0.18
+	 * Version: 0.19
 	 */
 	[TestClass]
 	public class AnvänderTjänstTest

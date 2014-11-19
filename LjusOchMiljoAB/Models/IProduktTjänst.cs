@@ -12,7 +12,7 @@ using PagedList;
  * 
  * Grupp 2
  * Senast ändrat: 2014 11 11
- * Version: 0.18
+ * Version: 0.19
  */
 namespace LjusOchMiljoAB.Models
 {

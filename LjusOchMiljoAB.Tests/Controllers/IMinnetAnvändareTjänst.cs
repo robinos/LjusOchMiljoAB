@@ -11,6 +11,13 @@ namespace LjusOchMiljoAB.Tests.Controllers
 {
 	/*
 	 * Mock AnvändareTjänst för testning.
+	 * 
+	 * Förhoppningsvis behövs det här inte alls om man kan förstå
+	 * MvcContrib.TestHelper bibliotek lite bättre.
+	 * 
+	 * Grupp 2
+	 * Senast ändrat: 2014 11 19
+	 * Version: 0.19
 	 */
 	class IMinnetAnvändareTjänst : IAnvändareTjänst
 	{
@@ -28,7 +35,12 @@ namespace LjusOchMiljoAB.Tests.Controllers
 		}
 
 		/*
-		 * En kopia av BekräftaLösenord från AnvändareTjänst.
+		 * En ren kopia av BekräftaLösenord från AnvändareTjänst.
+		 * 
+		 * in:	användarnamn som sträng
+		 *		lösnord som sträng
+		 * ut:	Task (för en await) och Status som är en enum definerad i
+		 *		IAnvändareTjänst som har värden Lyckades, Misslyckades, eller Låste
 		 */
 		public async Task<Status> BekräftaLösenord(string användarnamn, string lösenord)
 		{
@@ -70,11 +82,22 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			}
 		}
 
+		/*
+		 * SättLösenord Finns bara i mock versionen för att kryptera lösnordet när
+		 * en användare skapas för testning.
+		 * 
+		 * in:	användarnamn som sträng
+		 *		lösnord som sträng
+		 */
 		public void SättLösenord(Anvandare anvandare, string lösenord)
 		{
 			anvandare.LosenordHash = Crypto.HashPassword(lösenord);
 		}
 
+		/*
+		 * SkapaAnvändare har bara kod i IMinnetAnvändareTjänst och inte i
+		 * AnvändareTjänst. Den används för att skapa test användare.
+		 */
 		public void SkapaAnvändare(Anvandare användare)
 		{
 			repository.SkapaAnvändare(användare);
@@ -82,6 +105,8 @@ namespace LjusOchMiljoAB.Tests.Controllers
 
 		/*
 		 * Förstör finns för att fria upp minne.
+		 * 
+		 * ut: Task för en await (behövs för async metoder)
 		 */
 		public async Task Förstör()
 		{

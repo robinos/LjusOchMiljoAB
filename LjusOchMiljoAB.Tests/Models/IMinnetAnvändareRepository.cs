@@ -10,12 +10,15 @@ namespace LjusOchMiljoAB.Tests.Models
 	/*
 	 * IMinnetAnvändareRepository implementerar IAnvändareRepository.  Den används
 	 * som 'mock databas' eller lösas databas vid testning.  I att den implementerar
-	 * IAnvändareRepository så kan en AnvändareTjänst skapas som använder den
+	 * IAnvändareRepository så kan en IAnvändareTjänst skapas som använder den
 	 * som databas kontakt.
 	 * 
+	 * Förhoppningsvis behövs det här inte alls om man kan förstå
+	 * MvcContrib.TestHelper bibliotek lite bättre.
+	 *
 	 * Grupp 2
 	 * Senast ändrat: 2014 11 18
-	 * Version: 0.17
+	 * Version: 0.19
 	 */
 	class IMinnetAnvändareRepository : IAnvändareRepository
 	{
@@ -30,6 +33,7 @@ namespace LjusOchMiljoAB.Tests.Models
 		 * till användaren användareAttÄndra.
 		 * 
 		 * in: användareAttÄndra är en användare av objekttypen Anvandare
+		 * ut: Task för en await (behövs för async metoder)
 		 */
 		public async Task RedigeraAnvändare(Anvandare användareAttÄndra)
 		{
@@ -73,6 +77,8 @@ namespace LjusOchMiljoAB.Tests.Models
 		/*
 		 * SparaÄndringar är bara en återspegling för IAnvändareRepository och
 		 * gör ingenting äv värde.
+		 * 
+		 * ut: Task för en await (behövs för async metoder) 
 		 */
 		public async Task<int> SparaÄndringar()
 		{
@@ -83,6 +89,8 @@ namespace LjusOchMiljoAB.Tests.Models
 		/*
 		 * Förstör databasen för att fri upp minne (i det här fallet är databasen
 		 * listan db).
+		 * 
+		 * ut: Task för en await (behövs för async metoder)
 		 */
 		public async Task Förstör()
 		{

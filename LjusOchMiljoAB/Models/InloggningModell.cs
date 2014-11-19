@@ -7,7 +7,11 @@ using System.ComponentModel.DataAnnotations;
 namespace LjusOchMiljoAB.Models
 {
 	/*
-	 * InloggningsModell används för validering av inloggningsformen.
+	 * InloggningsModell används för att test giltighet av inloggningsformen.
+	 * 
+	 * Grupp 2
+	 * Senast ändrat: 2014 11 09
+	 * Version: 0.19
 	 */
 	public class InloggningsModell
 	{

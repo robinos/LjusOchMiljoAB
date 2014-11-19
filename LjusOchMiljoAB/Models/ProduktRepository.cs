@@ -16,8 +16,8 @@ namespace LjusOchMiljoAB.Models
 	 * ändras.
 	 * 
 	 * Grupp 2
-	 * Senast ändrat: 2014 11 11
-	 * Version: 0.18
+	 * Senast ändrat: 2014 11 18
+	 * Version: 0.19
 	 */
 	public class ProduktRepository : IProduktRepository
 	{
