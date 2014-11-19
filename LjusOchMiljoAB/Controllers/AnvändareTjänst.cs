@@ -104,7 +104,7 @@ namespace LjusOchMiljoAB.Controllers
 		 */
 		public void Inloggning(string användarnamn)
 		{
-			FormsAuthentication.SetAuthCookie(Crypto.Hash(användarnamn), false);
+			FormsAuthentication.SetAuthCookie(användarnamn, false);
 		}
 
 		/*
