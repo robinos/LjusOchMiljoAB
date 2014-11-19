@@ -5,6 +5,15 @@
 @model LjusOchMiljoAB.Models.Produkt
 
 @{
+    string path = Html.DisplayFor(model => model.Bildfilnamn).ToString();
+    string imgpath = @"/Content/Bilder/default.png";
+    if (File.Exists(HttpRuntime.AppDomainAppPath + @"Content/Bilder/" + path + ".png"))
+    {
+        imgpath = @"/Content/Bilder/" + path + ".png";
+    }
+}
+
+@{
     ViewBag.Title = "Detaljer";
 }
 
@@ -14,6 +23,9 @@
 <div>
     <h4>Produkt</h4>
     <hr />
+
+    <img src=@imgpath height="128" width="128">
+
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.Namn)
@@ -86,9 +98,10 @@
         <dd>
             @Html.DisplayFor(model => model.Montering)
         </dd>
-
     </dl>
+
 </div>
+
 <p>
     @*Problematiskt så går det här tillbaka till produktlistan även om man kommer
     här från prislistan, så jag tog bort det (tillbaka knappen fungerar ändå).*@
