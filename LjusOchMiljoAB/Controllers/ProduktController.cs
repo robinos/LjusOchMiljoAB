@@ -77,13 +77,13 @@ namespace LjusOchMiljoAB.Controllers
 		}
 
 		/*
-		 * Details kunde omdöpas.  Det är bara den namn den fick från automatgenering.
+		 * Detaljer är bara den namn den fick från automatgenering.
 		 * Den visar detaljer på en särskild produkt (all data för en rad).
 		 * 
 		 * in: sträng id som representera en produkt id
 		 * ut: ActionResult (en vy eller resultat efter kodkörning)
 		 */
-		public async Task<ActionResult> Details(string id)
+		public async Task<ActionResult> Detaljer(string id)
 		{
 			//Om inskickade id är null, visa en default HTTP sida för fel
 			if (id == null)
@@ -105,7 +105,7 @@ namespace LjusOchMiljoAB.Controllers
 
 			//"Details" texten är bara för hjälp vid testning
 			//produkter skickas in för att visa för vald produkten i vyn
-			return View("Details", produkt);
+			return View("Detaljer", produkt);
 		}
 
 		/*

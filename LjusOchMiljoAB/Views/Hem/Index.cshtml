@@ -16,7 +16,8 @@
 {
 
 @*Länkar till kategorier i textform - kallar Index metoden i ProdukterController för
-    att visa med filtrering för typ*@
+    att visa med filtrering för typ - vi vill kanske ha det här i en egen vy
+    istället*@
     <div>
         <br />
         @Html.ActionLink("Inomhus", "Index", "Produkt", new { Ordning = "", produktTyp = "inomhus", sökSträng = "", filterSträng = "", filterProdukt = "inomhus", sida = 1 }, null)
@@ -24,21 +25,6 @@
         @Html.ActionLink("Tillbehör", "Index", "Produkt", new { Ordning = "", produktTyp = "tillbehör", sökSträng = "", filterSträng = "", filterProdukt = "tillbehör", sida = 1 }, null)
         <br />
     </div>
-
-    @*Länk till produktlistan - kallar Index metoden i ProdukterController för att visa
-        alla produkter.*@
-    <div>
-        @Html.ActionLink("Lista av produkter", "Index", "Produkt", new { Ordning = "", produktTyp = "", sökSträng = "", filterSträng = "", filterProdukt = "", sida = 1 }, null)
-    </div>
-
-    @*Länk till prislistan - kallar Prislista metoden i ProdukterController för att visa
-        prislistan*@
-    <div>
-        <br />
-        @Html.ActionLink("Prislista", "Prislista", "Produkt", new { Ordning = "", produktTyp = "", sökSträng = "", filterSträng = "", filterProdukt = "", sida = 1 }, null)
-        <br />
-    </div>
-    <br />
 }
 </div>
 }
