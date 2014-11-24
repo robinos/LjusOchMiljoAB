@@ -4,42 +4,69 @@
     ViewBag.Title = "Detaljer";
 }
 
-    <h2>Detaljer</h2>
+@{
+    string img = @"/Content/Bilder/default.png";
+    string Ritningimg = @"/Content/Bilder/DefaultRitning.png";
+    if (File.Exists(HttpRuntime.AppDomainAppPath + @"Content/Bilder/" + @Html.DisplayFor(model => model.Bildfilnamn) + ".png"))
+    {
+        img = @"/Content/Bilder/" + @Html.DisplayFor(model => model.Bildfilnamn) + ".png";
+    }
 
-    @using (Html.BeginForm())
+    if (File.Exists(HttpRuntime.AppDomainAppPath + @"Content/Bilder/" + @Html.DisplayFor(model => model.Ritningsfilnamn) + ".png"))
+    {
+        Ritningimg = @"/Content/Bilder/" + @Html.DisplayFor(model => model.Ritningsfilnamn) + ".png";
+    }
+}
+
+@using (Html.BeginForm())
 {
-        @Html.AntiForgeryToken()
-        <div>
-            <h1>@Html.DisplayFor(model => model.Namn)</h1>
-        </div>
-        <br />
-        <div>
-            <table>
-                <tr>
-                    <td>
-                        @{
-                            string img = @"/Content/Bilder/default.png";
-                            if (File.Exists(HttpRuntime.AppDomainAppPath + @"Content/Bilder/" + @Html.DisplayFor(model => model.Bildfilnamn) + ".png"))
-                            {
-                                img = @"/Content/Bilder/" + @Html.DisplayFor(model => model.Bildfilnamn) + ".png";
-                            }
-                        }
-                        <img src=@img height="256" width="256" style="border:solid">
-                    </td>
-                    <td>&nbsp;</td>
-                    <td style="vertical-align: top; text-align:left;">
-                        <b>@Html.DisplayNameFor(model => model.Beskrivning):</b><br />@Html.DisplayFor(model => model.Beskrivning)
-                        <br />
-                        <span>
-                            <b>@Html.DisplayNameFor(model => model.Pris):</b>&nbsp;@Html.DisplayFor(model => model.Pris)
-                        </span>
-                        <br />
-                        <span>
-                            <b>Produkt @Html.DisplayNameFor(model => model.ID):</b>&nbsp;@Html.DisplayFor(model => model.ID)
-                        </span>
-                        <br />
-                    </td>
-                </tr>
-            </table>
-        </div>
+    @Html.AntiForgeryToken()
+    <div>
+        <h1 style="text-align:center">@Html.DisplayFor(model => model.Namn)</h1>
+    </div>
+    <br />
+    <hr />
+    <div>
+        <table>
+            <tr>
+                <td>
+                    <div style="width:256px;height:512px">
+                        <img src=@img height="256" width="256">
+                        <img src=@Ritningimg height="256" width="256">
+                    </div>
+                </td>
+                <td>&nbsp;</td>
+                <td style="padding-left:20px;vertical-align: top; text-align:left;">
+                    <b>@Html.DisplayNameFor(model => model.Beskrivning):</b><br />@Html.DisplayFor(model => model.Beskrivning)
+                    <br />
+                    <hr />
+
+                    <b>@Html.DisplayNameFor(model => model.Montering):</b><br />@Html.DisplayFor(model => model.Montering)
+                    <br />
+                    <hr />
+
+                    <span>
+                        <b>@Html.DisplayNameFor(model => model.Pris):</b>&nbsp;@Html.DisplayFor(model => model.Pris)
+                    </span>
+                    <br />
+
+                    <span>
+                        <b>Produkt @Html.DisplayNameFor(model => model.ID):</b>&nbsp;@Html.DisplayFor(model => model.ID)
+                    </span>
+                    <br />
+
+                    <span>
+                        <b>Produkt @Html.DisplayNameFor(model => model.Typ):</b>&nbsp;@Html.DisplayFor(model => model.Typ)
+                    </span>
+                    <br />
+
+                    <span>
+                        <b>Produkt @Html.DisplayNameFor(model => model.Farg):</b>&nbsp;@Html.DisplayFor(model => model.Farg)
+                    </span>
+                    <br />
+
+                </td>
+            </tr>
+        </table>
+    </div>
    }
