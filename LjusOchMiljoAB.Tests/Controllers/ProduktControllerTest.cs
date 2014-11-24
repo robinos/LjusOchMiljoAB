@@ -283,7 +283,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			ProduktController controller = GetProduktController(GetProduktTjänst(repository));
 
 			// Act
-			ViewResult result = controller.Details("00000").Result as ViewResult;
+			ViewResult result = controller.Detaljer("00000").Result as ViewResult;
 
 			// Assert
 			Assert.IsNotNull(result);
@@ -303,7 +303,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			ProduktController controller = GetProduktController(GetProduktTjänst(repository));
 
 			// Act
-			ViewResult result = controller.Details("00000").Result as ViewResult;
+			ViewResult result = controller.Detaljer("00000").Result as ViewResult;
 
 			// Assert
 			Assert.AreEqual("Details", result.ViewName);
@@ -325,7 +325,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			ProduktController controller = GetProduktController(GetProduktTjänst(repository));
 
 			// Act
-			ViewResult result = controller.Details("00000").Result as ViewResult;
+			ViewResult result = controller.Detaljer("00000").Result as ViewResult;
 
 			// Assert
 			var model = result.ViewData.Model;
@@ -348,7 +348,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			ProduktController controller = GetProduktController(GetProduktTjänst(repository));
 
 			// Act
-			ViewResult result = controller.Details("33333").Result as ViewResult;
+			ViewResult result = controller.Detaljer("33333").Result as ViewResult;
 
 			// Assert
 			Assert.IsNull(result);
