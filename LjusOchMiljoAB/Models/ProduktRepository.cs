@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
+using System.Threading.Tasks;
 
 namespace LjusOchMiljoAB.Models
 {
@@ -13,12 +14,10 @@ namespace LjusOchMiljoAB.Models
 	 * IProdukterRepository.  Detta görs för att göra det lättare vid testning
 	 * men även lättare för databasbytt och ändringar där huvudkoden behöver inte
 	 * ändras.
-	 * Bara HämtaProduktMedID, HämtaProduktlista och Förstör metoder används,
-	 * resten är bara implementationer för IProdukterRepository.
 	 * 
 	 * Grupp 2
-	 * Senast ändrat: 2014 11 11
-	 * Version: 0.18
+	 * Senast ändrat: 2014 11 18
+	 * Version: 0.19
 	 */
 	public class ProduktRepository : IProduktRepository
 	{
@@ -27,82 +26,70 @@ namespace LjusOchMiljoAB.Models
 		private LOM_DBEntities db = new LOM_DBEntities();
 
 		/*
-		 * SkapaProdukt skapar en ny produkt.  Detta används inte av applikationen
-		 * och är kommenterad ut så produkter kan inte skapas.
+		 * HämtaProduktMedID hämtar en produkt (rad) från tabellen Produkt som
+		 * matcher strängen id för ID kolumnen.  ID är den unika nycklen för
+		 * tabellen.
 		 * 
-		 * in: produktAttSkapa är produkten man vill skapa av objekttyp Produkter 
-		 */
-		public void SkapaProdukt(Produkt produktAttSkapa)
-		{
-			//db.Produkt.Add(produktAttSkapa);
-			//db.SaveChanges();
-		}
-
-		/*
-		 * TaBortProdukt tar bort en befintlig produkt.  Detta används inte av
-		 * applikationen och är kommenterad ut så produkter kan inte tas bort.
-		 * 
-		 * in: strängen id är den unika nyckeln till tabellen
-		 */
-		public void TaBortProdukt(string id)
-		{
-			//var conToDel = HämtaProduktMedID(id);
-			//db.Produkt.Remove(conToDel);
-			//db.SaveChanges();
-		}
-
-		/*
-		 * RedigeraProdukt ändrar en befintlig produkt.  Detta används inte av applikationen
-		 * och är kommenterad ut så produkter kan inte ändras.
-		 * 
-		 * in: produktAttSkapa är produkten man vill skapa av objekttyp Produkter med Bind för
-		 * säkerställning av modellen
-		 */
-		public void RedigeraProdukt([Bind(Include = "ID,Namn,Pris,Typ,Farg,Bildfilnamn,Ritningsfilnamn,RefID,Beskrivning,Montering")] Produkt produktAttÄndra)
-		{
-			//db.Entry(produktAttÄndra).State = EntityState.Modified;
-			//db.SaveChanges();
-		}
-
-		/*
-		 * HämtaProduktMedID hämtar en produkt (rad) från tabellen som matcher strängen
-		 * id för ID kolumnen.  ID är den unika nycklen för tabellen.
+		 * Kastar System.ArgumentNullException
 		 * 
 		 * in: strängen som representera ID för en produkt
-		 * ut: en produkt av objekttyp Produkter som har id som sin ID
+		 * ut: Task för await och en produkt av objekttyp Produkt som har id
+		 * som sin ID
 		 */
-		public Produkt HämtaProduktMedID(string id)
+		public async Task<Produkt> HämtaProduktMedID(string id)
 		{
-			return db.Produkt.FirstOrDefault(d => d.ID == id);
+			await Task.Delay(0);
+
+			Produkt produkt = null;
+
+			try
+			{
+				produkt = db.Produkt.FirstOrDefault(d => d.ID == id);
+			}
+			catch (Exception ex)
+			{
+				//Exception hantering kunde vara här
+				throw ex;
+			}
+
+			return produkt;
 		}
 
 		/*
+		 * HämtaProduktlista hämtar listan av alla produkter (rad) i tabellen
+		 * Produkt.
 		 * 
+		 * Kastar System.ArgumentNullException
+		 * 
+		 * ut: en IEnumerable av Produkt objekter
 		 */
-		public IEnumerable<Produkt> HämtaProduktlista()
+		public async Task<IEnumerable<Produkt>> HämtaProduktlista()
 		{
-			return db.Produkt.ToList<Produkt>();
-		}
+			await Task.Delay(0);
 
-		/*
-		 * SparaÄndringar sparar ändringar till databasen.  Den används inte av applikationen
-		 * och är kommenterad ut.
-		 * 
-		 * ut: int som beskriver om sparningen lyckades (1=lyckades)
-		 */
-		public int SparaÄndringar()
-		{
-			//return db.SaveChanges();
-			return 1;
+			IEnumerable<Produkt> produkter = null;
+
+			try
+			{
+				produkter = db.Produkt.ToList<Produkt>();
+			}
+			catch (Exception ex)
+			{
+				//Exception hantering kunde vara här
+				throw ex;
+			}
+
+			return produkter;
 		}
 
 		/*
 		 * Förstör tar bort instansen av databasen och kan användas för minnesrengöring
 		 * vid applikationsslut.
 		 */
-		public void Förstör()
+		public async Task Förstör()
 		{
-				db.Dispose();
+			await Task.Delay(0);			
+			db.Dispose();
 		}
 	}
 }

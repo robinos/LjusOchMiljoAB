@@ -1,7 +1,15 @@
-﻿@{
+﻿@** Grupp 2
+    * Senast ändrat: 2014 11 19
+    * Version: 0.19*@
+
+@{
     ViewBag.Title = "Om";
 }
 <h2>@ViewBag.Title.</h2>
 <h3>@ViewBag.Message</h3>
 
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
 <p>Information om hemsidan och företaget.</p>
+}

@@ -1,6 +1,6 @@
 ﻿  @** Grupp 2
     * Senast ändrat: 2014 11 11
-    * Version: 0.18*@
+    * Version: 0.19*@
 
 @*Lägg till PagedList css objektet*@
 
@@ -17,9 +17,10 @@
 @*Med Html.BeginForm gör man det lätt att ladda om sig själv vid sökningar*@
 @using (Html.BeginForm("Prislista", "Produkt", FormMethod.Get))
 {
+    @Html.AntiForgeryToken()
     //DropDownList hantera val av kategori för visning
     //Html.TextBox är textboxen som tar emot söksträngen vid sökning
-    //Sök knappen kör val/sökningen (sökning och val kan användas tillsammans)    
+    //Sök knappen kör val/sökningen (sökning och val kan användas tillsammans)
     <p>
         Kategori: @Html.DropDownList("produktTyp", "All")
         Namn: @Html.TextBox("sökSträng", ViewBag.filterSträng as string) <br />

@@ -7,8 +7,10 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using LjusOchMiljoAB.Models;
+using LjusOchMiljoAB.Controllers;
 using PagedList.Mvc;
 using PagedList;
+using System.Threading.Tasks;
 
 namespace LjusOchMiljoAB.Controllers
 {
@@ -24,10 +26,14 @@ namespace LjusOchMiljoAB.Controllers
 	 * Details - produktsidan med alla data om en viss produkt (bild och ritningar
 	 * är fortfarande bara filnamn)
 	 * 
+	 * HanteraListan - sätter alla temporär variabel i vyn (ViewBag variabler)
+	 * och anropar de viktiga metoder i ProduktTjänst för sortering och filtrering
+	 * 
 	 * Grupp 2
 	 * Senast ändrat: 2014 11 09
-	 * Version: 0.18
+	 * Version: 0.19
 	 */
+	[Authorize]
 	public class ProduktController : Controller
 	{
 		//IProduktTjänst hanterar kommunikation med tjänsten som hanterar
@@ -60,10 +66,10 @@ namespace LjusOchMiljoAB.Controllers
 		 *		sida - vilken sida man är på (som bestäms är css PagedList)
 		 * ut: ActionResult (en vy eller resultat efter kodkörning)
 		 */
-		public ActionResult Index(string Ordning, string produktTyp, string sökSträng, string filterSträng, string filterProdukt, int? sida)
+		public async Task<ActionResult> Index(string ordning, string produktTyp, string sökSträng, string filterSträng, string filterProdukt, int? sida)
 		{
 			//Hämta IEnumerable produkter från tjänsten 
-			var produkter = HanteraListan(Ordning, produktTyp, sökSträng, filterSträng, filterProdukt, sida);
+			var produkter = await HanteraListan(ordning, produktTyp, sökSträng, filterSträng, filterProdukt, sida);
 
 			//"Index" i det här fallet är bara en medellande för testning.
 			//HämtaSida hämtar sidoinformation och skickar en IPagedList till vyn
@@ -71,13 +77,13 @@ namespace LjusOchMiljoAB.Controllers
 		}
 
 		/*
-		 * Details kunde omdöpas.  Det är bara den namn den fick från automatgenering.
+		 * Detaljer är bara den namn den fick från automatgenering.
 		 * Den visar detaljer på en särskild produkt (all data för en rad).
 		 * 
 		 * in: sträng id som representera en produkt id
 		 * ut: ActionResult (en vy eller resultat efter kodkörning)
 		 */
-		public ActionResult Details(string id)
+		public async Task<ActionResult> Detaljer(string id)
 		{
 			//Om inskickade id är null, visa en default HTTP sida för fel
 			if (id == null)
@@ -87,7 +93,7 @@ namespace LjusOchMiljoAB.Controllers
 			}
 
 			//Hämta information för rad som matcher id (som är nyckeln)
-			Produkt produkt = produktTjänst.HämtaProduktMedID(id);
+			Produkt produkt = await produktTjänst.HämtaProduktMedID(id);
 
 			//Om raden är null (id finns inte), visa en default HTTP sida för
 			//att resultatet hittades inte med medellande
@@ -99,7 +105,7 @@ namespace LjusOchMiljoAB.Controllers
 
 			//"Details" texten är bara för hjälp vid testning
 			//produkter skickas in för att visa för vald produkten i vyn
-			return View("Details", produkt);
+			return View("Detaljer", produkt);
 		}
 
 		/*
@@ -115,24 +121,44 @@ namespace LjusOchMiljoAB.Controllers
 		 *		sida - vilken sida man är på (som bestäms är css PagedList)
 		 * ut: ActionResult (en vy eller resultat efter kodkörning)
 		 */
-		public ActionResult Prislista(string Ordning, string produktTyp, string sökSträng, string filterSträng, string filterProdukt, int? sida)
+		public async Task<ActionResult> Prislista(string ordning, string produktTyp, string sökSträng, string filterSträng, string filterProdukt, int? sida)
 		{
 			//Hämta IEnumerable produkter från tjänsten 
-			var produkter = HanteraListan(Ordning, produktTyp, sökSträng, filterSträng, filterProdukt, sida);
+			var produkter = await HanteraListan(ordning, produktTyp, sökSträng, filterSträng, filterProdukt, sida);
 
 			//"Pristlista" i det här fallet är bara en medellande för testning.
 			//HämtaSida hämtar sidoinformation och skickar en IPagedList till vyn
 			return View("Prislista", produktTjänst.HämtaSida(produkter, sida));
 		}
 
-		public IEnumerable<Produkt> HanteraListan(string Ordning, string produktTyp, string sökSträng, string filterSträng, string filterProdukt, int? sida)
+		/*
+		 * HanteraListan sätter alla temporär variabel i vyn (ViewBag variabler)
+		 * och anropar de viktiga metoder i ProduktTjänst
+		 *		produktTjänst.HämtaProdukter() - hämta alla produkter i databasen
+		 *		produktTjänst.HämtaValLista(produkter, produktTyp) - hämta sträng
+		 *			listan av alla produkttyper för DropDownList med vald produktTyp
+		 *		produktTjänst.HämtaFiltreradProduktlista(produkter, produktTyp,
+		 *			sökSträng) - filtrera produktlistan efter val produkt typ och
+		 *			söksträngen
+		 *		produktTjänst.HämtaOrdnadProduktlista(produkter, ordning) - ordnar
+		 *			produktlistan efter ordning
+		 * 
+		 * in:	ordning - ordning typ (default "" är vid namn A-Ö/0-9)
+		 *		produktTyp - vald typ av produkt att visa (default alla)
+		 *		sökSträng - namn söksträng att filtrera med (defaul "")
+		 *		filterSträng - för att spara sökSträng mellan sidor
+		 *		filterProdukt - för att spara produktType mellan sidor
+		 *		sida - sida man kommer att visa som int
+		 * ut:	Task för async och en IEnumerable av Produkt objekt som är resultatet
+		 */
+		public async Task<IEnumerable<Produkt>> HanteraListan(string ordning, string produktTyp, string sökSträng, string filterSträng, string filterProdukt, int? sida)
 		{
 			//Spara ordningen just nu
-			ViewBag.OrdningNu = Ordning;
+			ViewBag.OrdningNu = ordning;
 
 			//Om ordningen skulle vara null, är det bara tom som är default med
 			//namnordning A->Ö
-			if (String.IsNullOrEmpty(Ordning)) Ordning = "";
+			if (String.IsNullOrEmpty(ordning)) ordning = "";
 
 			//default ordningar för första körningen
 			ViewBag.NamnOrdning = "";
@@ -157,7 +183,7 @@ namespace LjusOchMiljoAB.Controllers
 			ViewBag.filterProdukt = produktTyp;
 
 			//Hämta IEnumerable produkter från tjänsten 
-			var produkter = produktTjänst.HämtaProdukter();
+			var produkter = await produktTjänst.HämtaProdukter();
 
 			//Spara typ listan för att visa upp i valjboxen på formen
 			ViewBag.produktTyp = produktTjänst.HämtaValLista(produkter, produktTyp);
@@ -166,12 +192,12 @@ namespace LjusOchMiljoAB.Controllers
 			produkter = produktTjänst.HämtaFiltreradProduktlista(produkter, produktTyp, sökSträng);
 
 			//Ordna listan utefter Ordning strängen
-			produkter = produktTjänst.HämtaOrdnadProduktlista(produkter, Ordning);
+			produkter = produktTjänst.HämtaOrdnadProduktlista(produkter, ordning);
 
 			//Hantera ordningen.  Det går fram och tillbaka mot ordningen
 			//högst till lägst (eller Ö->A), och lägst till högst (eller A->Ö)
 			//Default är A->Ö för namn
-			switch (Ordning)
+			switch (ordning)
 			{
 				case "DesNamn_Ordning":
 					ViewBag.NamnOrdning = "";

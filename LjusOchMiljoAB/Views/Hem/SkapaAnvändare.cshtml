@@ -2,7 +2,7 @@
          
          Grupp 2
 	 * Senast ändrat: 2014 11 11
-	 * Version: 0.18*@
+	 * Version: 0.19*@
 
 @{
     ViewBag.Title = "SkapaAnvändare";
@@ -11,6 +11,7 @@
 <h2>Skapa Användare</h2>
 @using (Html.BeginForm())
 {
+    @Html.AntiForgeryToken()
     <div>
         <label for="användarnamn">Användarnamn</label>
         <input type="text" name="användarnamn" />

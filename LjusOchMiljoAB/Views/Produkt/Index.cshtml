@@ -1,6 +1,6 @@
 ﻿  @** Grupp 2
     * Senast ändrat: 2014 11 11
-    * Version: 0.18*@
+    * Version: 0.19*@
 
 @*Lägg till PagedList css objektet*@
 
@@ -17,6 +17,7 @@
 @*Med Html.BeginForm gör man det lätt att ladda om sig själv vid sökningar*@
 @using (Html.BeginForm("Index", "Produkt", FormMethod.Get))
 {
+    @Html.AntiForgeryToken()
     //DropDownList hantera val av kategori för visning
     //Html.TextBox är textboxen som tar emot söksträngen vid sökning
     //Sök knappen kör val/sökningen (sökning och val kan användas tillsammans)
@@ -33,11 +34,11 @@
     <tr>
         <th>
             @Html.ActionLink("ID", "Index",
-    new { Ordning = ViewBag.IDOrdning, produktTyp = ViewBag.ProduktType, sökSträng = ViewBag.SökSträng, filterSträng = ViewBag.filterSträng, filterProdukt = ViewBag.filterProdukt })
+    new { Ordning = ViewBag.IDOrdning, produktTyp = ViewBag.ProduktTyp, sökSträng = ViewBag.SökSträng, filterSträng = ViewBag.filterSträng, filterProdukt = ViewBag.filterProdukt })
         </th>
         <th>
             @Html.ActionLink("Namn", "Index",
-  new { Ordning = ViewBag.NamnOrdning, produktTyp = ViewBag.ProduktType, sökSträng = ViewBag.SökSträng, filterSträng = ViewBag.filterSträng, filterProdukt = ViewBag.filterProdukt })
+  new { Ordning = ViewBag.NamnOrdning, produktTyp = ViewBag.ProduktTyp, sökSträng = ViewBag.SökSträng, filterSträng = ViewBag.filterSträng, filterProdukt = ViewBag.filterProdukt })
         </th>
         <th>
             Bild
@@ -70,7 +71,7 @@
                 <img src=@img height="64" width="64">
             </td>
             <td>
-                @Html.ActionLink("Detailjer", "Details", new { id = item.ID })
+                @Html.ActionLink("Detaljer", "Detaljer", new { id = item.ID })
             </td>
         </tr>
 }

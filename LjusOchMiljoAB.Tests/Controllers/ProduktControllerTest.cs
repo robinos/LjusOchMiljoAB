@@ -59,20 +59,20 @@ namespace LjusOchMiljoAB.Tests.Controllers
 		}
 
 		/*
-		 * Skapa en ProduktService
+		 * Skapa en ProduktTjänst
 		 */
-		private static IProduktTjänst GetProduktService(IProduktRepository repository)
+		private static IProduktTjänst GetProduktTjänst(IProduktRepository repository)
 		{
-			ProduktTjänst produktService = new ProduktTjänst(repository);
-			return produktService;
+			ProduktTjänst produktTjänst = new ProduktTjänst(repository);
+			return produktTjänst;
 		}
 
 		/*
-		 * Skapa en ProdukterController och koppla det till MockHttpContext för tester
+		 * Skapa en ProduktController och koppla det till MockHttpContext för tester
 		 */
-		private static ProduktController GetProduktController(IProduktTjänst produktService)
+		private static ProduktController GetProduktController(IProduktTjänst produktTjänst)
 		{
-			ProduktController controller = new ProduktController(produktService);
+			ProduktController controller = new ProduktController(produktTjänst);
 
 			controller.ControllerContext = new ControllerContext()
 			{
@@ -104,6 +104,9 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			}
 		}
 
+		/*
+		 * Testar produktlistan med default ordning (namn A->Ö) och ingen filtrering.
+		 */
 		[TestMethod]
 		public void TestProduktControllerHanteraListanDefault()
 		{
@@ -116,7 +119,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			List<Produkt> produkter = new List<Produkt>();
 			produkter.Add(produkt1);
 			produkter.Add(produkt2);
-			ProduktController controller = GetProduktController(GetProduktService(repository));
+			ProduktController controller = GetProduktController(GetProduktTjänst(repository));
 
 			string Ordning = "";
 			string produktTyp = "";
@@ -126,7 +129,11 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			int sida = 1;
 
 			//Act
-			List<Produkt> visadeProduktList = new List<Produkt>(controller.HanteraListan(Ordning, produktTyp, sökSträng, filterSträng, filterProdukt, sida));
+			//produktEnumer är det som kommer tillbaka från HanteraListan metoden
+			//i ProduktController
+			IEnumerable<Produkt> produktEnumer = controller.HanteraListan(Ordning, produktTyp, sökSträng, filterSträng, filterProdukt, sida).Result;
+			//En list kan ta en IEnumerable som konstruktör
+			List<Produkt> visadeProduktList = new List<Produkt>(produktEnumer);
 
 			bool sammaStorlek = (produkter.Count == visadeProduktList.Count);
 
@@ -135,6 +142,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 
 			if (sammaStorlek)
 			{
+				//Testa att lika produkter finns i samma platser i listan
 				for (int i = 0; i < visadeProduktList.Count; i++)
 				{
 					Assert.IsTrue(ÄrProdukterLika(produkter[i], visadeProduktList[i]));
@@ -142,6 +150,11 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			}
 		}
 
+		/*
+		 * Testar produktlistan med default ordning (namn A->Ö) och filtrering på typ
+		 * "inomhus". Där finns fler än 5 inomhus produkter så man kan sätta det på
+		 * att visa sida 2.
+		 */
 		[TestMethod]
 		public void TestProduktControllerHanteraListanMedOrdningFilterSida()
 		{
@@ -162,6 +175,8 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			repository.Add(produkt5);
 			repository.Add(produkt6);
 			repository.Add(produkt7);
+			//Produkt2 innan 1 är 'rätt' ordning för listan man borde få ut som
+			//blir listan produkter (för jämförelse)
 			List<Produkt> produkter = new List<Produkt>();
 			produkter.Add(produkt2);
 			produkter.Add(produkt1);
@@ -169,7 +184,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			produkter.Add(produkt5);
 			produkter.Add(produkt6);
 			produkter.Add(produkt7);
-			ProduktController controller = GetProduktController(GetProduktService(repository));
+			ProduktController controller = GetProduktController(GetProduktTjänst(repository));
 
 			string Ordning = "";
 			string produktTyp = "inomhus";
@@ -179,7 +194,11 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			int sida = 2;
 
 			//Act
-			List<Produkt> visadeProduktList = new List<Produkt>(controller.HanteraListan(Ordning, produktTyp, sökSträng, filterSträng, filterProdukt, sida));
+			//produktEnumer är det som kommer tillbaka från HanteraListan metoden
+			//i ProduktController
+			IEnumerable<Produkt> produktEnumer = controller.HanteraListan(Ordning, produktTyp, sökSträng, filterSträng, filterProdukt, sida).Result;
+			//En list kan ta en IEnumerable som konstruktör			
+			List<Produkt> visadeProduktList = new List<Produkt>(produktEnumer);
 
 			bool sammaStorlek = (produkter.Count == visadeProduktList.Count);
 
@@ -188,6 +207,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 
 			if (sammaStorlek)
 			{
+				//Testa att lika produkter finns i samma platser i listan
 				for (int i = 0; i < visadeProduktList.Count; i++)
 				{
 					Assert.IsTrue(ÄrProdukterLika(produkter[i], visadeProduktList[i]));
@@ -202,33 +222,33 @@ namespace LjusOchMiljoAB.Tests.Controllers
 		public void TestProduktControllerIndexNotNull()
 		{
 			// Arrange
-			ProduktController controller = GetProduktController(GetProduktService(new IMinnetProduktRepository()));
+			ProduktController controller = GetProduktController(GetProduktTjänst(new IMinnetProduktRepository()));
 
 			// Act
-			ViewResult result = controller.Index("Namn_Ordning", "", "", "", "", 1) as ViewResult;
+			ViewResult result = controller.Index("Namn_Ordning", "", "", "", "", 1).Result as ViewResult;
 
 			// Assert
 			Assert.IsNotNull(result);
 		}
 
 		/*
-		 * ProdukterIndexHämtarVyn testar att sidan hämtar vyn mha text som
-		 * skickas från ProdukterController för testning.
+		 * ProduktIndexHämtarVyn testar att sidan hämtar vyn mha text som
+		 * skickas från ProduktController för testning.
 		 */
 		[TestMethod]
 		public void TestProduktControllerIndexHämtarVyn()
 		{
 			// Arrange
-			ProduktController controller = GetProduktController(GetProduktService(new IMinnetProduktRepository()));
+			ProduktController controller = GetProduktController(GetProduktTjänst(new IMinnetProduktRepository()));
 			// Act
-			ViewResult result = controller.Index("Namn_Ordning", "", "", "", "", 1) as ViewResult;
+			ViewResult result = controller.Index("Namn_Ordning", "", "", "", "", 1).Result as ViewResult;
 			// Assert
 			Assert.AreEqual("Index", result.ViewName);
 		}
 
 		/*
-		 * ProdukterIndexHämtarAllaProdukterFrånRepository testar att vyn för
-		 * alla produkter verkligen visas alla produkter som finns.
+		 * TestProduktControllerIndexHämtarAllaProdukterFrånRepository testar att
+		 * vyn för alla produkter verkligen visar alla produkter som finns i databasen.
 		 */
 		[TestMethod]
 		public void TestProduktControllerIndexHämtarAllaProdukterFrånRepository()
@@ -239,10 +259,10 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			IMinnetProduktRepository repository = new IMinnetProduktRepository();
 			repository.Add(produkt1);
 			repository.Add(produkt2);
-			ProduktController controller = GetProduktController(GetProduktService(repository));
+			ProduktController controller = GetProduktController(GetProduktTjänst(repository));
 
 			// Act
-			ViewResult result = controller.Index("Namn_Ordning", "", "", "", "", 1) as ViewResult;
+			ViewResult result = controller.Index("Namn_Ordning", "", "", "", "", 1).Result as ViewResult;
 
 			// Assert
 			var model = (IEnumerable<Produkt>)result.ViewData.Model;
@@ -251,7 +271,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 		}
 
 		/*
-		 * ProdukterDetailsNotNull testar att sidan är inte null.
+		 * TestProduktControllerDetailsNotNull testar att sidan är inte null.
 		 */
 		[TestMethod]
 		public void TestProduktControllerDetailsNotNull()
@@ -260,18 +280,18 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			Produkt produkt1 = HämtaProduktMedID("00000"); 
 			IMinnetProduktRepository repository = new IMinnetProduktRepository();
 			repository.Add(produkt1);
-			ProduktController controller = GetProduktController(GetProduktService(repository));
+			ProduktController controller = GetProduktController(GetProduktTjänst(repository));
 
 			// Act
-			ViewResult result = controller.Details("00000") as ViewResult;
+			ViewResult result = controller.Detaljer("00000").Result as ViewResult;
 
 			// Assert
 			Assert.IsNotNull(result);
 		}
 
 		/*
-		 * ProdukterDetailsHämtarVyn testar att sidan hämtar vyn mha text som
-		 * skickas från ProdukterController för testning.
+		 * TestProduktControllerDetailsHämtarVyn testar att sidan hämtar vyn mha text
+		 * som skickas från ProdukterController för testning.
 		 */
 		[TestMethod]
 		public void TestProduktControllerDetailsHämtarVyn()
@@ -280,17 +300,17 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			Produkt produkt1 = HämtaProduktMedID("00000");
 			IMinnetProduktRepository repository = new IMinnetProduktRepository();
 			repository.Add(produkt1);
-			ProduktController controller = GetProduktController(GetProduktService(repository));
+			ProduktController controller = GetProduktController(GetProduktTjänst(repository));
 
 			// Act
-			ViewResult result = controller.Details("00000") as ViewResult;
+			ViewResult result = controller.Detaljer("00000").Result as ViewResult;
 
 			// Assert
 			Assert.AreEqual("Details", result.ViewName);
 		}
 
 		/*
-		 * ProdukterDetailsHämtarProdukt00000 testar att just produkter 00000
+		 * ProduktDetailsHämtarProdukt00000 testar att just produkter 00000
 		 * hittas och visas och inte någon annan produkt.
 		 */
 		[TestMethod]
@@ -302,10 +322,10 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			IMinnetProduktRepository repository = new IMinnetProduktRepository();
 			repository.Add(produkt1);
 			repository.Add(produkt2);
-			ProduktController controller = GetProduktController(GetProduktService(repository));
+			ProduktController controller = GetProduktController(GetProduktTjänst(repository));
 
 			// Act
-			ViewResult result = controller.Details("00000") as ViewResult;
+			ViewResult result = controller.Detaljer("00000").Result as ViewResult;
 
 			// Assert
 			var model = result.ViewData.Model;
@@ -314,8 +334,9 @@ namespace LjusOchMiljoAB.Tests.Controllers
 		}
 
 		/*
-		 * ProdukterDetailsHämtarInteObefintligProdukt testar att details hämtar
-		 * INTE en produkt som inte finns.
+		 * TestProduktControllerDetailsHämtarInteObefintligProdukt testar att details
+		 * hämtar INTE en produkt som inte finns.
+		 * Error result blev inte väntad...behövs mer testning.
 		 */
 		[TestMethod]
 		public void TestProduktControllerDetailsHämtarInteObefintligProdukt()
@@ -324,10 +345,10 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			Produkt produkt1 = HämtaProduktMedID("00000");
 			IMinnetProduktRepository repository = new IMinnetProduktRepository();
 			repository.Add(produkt1);
-			ProduktController controller = GetProduktController(GetProduktService(repository));
+			ProduktController controller = GetProduktController(GetProduktTjänst(repository));
 
 			// Act
-			ViewResult result = controller.Details("33333") as ViewResult;
+			ViewResult result = controller.Detaljer("33333").Result as ViewResult;
 
 			// Assert
 			Assert.IsNull(result);
@@ -336,41 +357,41 @@ namespace LjusOchMiljoAB.Tests.Controllers
 		}
 
 		/*
-		 * ProdukterPrislistaNotNull testar att sidan är inte null.
+		 * TestProduktControllerPrislistaNotNull testar att sidan är inte null.
 		 */
 		[TestMethod]
 		public void TestProduktControllerPrislistaNotNull()
 		{
 			// Arrange
-			ProduktController controller = GetProduktController(GetProduktService(new IMinnetProduktRepository()));
+			ProduktController controller = GetProduktController(GetProduktTjänst(new IMinnetProduktRepository()));
 
 			// Act
-			ViewResult result = controller.Prislista("Namn_Ordning", "", "", "", "", 1) as ViewResult;
+			ViewResult result = controller.Prislista("Namn_Ordning", "", "", "", "", 1).Result as ViewResult;
 
 			// Assert
 			Assert.IsNotNull(result);
 		}
 
 		/*
-		 * ProdukterPrislistaHämtarVyn testar att sidan hämtar vyn mha text som
-		 * skickas från ProdukterController för testning.
+		 * TestProduktControllerPrislistaHämtarVyn testar att sidan hämtar vyn mha text
+		 * som skickas från ProdukterController för testning.
 		 */
 		[TestMethod]
 		public void TestProduktControllerPrislistaHämtarVyn()
 		{
 			// Arrange
-			ProduktController controller = GetProduktController(GetProduktService(new IMinnetProduktRepository()));
+			ProduktController controller = GetProduktController(GetProduktTjänst(new IMinnetProduktRepository()));
 
 			// Act
-			ViewResult result = controller.Prislista("Namn_Ordning", "", "", "", "", 1) as ViewResult;
+			ViewResult result = controller.Prislista("Namn_Ordning", "", "", "", "", 1).Result as ViewResult;
 
 			// Assert
 			Assert.AreEqual("Prislista", result.ViewName);
 		}
 
 		/*
-		 * ProdukterPrislistaHämtarAllaProdukterFrånRepository testar att vyn för
-		 * priser på alla produkter verkligen visas alla produkter som finns.
+		 * TestProduktControllerPrislistaHämtarAllaProdukterFrånRepository testar att
+		 * vyn för priser på alla produkter verkligen visas alla produkter som finns.
 		 */
 		[TestMethod]
 		public void TestProduktControllerPrislistaHämtarAllaProdukterFrånRepository()
@@ -381,10 +402,10 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			IMinnetProduktRepository repository = new IMinnetProduktRepository();
 			repository.Add(produkt1);
 			repository.Add(produkt2);
-			ProduktController controller = GetProduktController(GetProduktService(repository));
+			ProduktController controller = GetProduktController(GetProduktTjänst(repository));
 
 			// Act
-			ViewResult result = controller.Prislista("Namn_Ordning", "", "", "", "", 1) as ViewResult;
+			ViewResult result = controller.Prislista("Namn_Ordning", "", "", "", "", 1).Result as ViewResult;
 
 			// Assert
 			var model = (IEnumerable<Produkt>)result.ViewData.Model;
@@ -392,6 +413,11 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			CollectionAssert.Contains(model.ToList(), produkt2);
 		}
 
+		/*
+		 * ÄrProdukterLika är inte en test.  Det är en hjälpmetod för att jämföra
+		 * produkter då Produkt klassen är autogenererad och man vill helst inte
+		 * ändra den för att skriva en Equals metod.
+		 */
 		private bool ÄrProdukterLika(Produkt produkt1, Produkt produkt2)
 		{
 			bool result = false;

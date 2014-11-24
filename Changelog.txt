@@ -1,3 +1,37 @@
+Version 0.19
+- Readme uppdaterad
+- Många fler kommentar där de saknades tidigare!
+- ProduktRepository nu använder sig av async metoder för kontakt med databasen vilket
+	inte borde göra något för snabbhet i vårt fall men kunde om det bytts mot en databas
+	i molnet eller något tjänst
+- Även ProduktTjänst använder sig av en async metod för kontakt med ProduktRepository
+- Fixade till för testning
+	- FormsAuthentication med kakor hanteras av AnvändareTjänst nu så Inloggning och
+	Utloggning kan testas i HemControllerTest
+	- För ovan, Inloggning och Utloggning lades till IAnvändareTjänst
+	- Utlåste (kod i HemController, vy i Views->Hem) används vid 5 misslyckades
+	inloggningsförsök istället för Views->Shared->Locked
+	- IMinnetAnvändareTjänst finns i LjusOchMiljoAB.Test -> Controllers som en test
+	version av AnvändareTjänst då Unit Testar gillar inte inloggningskakor
+	- MvcContrib.TestHelper paketet lades till i NuGet.  Den använder Rhino som en
+	en automock - i andra ord den autogenerera mock kod så man behöver inte det i
+	egen kod fast arbete med det har bara påbörjats i HemControllerTest
+- Lagd till unit testar
+	- i HemControllerTest testas det nu att man skickas vidare till rätt sidor efter
+	inloggning, utloggning och utlåsning
+	- i AnvänderTjänstTest testas logiken för bekräftelse av lösenord inklusive
+	utlåsning efter 5 mislyckade försök
+	
+
+Version 0.18a
+- InloggningsModell nu finns i Models mappen
+- inmatade strängar nu rensas av kod/annat innan användning
+- För snabbhet och bättre kompatibilitet används nu async metoder för
+	inloggningssystemet och kontakt med databas
+- [Authorize] används istället för Redirect för att kicka folk tillbaka till
+	inloggning vid utloggning i privata områden
+- Prislista och Produkter nu finns som meny val
+
 Version 0.18
 - Bilder nu finns i produktlistan med en bild för skruvor och annars default bilden
 	De finns i Content->Bilder

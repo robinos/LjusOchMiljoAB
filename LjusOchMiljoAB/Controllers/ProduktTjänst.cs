@@ -6,15 +6,18 @@ using System.Web.Mvc;
 using LjusOchMiljoAB.Models;
 using PagedList.Mvc;
 using PagedList;
+using System.Threading.Tasks;
 
 namespace LjusOchMiljoAB.Controllers
 {
 	/*
-	 * ProduktService
+	 * ProduktService är tjänsten som hantera kontakt med ProduktRepository
+	 * för att tar fram listan av produkter eller sök en produkt baserad på
+	 * ID.
 	 * 
 	 * Grupp 2
 	 * Senast ändrat: 2014 11 11
-	 * Version: 0.18
+	 * Version: 0.19
 	 */
 	public class ProduktTjänst : IProduktTjänst
 	{
@@ -34,13 +37,28 @@ namespace LjusOchMiljoAB.Controllers
 			this.repository = repository;
 		}
 
-		public IEnumerable<Produkt> HämtaProdukter()
+		/*
+		 * HämtaProdukter får en lista produkter från respository:n och returnerar
+		 * listan.
+		 * 
+		 * ut: Task för await och en IEnumerable av Produkt objekt
+		 */
+		public async Task<IEnumerable<Produkt>> HämtaProdukter()
 		{
-			IEnumerable<Produkt> produkter = repository.HämtaProduktlista();
+			IEnumerable<Produkt> produkter = await repository.HämtaProduktlista();
 
 			return produkter;
 		}
 
+		/*
+		 * HämtaValLista hämtar listan av alla Typ namn som finns av produkter med
+		 * en vald produkt typ (som kan vara "" vilket blir default ('All'))
+		 * 
+		 * in:	produkter: en IEnumerable av produkt objekt
+		 *		produktTyp: en sträng som ska innehålla en Typ av produkt
+		 * ut:	en SelectList som innehåller namn av produkt typer med produktTyp
+		 *		som vald produkt
+		 */
 		public SelectList HämtaValLista(IEnumerable<Produkt> produkter, string produktTyp)
 		{
 			//En lista för att hålla typer för filtrering
@@ -57,6 +75,16 @@ namespace LjusOchMiljoAB.Controllers
 			return new SelectList(TypLst, produktTyp);
 		}
 
+		/*
+		 * HämtaFiltreradProduktlista filtrerar angiven IEnumerable av produkter
+		 * efter Typ och en sökning på Namn.
+		 * 
+		 * in:	produkter: en IEnumerable av produkt objekt
+		 *		produktTyp: en sträng som ska innehålla en Typ av produkt
+		 *		sökSträng: en sträng som ska innehålla en söksträng efter namn på
+		 *			en produkt
+		 * ut:	en IEnumerable av Produkt objekt
+		 */
 		public IEnumerable<Produkt> HämtaFiltreradProduktlista(IEnumerable<Produkt> produkter, string produktTyp, string sökSträng)
 		{
 			//Gör en lista med alla produkter
@@ -70,7 +98,7 @@ namespace LjusOchMiljoAB.Controllers
 				produkter = produkter.Where(s => s.Namn.ToUpper().Contains(sökSträng.ToUpper()));
 			}
 
-			//Om där finns en vald produktyp (där All är en speciellfall), filtreras
+			//Om där finns en vald produktyp (där All är en default fall), filtreras
 			//produkter efter vald typ
 			if (!string.IsNullOrEmpty(produktTyp))
 			{
@@ -80,12 +108,20 @@ namespace LjusOchMiljoAB.Controllers
 			return produkter;
 		}
 
-		public IEnumerable<Produkt> HämtaOrdnadProduktlista(IEnumerable<Produkt> produkter, string Ordning)
+		/*
+		 * HämtaOrdnadProduktlista ändra ordning av angiven IEnumerable av Produkt objekt
+		 * baserad på en sträng som representera ordningstypen.  Default är A->Ö för Namn.
+		 * 
+		 * in:	produkter: en IEnumerable av produkt objekt
+		 *		ordning: en sträng som ska representera en ordningstyp
+		 * ut:	en IEnumerable av Produkt objekt
+		 */
+		public IEnumerable<Produkt> HämtaOrdnadProduktlista(IEnumerable<Produkt> produkter, string ordning)
 		{
 			//Hantera ordningen.  Det går fram och tillbaka mot ordningen
 			//högst till lägst (eller Ö->A), och lägst till högst (eller A->Ö)
 			//Default är A->Ö för namn
-			switch (Ordning)
+			switch (ordning)
 			{
 				case "DesNamn_Ordning":
 					produkter = produkter.OrderByDescending(n => n.Namn);
@@ -116,30 +152,46 @@ namespace LjusOchMiljoAB.Controllers
 			return produkter;
 		}
 
-		//ToPagedList är en speciell tillägg till IEnumerables bland annat
-		//mha 'using PagedList och PagedList.Mvc'.  Den kopplar till en
-		//css model (ser PagedList.css under Content mappen) som används i
-		//vyn.  Den tar emot sin egen räkning på sidor, och ovan definition
-		//av hur många element att visa åt gången.
+
+		/*
+		 * ToPagedList är en speciell tillägg till IEnumerables bland annat
+		 * mha 'using PagedList och PagedList.Mvc'.  Den kopplar till en
+		 * css model (ser PagedList.css under Content mappen) som används i
+		 * vyn.  Den tar emot sin egen räkning på sidor och en definition
+		 * av hur många element att visa åt gången (definerad som instansvariabeln
+		 * antalProdukter i ProduktTjänst).
+		 * 
+		 * in:	produkter: en IEnumerable av produkt objekt
+		 *		sida: en int som representera nuvarande sidonummer
+		 * ut:	en IPagedList objekt som är en speciell IEnumerable eller Lista med
+		 *			egendefinerade sidor
+		 */
 		public IPagedList HämtaSida(IEnumerable<Produkt> produkter, int? sida)
 		{
-			//En variabel som PagedList sätter själv efter vilken sida man är på 
+			//En variabel som PagedList sätter själv efter vilken sida man är på eller 1 
 			int antalSidor = (sida ?? 1);
 
 			return produkter.ToPagedList(antalSidor, antalProdukter);
 		}
 
-		public Produkt HämtaProduktMedID(string id)
+		/*
+		 * HämtaProduktMedID hämtar en produkt från repository:n som har samma id som
+		 * den angiven.
+		 * 
+		 * in:	id: en sträng som ska innehålla en unik id för en produkt
+		 * ut:	Task för await och en Produkt objekt
+		 */
+		public async Task<Produkt> HämtaProduktMedID(string id)
 		{
-			return (repository.HämtaProduktMedID(id));
+			return (await repository.HämtaProduktMedID(id));
 		}
 
 		/*
 		 * Förstör finns för att fria upp minnet när man avslutar.
 		 */
-		public void Förstör()
+		public async Task Förstör()
 		{
-			repository.Förstör();
+			await repository.Förstör();
 		}
 	}
 }

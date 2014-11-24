@@ -10,12 +10,15 @@ namespace LjusOchMiljoAB.Tests.Models
 	/*
 	 * IMinnetProduktRepository implementerar IProdukterRepository.  Den används
 	 * som 'mock databas' eller lösas databas vid testning.  I att den implementerar
-	 * IProdukterRepository så kan en ProdukterController skapas som använder den
+	 * IProdukterRepository så kan en ProduktTjänst skapas som använder den
 	 * som databas kontakt.
 	 * 
+	 * Förhoppningsvis behövs det här inte alls om man kan förstå
+	 * MvcContrib.TestHelper bibliotek lite bättre.
+	 *
 	 * Grupp 2
 	 * Senast ändrat: 2014 11 04
-	 * Version: 0.17
+	 * Version: 0.19
 	 */
 	class IMinnetProduktRepository : IProduktRepository
 	{
@@ -61,8 +64,9 @@ namespace LjusOchMiljoAB.Tests.Models
 		 * in: strängen id som en ID av en produkt
 		 * ut: en produkt av objekttypen Produkt med given ID (eller default)
 		 */
-		public Produkt HämtaProduktMedID(string id)
+		public async Task<Produkt> HämtaProduktMedID(string id)
 		{
+			await Task.Delay(0);
             return db.FirstOrDefault(d => d.ID == id);
         }
 
@@ -95,10 +99,12 @@ namespace LjusOchMiljoAB.Tests.Models
 		/*
 		 * HämtaProduktlista returnerar alla produkter.
 		 * 
-		 * ut: IEnumerable<Produkter> innehåller alla produkter
+		 * ut: Task (för en await) och en IEnumerable<Produkter> som innehåller
+		 * alla produkter
 		 */
-		public IEnumerable<Produkt> HämtaProduktlista()
+		public async Task<IEnumerable<Produkt>> HämtaProduktlista()
 		{
+			await Task.Delay(0);
             return db.ToList();
         }
 
@@ -108,9 +114,9 @@ namespace LjusOchMiljoAB.Tests.Models
 		 * 
 		 * in: strängen id som en ID av en produkt
 		 */
-		public void TaBortProdukt(string id)
+		public async void TaBortProdukt(string id)
 		{
-			db.Remove(HämtaProduktMedID(id));
+			db.Remove(await HämtaProduktMedID(id));
         }
 
 		/*
@@ -128,9 +134,12 @@ namespace LjusOchMiljoAB.Tests.Models
 		/*
 		 * Förstör databasen för att fri upp minne (i det här fallet är databasen
 		 * listan db).
+		 * 
+		 * ut: Task för en await (behövs för async metoder)
 		 */
-		public void Förstör()
+		public async Task Förstör()
 		{
+			await Task.Delay(0);
 			db = null;
 		}
 	}

@@ -40,12 +40,30 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AntiXssLibrary">
+      <HintPath>..\packages\AntiXSS.4.3.0\lib\net40\AntiXssLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlSanitizationLibrary">
+      <HintPath>..\packages\AntiXSS.4.3.0\lib\net40\HtmlSanitizationLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Web.Mvc">
+      <HintPath>..\packages\Mvc2Futures.2.0.50217.0\lib\Microsoft.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="MvcContrib">
+      <HintPath>..\packages\MvcContrib.2.0.95.0\lib\MvcContrib.dll</HintPath>
+    </Reference>
+    <Reference Include="MvcContrib.TestHelper">
+      <HintPath>..\packages\MvcContrib.TestHelper.2.0.95.0\lib\net\MvcContrib.TestHelper.dll</HintPath>
+    </Reference>
     <Reference Include="PagedList">
       <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
     </Reference>
     <Reference Include="PagedList.Mvc">
       <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.Mocks">
+      <HintPath>..\packages\RhinoMocks.3.6\lib\Rhino.Mocks.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -181,6 +199,7 @@
       <DependentUpon>LOMDB_Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AnvändareRepository.cs" />
+    <Compile Include="Models\InloggningModell.cs" />
     <Compile Include="Models\ProduktRepository.cs" />
     <Compile Include="Models\IAnvändareRepository.cs" />
     <Compile Include="Models\IAnvändareTjänst.cs" />
@@ -292,11 +311,13 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Produkt\Details.cshtml" />
+    <Content Include="Views\Produkt\Details2.cshtml" />
     <Content Include="Views\Produkt\Index.cshtml" />
     <Content Include="Views\Produkt\Prislista.cshtml" />
     <Content Include="Views\Hem\Inloggning.cshtml" />
     <Content Include="Views\Hem\SkapaAnvändare.cshtml" />
+    <Content Include="Views\Hem\Utlåste.cshtml" />
+    <Content Include="Views\Produkt\Detaljer.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
