@@ -1,109 +1,72 @@
-﻿@** Grupp 2
-    * Senast ändrat: 2014 11 11
-    * Version: 0.18*@
-
-@model LjusOchMiljoAB.Models.Produkt
-
-@{
-    string path = Html.DisplayFor(model => model.Bildfilnamn).ToString();
-    string imgpath = @"/Content/Bilder/default.png";
-    if (File.Exists(HttpRuntime.AppDomainAppPath + @"Content/Bilder/" + path + ".png"))
-    {
-        imgpath = @"/Content/Bilder/" + path + ".png";
-    }
-}
+﻿@model LjusOchMiljoAB.Models.Produkt
 
 @{
     ViewBag.Title = "Detaljer";
 }
 
-<h2>Detaljer</h2>
+@{
+    string img = @"/Content/Bilder/default.png";
+    string Ritningimg = @"/Content/Bilder/DefaultRitning.png";
+    if (File.Exists(HttpRuntime.AppDomainAppPath + @"Content/Bilder/" + @Html.DisplayFor(model => model.Bildfilnamn) + ".png"))
+    {
+        img = @"/Content/Bilder/" + @Html.DisplayFor(model => model.Bildfilnamn) + ".png";
+    }
 
-@*Visar all information om en produkt*@
-<div>
-    <h4>Produkt</h4>
+    if (File.Exists(HttpRuntime.AppDomainAppPath + @"Content/Bilder/" + @Html.DisplayFor(model => model.Ritningsfilnamn) + ".png"))
+    {
+        Ritningimg = @"/Content/Bilder/" + @Html.DisplayFor(model => model.Ritningsfilnamn) + ".png";
+    }
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div>
+        <h1 style="text-align:center">@Html.DisplayFor(model => model.Namn)</h1>
+    </div>
+    <br />
     <hr />
+    <div>
+        <table>
+            <tr>
+                <td>
+                    <div style="width:256px;height:512px">
+                        <img src=@img height="256" width="256">
+                        <img src=@Ritningimg height="256" width="256">
+                    </div>
+                </td>
+                <td>&nbsp;</td>
+                <td style="padding-left:20px;vertical-align: top; text-align:left;">
+                    <b>@Html.DisplayNameFor(model => model.Beskrivning):</b><br />@Html.DisplayFor(model => model.Beskrivning)
+                    <br />
+                    <hr />
 
-    <img src=@imgpath height="128" width="128">
+                    <b>@Html.DisplayNameFor(model => model.Montering):</b><br />@Html.DisplayFor(model => model.Montering)
+                    <br />
+                    <hr />
 
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Namn)
-        </dt>
+                    <span>
+                        <b>@Html.DisplayNameFor(model => model.Pris):</b>&nbsp;@Html.DisplayFor(model => model.Pris)
+                    </span>
+                    <br />
 
-        <dd>
-            @Html.DisplayFor(model => model.Namn)
-        </dd>
+                    <span>
+                        <b>Produkt @Html.DisplayNameFor(model => model.ID):</b>&nbsp;@Html.DisplayFor(model => model.ID)
+                    </span>
+                    <br />
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Pris)
-        </dt>
+                    <span>
+                        <b>Produkt @Html.DisplayNameFor(model => model.Typ):</b>&nbsp;@Html.DisplayFor(model => model.Typ)
+                    </span>
+                    <br />
 
-        <dd>
-            @Html.DisplayFor(model => model.Pris)
-        </dd>
+                    <span>
+                        <b>Produkt @Html.DisplayNameFor(model => model.Farg):</b>&nbsp;@Html.DisplayFor(model => model.Farg)
+                    </span>
+                    <br />
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Typ)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Typ)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Farg)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Farg)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Bildfilnamn)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Bildfilnamn)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Ritningsfilnamn)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Ritningsfilnamn)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.RefID)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.RefID)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Beskrivning)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Beskrivning)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Montering)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Montering)
-        </dd>
-    </dl>
-
-</div>
-
-<p>
-    @*Problematiskt så går det här tillbaka till produktlistan även om man kommer
-    här från prislistan, så jag tog bort det (tillbaka knappen fungerar ändå).*@
-    @*@Html.ActionLink("Back to List", "Index")*@
-</p>
+                </td>
+            </tr>
+        </table>
+    </div>
+   }
