@@ -61,6 +61,7 @@ namespace LjusOchMiljoAB.Controllers
 			{
 				//Ändra Anvandare objektet så låste blir sann
 				användare.Laste = true;
+				användare.Raknare += 1;
 				await repository.RedigeraAnvändare(användare);
 				//Returnera status Låste
 				return Status.Låste;
