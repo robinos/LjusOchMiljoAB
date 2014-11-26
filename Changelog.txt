@@ -1,4 +1,4 @@
-Version 0.19
+Version 0.19x
 - Readme uppdaterad
 - Många fler kommentar där de saknades tidigare!
 - ProduktRepository nu använder sig av async metoder för kontakt med databasen vilket
