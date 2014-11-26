@@ -235,6 +235,10 @@
     </Content>
     <Content Include="Content\Bilder\90562skruvor.png" />
     <Content Include="Content\Bilder\default.png" />
+    <Content Include="Content\Bilder\skiftnyckel.png" />
+    <Content Include="Content\Bilder\Skruvar.png" />
+    <Content Include="Content\Bilder\takljus.png" />
+    <Content Include="Content\Bilder\utomhus.png" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\PagedList.css" />
