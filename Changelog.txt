@@ -20,7 +20,7 @@ Version 0.19
 	- i HemControllerTest testas det nu att man skickas vidare till rätt sidor efter
 	inloggning, utloggning och utlåsning
 	- i AnvänderTjänstTest testas logiken för bekräftelse av lösenord inklusive
-	utlåsning efter 5 mislyckade försök
+	utlåsning efter 5 mislyckade försök 
 	
 
 Version 0.18a
