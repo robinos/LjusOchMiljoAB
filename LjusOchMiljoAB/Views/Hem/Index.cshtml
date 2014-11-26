@@ -11,6 +11,13 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
+
+    <p>Presentera företaget Ljus och Miljö AB här.</p>
+
+    
+    
+    //Allt här inom User.Identity.IsAuthenticated borde flyttas till kategorisidan när den är klar
+    //Den borde inte var här.
 <div>
 @if (User.Identity.IsAuthenticated)
 {

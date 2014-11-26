@@ -1,4 +1,10 @@
-Version 0.19x
+Version 0.20
+- Detaljsidan är nu klar med all information, bilder och ritningar (bild där ritningar ska vara)
+- Riktigt bilder nu finns med för vissa produkter!
+- Fixade så programmet fortsätter att räkna misslyckade inloggningar även efter man är utlåste
+
+
+Version 0.19
 - Readme uppdaterad
 - Många fler kommentar där de saknades tidigare!
 - ProduktRepository nu använder sig av async metoder för kontakt med databasen vilket
