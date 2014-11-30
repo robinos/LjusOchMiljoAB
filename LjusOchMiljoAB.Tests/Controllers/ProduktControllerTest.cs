@@ -306,7 +306,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			ViewResult result = controller.Detaljer("00000").Result as ViewResult;
 
 			// Assert
-			Assert.AreEqual("Details", result.ViewName);
+			Assert.AreEqual("Detaljer", result.ViewName);
 		}
 
 		/*
