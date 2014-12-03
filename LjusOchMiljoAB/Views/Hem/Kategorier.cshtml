@@ -1,0 +1,28 @@
+﻿	 @** Grupp 2
+	 * Senast ändrat: 2014 11 11
+	 * Version: 0.19*@
+
+@{
+    ViewBag.Title = "Kategorier";
+}
+
+<h2>Kategorier</h2>
+
+@using (Html.BeginForm())
+{
+    
+    <p>Här är våra kategorier!</p>
+    
+<div>
+@*Länkar till kategorier i textform - kallar Index metoden i ProdukterController för
+    att visa med filtrering för typ - vi vill kanske ha det här i en egen vy
+    istället*@
+    <div>
+        <br />
+        @Html.ActionLink("Inomhus", "Index", "Produkt", new { Ordning = "", produktTyp = "inomhus", sökSträng = "", filterSträng = "", filterProdukt = "inomhus", sida = 1 }, null)
+        @Html.ActionLink("Utomhus", "Index", "Produkt", new { Ordning = "", produktTyp = "utomhus", sökSträng = "", filterSträng = "", filterProdukt = "utomhus", sida = 1 }, null)
+        @Html.ActionLink("Tillbehör", "Index", "Produkt", new { Ordning = "", produktTyp = "tillbehör", sökSträng = "", filterSträng = "", filterProdukt = "tillbehör", sida = 1 }, null)
+        <br />
+    </div>
+</div>
+}
