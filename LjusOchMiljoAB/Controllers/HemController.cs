@@ -134,7 +134,7 @@ namespace LjusOchMiljoAB.Controllers
 					return RedirectToAction("Kategorier", "Hem");
 				//Vid 5+ misslyckade inloggningar skickas användare till Utlåste sidan
 				case Status.Låste:
-					return RedirectToAction("Utlåste", "Hem");
+					return RedirectToAction("Utlåst", "Hem");
 				//Vid Misslyckades som är också default skickas man tillbaka till
 				//inloggnings formen
 				case Status.Misslyckades:
