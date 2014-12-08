@@ -151,7 +151,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 		 * AssertViewRendered kommer från MvcContrib.TestHelper
 		 */
 		[TestMethod]
-		public void TestHemInloggningLyckadesReturneraTillIndexView()
+		public void TestHemInloggningLyckadesReturneraTillKategorierView()
 		{
 			// Arrange
 			IMinnetAnvändareTjänst användareTjänst = new IMinnetAnvändareTjänst();
@@ -167,7 +167,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			var result = controller.Inloggning(modell, returnUrl).Result;
 
 			// Assert
-			result.AssertActionRedirect().ToAction<HemController>(c => c.Index());
+			result.AssertActionRedirect().ToAction<HemController>(c => c.Kategorier());
 		}
 
 		/*
@@ -215,7 +215,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			var result = controller.Inloggning(modell, returnUrl).Result;
 
 			// Assert
-			result.AssertActionRedirect().ToAction<HemController>(c => c.Utlåste());
+			result.AssertActionRedirect().ToAction<HemController>(c => c.Utlåst());
 		}
 	}
 }

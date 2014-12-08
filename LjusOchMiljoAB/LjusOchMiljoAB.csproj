@@ -318,9 +318,9 @@
     <Content Include="Views\Produkt\Index.cshtml" />
     <Content Include="Views\Produkt\Prislista.cshtml" />
     <Content Include="Views\Hem\Inloggning.cshtml" />
-    <Content Include="Views\Hem\SkapaAnvändare.cshtml" />
-    <Content Include="Views\Hem\Utlåste.cshtml" />
+    <Content Include="Views\Hem\Utlåst.cshtml" />
     <Content Include="Views\Produkt\Detaljer.cshtml" />
+    <Content Include="Views\Hem\Kategorier.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

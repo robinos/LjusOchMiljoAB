@@ -131,10 +131,10 @@ namespace LjusOchMiljoAB.Controllers
 				case Status.Lyckades:
 					användareTjänst.Inloggning(Sanitizer.GetSafeHtmlFragment(model.Anvandarnamn));
 					//Därefter skickas användaren till hemsidan
-					return RedirectToAction("Index", "Hem");
+					return RedirectToAction("Kategorier", "Hem");
 				//Vid 5+ misslyckade inloggningar skickas användare till Utlåste sidan
 				case Status.Låste:
-					return RedirectToAction("Utlåste", "Hem");
+					return RedirectToAction("Utlåst", "Hem");
 				//Vid Misslyckades som är också default skickas man tillbaka till
 				//inloggnings formen
 				case Status.Misslyckades:
@@ -159,10 +159,19 @@ namespace LjusOchMiljoAB.Controllers
 		 * [AllowAnonymous] tillåter användare som är inte inloggad att se det
 		 */
 		[AllowAnonymous]
-		public ActionResult Utlåste()
+		public ActionResult Utlåst()
 		{
-			return View("Utlåste");
+			return View("Utlåst");
 		}
 
+		/*
+		 * Kategorier visar våra kategorier.  Man måste vara inloggad för att
+		 * komma hit.
+		 */
+		[Authorize]
+		public ActionResult Kategorier()
+		{
+			return View("Kategorier");
+		}
 	}
 }
