@@ -40,7 +40,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 		 * in:	användarnamn som sträng
 		 *		lösnord som sträng
 		 * ut:	Task (för en await) och Status som är en enum definerad i
-		 *		IAnvändareTjänst som har värden Lyckades, Misslyckades, eller Låste
+		 *		IAnvändareTjänst som har värden Lyckades, Misslyckades, eller Låst
 		 */
 		public async Task<Status> BekräftaLösenord(string användarnamn, string lösenord)
 		{
@@ -57,9 +57,10 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			{
 				//Ändra Anvandare objektet så låste blir sann
 				användare.Laste = true;
+				användare.Raknare += 1;
 				await repository.RedigeraAnvändare(användare);
-				//Returnera status Låste
-				return Status.Låste;
+				//Returnera status Låst
+				return Status.Låst;
 			}
 			//Annars om lösenordet var rätt, har det lyckats  
 			else if (användare.LosenordHash != null && Crypto.VerifyHashedPassword(användare.LosenordHash, lösenord))

@@ -10,15 +10,32 @@ using System.Web.Security;
 
 namespace LjusOchMiljoAB.Controllers
 {
-	/* 
-	 * AnvändareTjänst är tjänsten som hantera kontakt med AnvändareRepository
-	 * för att autentisera användare, håller koll på misslyckade lösenordsförsök
-	 * och låsa ut användare vid 5 misslyckade försök.
-	 * 
-	 * Grupp 2
-	 * Senast ändrat: 2014 11 11
-	 * Version: 0.19
-	 */
+	/// <summary>
+	/// AnvändareTjänst är tjänsten som hantera kontakt med en IAnvändareRepository
+	/// för att autentisera användare, håller koll på misslyckade lösenordsförsök
+	/// och låsa ut användare vid 5 misslyckade försök.
+	/// 
+	/// -Konstruktor-
+	/// AnvändareTjänst - tom konstruktor som använder en ny AnvändareRespository
+	///		som skickas till den andra konstruktor (används vid riktig körning).
+	///	AnvändareTjänst(IAnvändareRepository repository) - tar emot en
+	///		IAnvändareRespository för initialisering
+	/// 
+	/// -Metoder-
+	/// BekräftaLösenord - Returnerar Status.Lyckades, Misslyckades eller Låst
+	///		beroende på om lösenordet var korrekt för användaren
+	/// Förstör - Anropar Förstör i en IAnvändareRepository för att förstöra den och
+	///		fria upp minne
+	/// Inloggning - Skapar en inloggningskaka för Forms Autenetisering med
+	///		användarens namn (används även för att visa användarens namn).
+	/// Utloggning - Tar bort inloggningskakan.
+	/// SkapaAnvändare - En tom implementation av SkapaAnvändare i IAnvändareTjänst.
+	///		Den finns med för andra klasser av typen IAnvändareTjänst i testning.
+	/// 
+	/// Version: 1.0
+	/// 2014-12-10
+	/// Grupp 2
+	/// </summary>
 	public class AnvändareTjänst : IAnvändareTjänst
 	{
 		//IAnvändareRepository hanterar kommunikation med databasen
@@ -34,21 +51,24 @@ namespace LjusOchMiljoAB.Controllers
 			this.repository = repository;
 		}
 
-		/*
-		 * BekräftaLösenord försöker hämta Anvandare objektet som har användarnamn som
-		 * namn och sedan jämför angiven lösenordets hash med den från objektet.  Om
-		 * 5 eller fler misslyckade inloggningar har inträffat blir kontot låste.
-		 * Annars om lösenordets hash matchar har det lyckats och annars har det
-		 * misslyckats.
-		 * 
-		 * in:	användarnamn som rensade sträng
-		 *		lösenord som rensade sträng
-		 * ut:	Task för att vara async och Status som enum (Lyckades, Misslyckades,
-		 *		eller Låste)
-		 */
+		/// <summary>
+		/// BekräftaLösenord försöker hämta Anvandare objektet som har användarnamn
+		/// som namn och sedan jämför angiven lösenordets hash med den från objektet.
+		/// Om 5 eller fler misslyckade inloggningar har inträffat blir kontot låste.
+		/// Annars om lösenordets hash matchar har det lyckats och annars har det
+		/// misslyckats.
+		/// Metoden är async för att ta emot från async metoder HämtaAnvändareMedNamn
+		///	och RedigeraAnvändare men även för att tjänster ofta använder async metoder
+		///	för att vänta på svar och det underlätta om man skulle vilja byta ut 
+		///	repositoryn eller tjänsten mot något icke lokal tjänst.
+		/// </summary>
+		/// <param name="användarnamn">sträng för användarnamn</param>
+		/// <param name="lösenord">sträng för lösenord</param>
+		/// <returns>Task för async och Status enum som man skickar tillbaka som
+		///		Lyckades, Misslyckades, eller Låst</returns>
 		public async Task<Status> BekräftaLösenord(string användarnamn, string lösenord)
 		{
-			//Hämta användare objekt från respository
+			//Hämta användare objekt från respositoryn
 			Anvandare användare = await repository.HämtaAnvändareMedNamn(användarnamn);
 
 			//Om Anvandare objektet är null misslyckas det direkt
@@ -59,12 +79,14 @@ namespace LjusOchMiljoAB.Controllers
 			//låser upp den igen)
 			if (användare.Raknare != null && användare.Raknare >= 4)
 			{
-				//Ändra Anvandare objektet så låste blir sann
+				//Ändra Anvandare objektet så låst blir sann och räknaren ökas
+				//(databas kolumnen heter tyvärr Laste)
 				användare.Laste = true;
 				användare.Raknare += 1;
 				await repository.RedigeraAnvändare(användare);
-				//Returnera status Låste
-				return Status.Låste;
+
+				//Returnera status Låst
+				return Status.Låst;
 			}
 			//Annars om lösenordet var rätt, har det lyckats  
 			else if (användare.LosenordHash != null && Crypto.VerifyHashedPassword(användare.LosenordHash, lösenord))
@@ -79,7 +101,7 @@ namespace LjusOchMiljoAB.Controllers
 				//Om räknaren är null blir den 1, annars läggs till +1
 				if (användare.Raknare == null) användare.Raknare = 1;
 				else användare.Raknare += 1;
-				//Ändra Anvandare objektet så låste blir sann				
+				//Ändra Anvandare objektet så räknaren ökar				
 				await repository.RedigeraAnvändare(användare);
 
 				//Returnera status Misslyckades
@@ -87,38 +109,39 @@ namespace LjusOchMiljoAB.Controllers
 			}
 		}
 
-		/*
-		 * Förstör finns för att fria upp minne.
-		 * 
-		 * ut: Task för en await (behövs för async metoder)
-		 */
+		/// <summary>
+		/// Förstör finns för att fria upp minne och anropar Förstör i repositoryn.
+		/// 
+		/// Metoden är async för att ta emot från async metoden Förstör.
+		/// </summary>
+		/// <returns>Task för async (ingen data returneras)</returns>
 		public async Task Förstör()
 		{
 			await repository.Förstör();
 		}
 
-		/*
-		 * Inloggning ger en autentiseringskaka till användaren/webbläsaren för
-		 * webbsidan.
-		 * 
-		 * in: användarnamn som rensad sträng
-		 */
+		/// <summary>
+		/// Inloggning skapar en autentiseringskaka till användaren/webbläsaren för
+		/// webbsidan.
+		/// </summary>
+		/// <param name="användarnamn">sträng för användarnamn</param>
 		public void Inloggning(string användarnamn)
 		{
 			FormsAuthentication.SetAuthCookie(användarnamn, false);
 		}
 
-		/*
-		 * Utloggning tar bort autentiseringskakan.
-		 */
+		/// <summary>
+		/// Utloggning tar bort autentiseringskakan.
+		/// </summary>
 		public void Utloggning()
 		{
 			FormsAuthentication.SignOut();
 		}
 
-		/*
-		 * Bara för implementation av SkapaAnvändare fär IAnvändareTjänst
-		 */
+		/// <summary>
+		/// Bara för implementation av SkapaAnvändare fär IAnvändareTjänst.
+		/// </summary>
+		/// <param name="användareAttTillägga">en användare att lägga till</param>
 		public void SkapaAnvändare(Anvandare användareAttTillägga)
 		{
 			//ingenting

@@ -10,17 +10,35 @@ using System.Threading.Tasks;
 
 namespace LjusOchMiljoAB.Controllers
 {
-	/*
-	 * HemController har hand om alla metoder för huvudsidan och inloggning
-	 * inklusive Om, Kontakt och Inloggning undersidor.
-	 * 
-	 * [RequireHttps] tvingar sidan att vara HTTPS och använder SSL säkerhet
-	 * [HandleError] är inte någonting som används i nuläget
-	 * 
-	 * Grupp 2
-	 * Senast ändrat: 2014 11 11
-	 * Version: 0.19
-	 */
+	/// <summary>
+	/// HemController har hand om alla metoder för huvudsidan och inloggning
+	/// inklusive Om, Kontakt och Inloggning undersidor.
+	/// 
+	/// [RequireHttps] tvingar sidan att vara HTTPS och använder SSL säkerhet
+	/// [HandleError] är inte någonting som används i nuläget
+	///		
+	/// -Konstruktor-
+	/// HemController - tom konstruktor som använder en ny AnvändareTjänst som
+	///		skickas till den andra konstruktor (används vid riktig körning).
+	///	HemController(IAnvändareTjänst användareTjänst) - tar emot en IAnvändareTjänst
+	///		för initialisering
+	/// 
+	/// -Metoder-
+	/// Index - Hemsidans kod.  Hemsidan kan ses av alla.
+	/// Om - Omsidans kod. Omsidan kan ses av alla.
+	/// Kontakt - Kontaktsidans kod. Kontaktsidan kan ses av alla.
+	/// [HttpGET] Inloggning - Koden vid uppvisning av Inloggningssidan.
+	///		Inloggningssidan kan ses av alla.
+	/// [HttpPost] Inloggning - Koden som tar in inmatningar från användaren. 
+	/// Utloggning - Koden för utloggning. 
+	/// Utlåst - Koden för Utlåst. Utlåstsidan kan ses av alla men man kommer bara dit
+	///		vanligtvis av att ha fått kontot utlåst.
+	/// Kategorier - Koden för kategorisidan. Bara inloggade användare kan se sidan.
+	/// 
+	/// Version: 1.0
+	/// 2014-12-10
+	/// Grupp 2
+	/// </summary>
 	[RequireHttps]
 	[HandleError]
 	public class HemController : Controller
@@ -33,29 +51,30 @@ namespace LjusOchMiljoAB.Controllers
 		//verklig körning
 		public HemController() : this(new AnvändareTjänst()) { }
 
-		//En-parameter konstruktör för testning mot en egen tjänst
+		//En-parameter konstruktör för initialisera av en IAnvändareTjänst
 		public HemController(IAnvändareTjänst användareTjänst)
 		{
 			this.användareTjänst = användareTjänst;
 		}
 
-		/*
-		 * Index är själva huvudsidan av applikationen (med vy Views ->
-		 * Hem -> Index.cshtml).
-		 * Alla kan se Index sidan.
-		 * [AllowAnonymous] tillåter användare som är inte inloggad att se det
-		 */
+		/// <summary>
+		/// Index är koden för hemsidan. Den visar upp Index vyn som är hemsidan
+		///		(Views-Hem->Index.cshtml)
+		/// [AllowAnonymous] tillåter användare som är inte inloggad att se den.
+		/// </summary>
+		/// <returns>ActionResult av att visa vyn</returns>
 		[AllowAnonymous]
 		public ActionResult Index()
 		{
 			return View("Index");
 		}
 
-		/*
-		 * Om sidan ger information om företaget och hemsidan.
-		 * Alla kan se Om sidan.
-		 * [AllowAnonymous] tillåter användare som är inte inloggad att se det
-		 */
+		/// <summary>
+		/// Om är koden för omsidan. Den visar upp Om vyn som är information om
+		///		företaget och hemsidan (Views-Hem->Om.cshtml)
+		/// [AllowAnonymous] tillåter användare som är inte inloggad att se den.
+		/// </summary>
+		/// <returns>ActionResult av att visa vyn</returns>
 		[AllowAnonymous]
 		public ActionResult Om()
 		{
@@ -64,11 +83,12 @@ namespace LjusOchMiljoAB.Controllers
 			return View("Om");
 		}
 
-		/*
-		 * Kontakt sidan ger kontaktinformation för företaget.
-		 * Alla kan se Kontakt sidan.
-		 * [AllowAnonymous] tillåter användare som är inte inloggad att se det
-		 */
+		/// <summary>
+		/// Kontakt är koden för kontaktsidan. Den visar upp Om vyn som är
+		///		information om företaget (Views-Hem->Kontakt.cshtml)
+		/// [AllowAnonymous] tillåter användare som är inte inloggad att se den.
+		/// </summary>
+		/// <returns>ActionResult av att visa vyn</returns>
 		[AllowAnonymous]
 		public ActionResult Kontakt()
 		{
@@ -77,12 +97,12 @@ namespace LjusOchMiljoAB.Controllers
 			return View("Kontakt");
 		}
 
-		/*
-		 * HttpGET för Inloggningssidan.  Visar formen.
-		 * [AllowAnonymous] tillåter användare som är inte inloggad att se det
-		 * 
-		 * in: returnUrl: sidan man borde returnera till
-		 */
+		/// <summary>
+		/// HttpGet för Inloggningsidan. Visar upp inloggningsformen.
+		/// [AllowAnonymous] tillåter användare som är inte inloggad att se den.
+		/// </summary>
+		/// <param name="returnUrl">sidan där man är (från vyn)</param>
+		/// <returns>ActionResult av att visa vyn</returns>
 		[AllowAnonymous]
 		public ActionResult Inloggning(string returnUrl)
 		{
@@ -90,20 +110,28 @@ namespace LjusOchMiljoAB.Controllers
 			return View("Inloggning");
 		}
 
-		/*
-		 * HttpPost för Inloggningssidan.  Den validerar modellen och sedan försöker
-		 * bekräfta lösenordet.  Om det lyckas fortsätter man.  Om det misslyckas
-		 * stannar man på formen.  Om man blir utlåste (för många misslyckade
-		 * försök på lösenordet) skickas man till Utlåste sidan.
-		 * 
-		 * [AllowAnonymous] tillåter användare som är inte inloggad att se det
-		 * [ValidateAntiForgeryToken] tittar på en gömd kaka i webbformen för att
-		 * testa att det verkligen kommer från samma användaren/webbläsaren som fick
-		 * HttpGet sidan
-		 * 
-		 * in:	model: InloggningsModell för inloggningsformen
-		 *		returnUrl: sidan man borde returnera till
-		 */
+		/// <summary>
+		/// HttpPost för Inloggningsidan. Den validerar modellen och sedan försöker
+		/// bekräfta lösenordet.  Om det lyckas fortsätter man.  Om det misslyckas
+		/// stannar man på formen.  Om man blir utlåste (för många misslyckade
+		/// försök på lösenordet) skickas man till Utlåst sidan.
+		/// Metoden är async för att ta emot från async metoden BekräftaLösenord men
+		/// även för att tjänster ofta använder async metoder för att vänta på svar
+		/// och det underlätta om man skulle vilja byta ut tjänsten mot något icke
+		/// lokal tjänst.
+		/// 
+		/// [AllowAnonymous] tillåter användare som är inte inloggad att se den.
+		/// [ValidateAntiForgeryToken] tittar på en gömd kaka i webbformen för att
+		/// testa att det verkligen kommer från samma användaren/webbläsaren som fick
+		/// HttpGet sidan.
+		/// 
+		/// Version: 1.0
+		/// 2014-12-10
+		/// Grupp 2
+		/// </summary>
+		/// <param name="model">InloggningsModell med användarnamn och lösenord och
+		///		begränsningar på inmatningar</param>
+		/// <returns>Task för async och ActionResult av att visa vyn</returns>
 		[HttpPost]
 		[AllowAnonymous]
 		[ValidateAntiForgeryToken]
@@ -117,10 +145,10 @@ namespace LjusOchMiljoAB.Controllers
 			}
 
 			//Status är en enum som finns definerad i IAnvändareTjänst. Det sätts till
-			//misslyckade som default
+			//Misslyckade som default
 			Status stat = Status.Misslyckades;
 
-			//Santizer används för att ta bort farliga tecken och kod frpn Html
+			//Santizer används för att ta bort farliga tecken och kod från Html
 			//inmatningen
 			stat = await användareTjänst.BekräftaLösenord(Sanitizer.GetSafeHtmlFragment(model.Anvandarnamn), Sanitizer.GetSafeHtmlFragment(model.Losenord));
 
@@ -132,8 +160,8 @@ namespace LjusOchMiljoAB.Controllers
 					användareTjänst.Inloggning(Sanitizer.GetSafeHtmlFragment(model.Anvandarnamn));
 					//Därefter skickas användaren till hemsidan
 					return RedirectToAction("Kategorier", "Hem");
-				//Vid 5+ misslyckade inloggningar skickas användare till Utlåste sidan
-				case Status.Låste:
+				//Vid 5+ misslyckade inloggningar skickas användare till Utlåst sidan
+				case Status.Låst:
 					return RedirectToAction("Utlåst", "Hem");
 				//Vid Misslyckades som är också default skickas man tillbaka till
 				//inloggnings formen
@@ -144,30 +172,39 @@ namespace LjusOchMiljoAB.Controllers
 			}
 		}
 
-		/*
-		 * Vid utloggning skickas man tillbaka till huvudsidan.
-		 */
+		/// <summary>
+		/// Utloggning är koden för att logga ut. Detta ändrar menyvalet till
+		/// "logga in" men Utloggning är inte kopplad till en full vy.
+		/// </summary>
+		/// <returns>ActionResult av att visa vyn</returns>
 		public ActionResult Utloggning()
 		{
-			//FormsAuthentication.SignOut();
+			//logga ut från FormsAuthentication med hjälp av användareTjänst
 			användareTjänst.Utloggning();
+			//man skickas tillbaka till hemsidan
 			return RedirectToAction("Index", "Hem");
 		}
 
-		/*
-		 * Utlåste visas för folk men 5 eller mer misslyckade inloggningar.
-		 * [AllowAnonymous] tillåter användare som är inte inloggad att se det
-		 */
+		/// <summary>
+		/// Utlåst är koden för Utlåstsidan som visas för folk men 5 eller mer
+		///		misslyckade inloggningar. (Views-Hem->Låst.cshtml)
+		/// [AllowAnonymous] tillåter användare som är inte inloggad att se den.
+		/// </summary>
+		/// <returns>ActionResult av att visa vyn</returns>
 		[AllowAnonymous]
 		public ActionResult Utlåst()
 		{
 			return View("Utlåst");
 		}
 
-		/*
-		 * Kategorier visar våra kategorier.  Man måste vara inloggad för att
-		 * komma hit.
-		 */
+		/// <summary>
+		/// Kategorier är koden för kategorisidan. Den visar upp Om vyn som är
+		///		information om företaget (Views-Hem->Utlåst.cshtml)
+		/// [Authorize] tillåter bara inloggad användare att se den.  Försök att
+		///		komma till sidan utan att vara inloggad resulterar att man skickas
+		///		till inloggningssidan.
+		/// </summary>
+		/// <returns>ActionResult av att visa vyn</returns>
 		[Authorize]
 		public ActionResult Kategorier()
 		{
