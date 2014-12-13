@@ -9,16 +9,30 @@ using System.Web.Helpers;
 
 namespace LjusOchMiljoAB.Tests.Controllers
 {
-	/*
-	 * Mock AnvändareTjänst för testning.
-	 * 
-	 * Förhoppningsvis behövs det här inte alls om man kan förstå
-	 * MvcContrib.TestHelper bibliotek lite bättre.
-	 * 
-	 * Grupp 2
-	 * Senast ändrat: 2014 11 19
-	 * Version: 0.19
-	 */
+	/// <summary>
+	/// Mock AnvändareTjänst för testning. Den behövs för att den riktiga
+	/// AnvändareTjänst använder sig av FormsAuthentication inloggnings kakor som
+	/// enhetstestar kan inte hantera.
+	/// 
+	/// -Konstruktor-
+	/// IMinnetAnvändareTjänst - tom konstruktor som använder en ny 
+	///		IMinnetAnvändareRespository som skickas till den andra konstruktor.
+	///	IMinnetAnvändareTjänst(IAnvändareRepository repository) - tar emot en
+	///		IAnvändareRespository för initialisering
+	/// 
+	/// -Metoder-
+	/// BekräftaLösenord - Returnerar Status.Lyckades, Misslyckades eller Låst
+	///		beroende på om lösenordet var korrekt för användaren
+	/// SättLösenord - krypterar lösnordet när en användare skapas för testning
+	/// SkapaAnvändare - används för att skapa test användare
+	/// Förstör - finns för att fria upp minne
+	/// Inloggning - tom metod som speglar IAnvändareTjänst
+	/// Utloggning - som ovan
+	/// 
+	/// Version: 1.0
+	/// 2014-12-12
+	/// Grupp 2
+	/// </summary>
 	class IMinnetAnvändareTjänst : IAnvändareTjänst
 	{
 		//IAnvändareRepository hanterar kommunikation med databasen
@@ -34,17 +48,22 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			this.repository = repository;
 		}
 
-		/*
-		 * En ren kopia av BekräftaLösenord från AnvändareTjänst.
-		 * 
-		 * in:	användarnamn som sträng
-		 *		lösnord som sträng
-		 * ut:	Task (för en await) och Status som är en enum definerad i
-		 *		IAnvändareTjänst som har värden Lyckades, Misslyckades, eller Låst
-		 */
+		/// <summary>
+		/// En ren kopia av BekräftaLösenord från AnvändareTjänst.
+		/// 
+		/// BekräftaLösenord försöker hämta Anvandare objektet som har användarnamn
+		/// som namn och sedan jämför angiven lösenordets hash med den från objektet.
+		/// Om 5 eller fler misslyckade inloggningar har inträffat blir kontot låste.
+		/// Annars om lösenordets hash matchar har det lyckats och annars har det
+		/// misslyckats.
+		/// </summary>
+		/// <param name="användarnamn">sträng för användarnamn</param>
+		/// <param name="lösenord">sträng för lösenord</param>
+		/// <returns>Task för async och Status enum som man skickar tillbaka som
+		///		Lyckades, Misslyckades, eller Låst</returns>
 		public async Task<Status> BekräftaLösenord(string användarnamn, string lösenord)
 		{
-			//Hämta användare objekt från respository
+			//Hämta användare objekt från respositoryn
 			Anvandare användare = await repository.HämtaAnvändareMedNamn(användarnamn);
 
 			//Om Anvandare objektet är null misslyckas det direkt
@@ -55,10 +74,11 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			//låser upp den igen)
 			if (användare.Raknare != null && användare.Raknare >= 4)
 			{
-				//Ändra Anvandare objektet så låste blir sann
-				användare.Laste = true;
+				//Ändra Anvandare objektet så låst blir sann och räknaren ökas
+				användare.Last = true;
 				användare.Raknare += 1;
 				await repository.RedigeraAnvändare(användare);
+
 				//Returnera status Låst
 				return Status.Låst;
 			}
@@ -75,7 +95,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 				//Om räknaren är null blir den 1, annars läggs till +1
 				if (användare.Raknare == null) användare.Raknare = 1;
 				else användare.Raknare += 1;
-				//Ändra Anvandare objektet så låste blir sann				
+				//Ändra Anvandare objektet så räknaren ökar				
 				await repository.RedigeraAnvändare(användare);
 
 				//Returnera status Misslyckades
@@ -83,49 +103,48 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			}
 		}
 
-		/*
-		 * SättLösenord Finns bara i mock versionen för att kryptera lösnordet när
-		 * en användare skapas för testning.
-		 * 
-		 * in:	användarnamn som sträng
-		 *		lösnord som sträng
-		 */
+		/// <summary>
+		/// SättLösenord finns bara i mock versionen för att kryptera lösnordet när
+		/// en användare skapas för testning.
+		/// </summary>
+		/// <param name="anvandare">En Anvandare objekt för en användare</param>
+		/// <param name="lösenord">Lösenord som sträng</param> 
 		public void SättLösenord(Anvandare anvandare, string lösenord)
 		{
 			anvandare.LosenordHash = Crypto.HashPassword(lösenord);
 		}
 
-		/*
-		 * SkapaAnvändare har bara kod i IMinnetAnvändareTjänst och inte i
-		 * AnvändareTjänst. Den används för att skapa test användare.
-		 */
+		/// <summary>
+		/// SkapaAnvändare används för att skapa test användare.
+		/// </summary>
+		/// <param name="användareAttTillägga">en användare att lägga till</param>
 		public void SkapaAnvändare(Anvandare användare)
 		{
 			repository.SkapaAnvändare(användare);
 		}
 
-		/*
-		 * Förstör finns för att fria upp minne.
-		 * 
-		 * ut: Task för en await (behövs för async metoder)
-		 */
+		/// <summary>
+		/// Förstör finns för att fria upp minne.
+		/// </summary>
+		/// <returns>Task för async (ingen data returneras)</returns>
 		public async Task Förstör()
 		{
 			await repository.Förstör();
 		}
 
-		/*
-		 * Tom metod utan FormsAuthentication (som funkar inte så bra med
-		 * Unit testar).
-		 */
+		/// <summary>
+		/// Tom metod utan FormsAuthentication (som funkar inte så bra med
+		/// enhetstestar).
+		/// </summary>
+		/// <param name="användarnamn">sträng för användarnamn</param>
 		public void Inloggning(string användarnamn)
 		{
 		}
 
-		/*
-		 * Tom metod utan FormsAuthentication (som funkar inte så bra med
-		 * Unit testar).
-		 */
+		/// <summary>
+		/// Tom metod utan FormsAuthentication (som funkar inte så bra med
+		/// enhetstestar).
+		/// </summary>
 		public void Utloggning()
 		{
 		}

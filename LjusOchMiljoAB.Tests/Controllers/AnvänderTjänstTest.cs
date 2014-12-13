@@ -51,7 +51,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 				LosenordHash = Crypto.HashPassword(password),
 				Roll = "kund",
 				Raknare = 0,
-				Laste = false
+				Last = false
 			};
 		}
 

@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace LjusOchMiljoAB.Models
 {
-	/*
-	 * IAnvändareRepository är interface för kontakt med databasen eller en
-	 * mock databas vid testning.
-	 * 
-	 * SkapaAnvändare är bara för tester.
-	 * 
-	 * Grupp 2
-	 * Senast ändrat: 2014 11 11
-	 * Version: 0.19
-	 */
+	/// <summary>
+	/// IAnvändareRepository är interface för kontakt med databasen eller en
+	/// mock databas vid testning.
+	/// 
+	/// SkapaAnvändare är bara för tester.
+	/// 
+	/// Version: 1.0
+	/// 2014-12-12
+	/// Grupp 2
+	/// </summary>
 	public interface IAnvändareRepository
 	{
 		Task RedigeraAnvändare(Anvandare användareAttÄndra);

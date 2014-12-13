@@ -80,8 +80,7 @@ namespace LjusOchMiljoAB.Controllers
 			if (användare.Raknare != null && användare.Raknare >= 4)
 			{
 				//Ändra Anvandare objektet så låst blir sann och räknaren ökas
-				//(databas kolumnen heter tyvärr Laste)
-				användare.Laste = true;
+				användare.Last = true;
 				användare.Raknare += 1;
 				await repository.RedigeraAnvändare(användare);
 
