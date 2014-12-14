@@ -10,7 +10,7 @@ namespace LjusOchMiljoAB.Models
 {
 	/// <summary>
 	/// AnvändareRepository är implementationen av IAnvändareRepository för
-	/// kontakt med database tabellen Anvandare.
+	/// kontakt med databas tabellen Anvandare.
 	/// 
 	/// -Metoder-
 	/// RedigeraAnvändare - ändrar en rad i tabellen Anvandare baserad på en Anvandare
@@ -66,6 +66,7 @@ namespace LjusOchMiljoAB.Models
 			catch(Exception ex)
 			{
 				//Exception loggning kunde vara här
+				Console.WriteLine(ex);
 			}
 
 			return användare;

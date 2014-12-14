@@ -8,34 +8,33 @@ using System.Threading.Tasks;
 
 namespace LjusOchMiljoAB.Models
 {
-	/*
-	 * ProduktRepository har hand om entiteten Produkt (dvs
-	 * databaskontakt för Produkt tabellen).  Den implementera interface
-	 * IProdukterRepository.  Detta görs för att göra det lättare vid testning
-	 * men även lättare för databasbytt och ändringar där huvudkoden behöver inte
-	 * ändras.
-	 * 
-	 * Grupp 2
-	 * Senast ändrat: 2014 11 18
-	 * Version: 0.19
-	 */
+	/// <summary>
+	/// ProduktRepository är implementationen av IProduktRepository för
+	/// kontakt med databas tabellen Produkt.
+	/// 
+	/// -Metoder-
+	/// HämtaProduktMedID - hämtar en produkt (rad) från tabellen Produkt med angiven id
+	/// HämtaProduktlista - hämtar listan av alla produkter (rad) i tabellen Produkt
+	/// Förstör - tar bort instansen av databasen för att fria upp minne
+	/// 
+	/// Version: 1.0
+	/// 2014-12-14
+	/// Grupp 2
+	/// </summary>
 	public class ProduktRepository : IProduktRepository
 	{
 		//instansvariabler
 		//Databas objekten
 		private LOM_DBEntities db = new LOM_DBEntities();
 
-		/*
-		 * HämtaProduktMedID hämtar en produkt (rad) från tabellen Produkt som
-		 * matcher strängen id för ID kolumnen.  ID är den unika nycklen för
-		 * tabellen.
-		 * 
-		 * Kastar System.ArgumentNullException
-		 * 
-		 * in: strängen som representera ID för en produkt
-		 * ut: Task för await och en produkt av objekttyp Produkt som har id
-		 * som sin ID
-		 */
+		/// <summary>
+		/// HämtaProduktMedID hämtar en produkt (rad) från tabellen Produkt som
+		/// matcher strängen id för ID kolumnen.  ID är den unika nycklen för tabellen.
+		/// 
+		/// Kastar System.ArgumentNullException
+		/// </summary>
+		/// <param name="id">en sträng som ska innehålla en unik id för en produkt</param>
+		/// <returns>Task för await och en Produkt objekt</returns>
 		public async Task<Produkt> HämtaProduktMedID(string id)
 		{
 			await Task.Delay(0);
@@ -48,21 +47,19 @@ namespace LjusOchMiljoAB.Models
 			}
 			catch (Exception ex)
 			{
-				//Exception hantering kunde vara här
-				throw ex;
+				//Exception loggning kunde vara här
+				Console.WriteLine(ex);
 			}
 
 			return produkt;
 		}
 
-		/*
-		 * HämtaProduktlista hämtar listan av alla produkter (rad) i tabellen
-		 * Produkt.
-		 * 
-		 * Kastar System.ArgumentNullException
-		 * 
-		 * ut: en IEnumerable av Produkt objekter
-		 */
+		/// <summary>
+		/// HämtaProduktlista hämtar listan av alla produkter (rad) i tabellen Produkt.
+		/// 
+		/// Kastar System.ArgumentNullException
+		/// </summary>
+		/// <returns>Task för async och en IEnumerable av Produkt objekt</returns>
 		public async Task<IEnumerable<Produkt>> HämtaProduktlista()
 		{
 			await Task.Delay(0);
@@ -75,17 +72,18 @@ namespace LjusOchMiljoAB.Models
 			}
 			catch (Exception ex)
 			{
-				//Exception hantering kunde vara här
-				throw ex;
+				//Exception loggning kunde vara här
+				Console.WriteLine(ex);
 			}
 
 			return produkter;
 		}
 
-		/*
-		 * Förstör tar bort instansen av databasen och kan användas för minnesrengöring
-		 * vid applikationsslut.
-		 */
+		/// <summary>
+		/// Förstör tar bort instansen av databasen och kan användas för att fria upp
+		/// minne vid applikationsslut.
+		/// </summary>
+		/// <returns>Task för await (ingen data returneras)</returns>
 		public async Task Förstör()
 		{
 			await Task.Delay(0);			
