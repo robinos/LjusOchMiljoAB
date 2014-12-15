@@ -9,32 +9,39 @@ using System.Web.Helpers;
 
 namespace LjusOchMiljoAB.Tests.Controllers
 {
-	/*
-	 * Testar AnvändareTjänst klassen som har hand om kommunikation med
-	 * AnvändareRepository för bekräfelse av lösenord vid inloggning.
-	 * 
-	 * Metoden BekräftaLösenord testas av TestBekräftaGiltigAnvändarnamnOchLösenord,
-	 *	TestBekräftaOgiltigAnvändarnamn, TestBekräftaOgiltigLösenord och
-	 *	TestBekräftaOgiltigLösenord5GångerBlirLåste
-	 * 
-	 * Grupp 2
-	 * Senast ändrat: 2014 11 18
-	 * Version: 0.19
-	 */
+	/// <summary>
+	/// Testar AnvändareTjänst klassen som vid riktig körning har hand om
+	/// kommunikation med en IAnvändareRepository för bekräfelse av lösenord vid
+	/// inloggning. En mock repository IMinnetAnvändareRepository används (en
+	/// översättning av InMemory inte som en interface).
+	/// 
+	/// Klassen testas av TestAnvändareTjänstNotNull.
+	/// Metoden BekräftaLösenord testas av TestBekräftaGiltigAnvändarnamnOchLösenord,
+	///		TestBekräftaOgiltigAnvändarnamn, TestBekräftaOgiltigLösenord och
+	///		TestBekräftaOgiltigLösenord5GångerBlirLåste
+	/// 
+	/// Version: 1.0
+	/// 2014-12-10
+	/// Grupp 2
+	/// </summary>
 	[TestClass]
 	public class AnvänderTjänstTest
 	{
-		/*
-		 * Default hämtning
-		 */
+		/// <summary>
+		/// HämtaAnvandare (utan parameter) skapar en default hämtning av en användare.
+		/// </summary>
 		Anvandare HämtaAnvandare()
 		{
 			return HämtaAnvandare(1, "kund", "password");
 		}
 
-		/*
-		 * Default användare att skapa nya med för testning
-		 */
+		/// <summary>
+		/// HämtaAnvandare skapar olika default användare för testning beroende på
+		/// parameter.
+		/// </summary>
+		/// <param name="id">En integer som användare id</param>
+		/// <param name="namn">En sträng som användarnamn</param>
+		/// <param name="lösenord">En sträng som lösenord</param>
 		Anvandare HämtaAnvandare(int id, string namn, string password)
 		{
 			return new Anvandare
@@ -44,10 +51,14 @@ namespace LjusOchMiljoAB.Tests.Controllers
 				LosenordHash = Crypto.HashPassword(password),
 				Roll = "kund",
 				Raknare = 0,
-				Laste = false
+				Last = false
 			};
 		}
 
+		/// <summary>
+		/// TestAnvändareTjänstNotNull testar bara att det går att skapa en
+		/// AnvändareTjänst objekt med en mock repository.
+		/// </summary>
 		[TestMethod]
 		public void TestAnvändareTjänstNotNull()
 		{
@@ -61,13 +72,14 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			Assert.IsNotNull(användareTjänst);
 		}
 
-		/*
-		 * TestBekräftaGiltigAnvändarnamnOchLösenord testar fallet där användarnamn
-		 * och lösenordet stämmer.  Man borde få tillbaka Status.Lyckades från enum
-		 * Status.
-		 * *För att använda BekräftaLösenord som är async använder man .Result i
-		 * slutet och inte 'await'. 
-		 */
+		/// <summary>
+		/// TestBekräftaGiltigAnvändarnamnOchLösenord testar fallet där användarnamn
+		/// och lösenordet stämmer.  Man borde få tillbaka Status.Lyckades från enum
+		/// Status.
+		/// 
+		/// För att använda BekräftaLösenord som är async använder man .Result i
+		/// slutet och inte 'await'. 
+		/// </summary>
 		[TestMethod]
 		public void TestBekräftaGiltigAnvändarnamnOchLösenord()
 		{
@@ -84,13 +96,14 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			Assert.AreEqual(status, Status.Lyckades);
 		}
 
-		/*
-		 * TestBekräftaOgiltigAnvändarnamn testar fallet där användarnamnet
-		 * finns inte.  Man borde få tillbaka Status.Misslyckades från enum
-		 * Status.
-		 * *För att använda BekräftaLösenord som är async använder man .Result i
-		 * slutet och inte 'await'. 
-		 */
+		/// <summary>
+		/// TestBekräftaOgiltigAnvändarnamn testar fallet där användarnamnet
+		/// finns inte.  Man borde få tillbaka Status.Misslyckades från enum
+		/// Status.
+		/// 
+		/// För att använda BekräftaLösenord som är async använder man .Result i
+		/// slutet och inte 'await'. 
+		/// </summary>
 		[TestMethod]
 		public void TestBekräftaOgiltigAnvändarnamn()
 		{
@@ -107,13 +120,14 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			Assert.AreEqual(status, Status.Misslyckades);
 		}
 
-		/*
-		 * TestBekräftaOgiltigLösenord testar fallet där lösenordet är inte
-		 * korrekt (första gången).  Man borde få tillbaka Status.Misslyckades
-		 * från enum Status.
-		 * *För att använda BekräftaLösenord och HämtaAnvändareMedNamn som är
-		 *	async använder man .Result i slutet och inte 'await'. 
-		 */
+		/// <summary>
+		/// TestBekräftaOgiltigLösenord testar fallet där lösenordet är inte
+		/// korrekt (första gången).  Man borde få tillbaka Status.Misslyckades
+		/// från enum Status.
+		/// 
+		/// För att använda BekräftaLösenord som är async använder man .Result i
+		/// slutet och inte 'await'. 
+		/// </summary>
 		[TestMethod]
 		public void TestBekräftaOgiltigLösenord()
 		{
@@ -134,29 +148,32 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			Assert.AreEqual(dbAnvändare1.Raknare, 1);
 		}
 
-		/*
-		 * TestBekräftaOgiltigLösenord testar fallet där lösenordet är inte
-		 * korrekt (femte gången).  Man borde få tillbaka Status.Låste
-		 * från enum Status.
-		 * *För att använda BekräftaLösenord som är async använder man .Result i
-		 * slutet och inte 'await'. 
-		 */
+		/// <summary>
+		/// TestBekräftaOgiltigLösenord5GångerBlirLåst testar fallet där lösenordet
+		/// är inte korrekt (femte gången).  Man borde få tillbaka Status.Låst
+		/// från enum Status.
+		/// 
+		/// För att använda BekräftaLösenord som är async använder man .Result i
+		/// slutet och inte 'await'. 
+		/// </summary>
 		[TestMethod]
-		public void TestBekräftaOgiltigLösenord5GångerBlirLåste()
+		public void TestBekräftaOgiltigLösenord5GångerBlirLåst()
 		{
 			//Arrange
 			IMinnetAnvändareRepository repository = new IMinnetAnvändareRepository();
 			Anvandare användare1 = HämtaAnvandare(1, "kund", "password");
-			//Räknaren sätts till 4 misslyckade försök (på 5 blir det låste)
+			//Räknaren sätts till 4 misslyckade försök (på 5 blir det låst)
 			användare1.Raknare = 4;
 			repository.SkapaAnvändare(användare1);
 
 			//Act
 			AnvändareTjänst användareTjänst = new AnvändareTjänst(repository);
 			Status status = användareTjänst.BekräftaLösenord("kund", "lösenord").Result;
+			Anvandare dbAnvändare1 = repository.HämtaAnvändareMedNamn("kund").Result;
 
 			//Assert
-			Assert.AreEqual(status, Status.Låste);
+			Assert.AreEqual(dbAnvändare1.Raknare, 5);
+			Assert.AreEqual(status, Status.Låst);
 		}
 	}
 }

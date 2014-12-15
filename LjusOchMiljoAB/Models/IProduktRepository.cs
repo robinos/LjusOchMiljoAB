@@ -4,18 +4,14 @@ using System.Linq;
 using System.Web;
 using System.Threading.Tasks;
 
-/*
- * IProduktRepository är en interface som implementeras av
- * EntityProdukterManagerRepository för huvudprogram (och kontakt med databasen),
- * och InMemoryProdukterRepository för testningen (med lösas databas med listor).
- * 
- * I att ProdukterController tar en IProduktRepository som sin kontakt med
- * databasen så kan man köra riktigt eller köra 'mock databasen' för testning.
- * 
- * Grupp 2
- * Senast ändrat: 2014 11 09
- * Version: 0.19
- */
+/// <summary>
+/// IProduktRepository är interface för kontakt med databasen eller en
+/// mock databas vid testning.
+/// 
+/// Version: 1.0
+/// 2014-12-14
+/// Grupp 2
+/// </summary>
 namespace LjusOchMiljoAB.Models
 {
 	public interface IProduktRepository

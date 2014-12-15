@@ -7,13 +7,13 @@ using System.Web.Mvc;
 using PagedList.Mvc;
 using PagedList;
 
-/* 
- * IProduktTjänst är interface för produktlistan. 
- * 
- * Grupp 2
- * Senast ändrat: 2014 11 11
- * Version: 0.19
- */
+/// <summary>
+/// IProduktTjänst är interface för produktlistan. 
+/// 
+/// Version: 1.0
+/// 2014-12-14
+/// Grupp 2
+/// </summary>
 namespace LjusOchMiljoAB.Models
 {
 	public interface IProduktTjänst

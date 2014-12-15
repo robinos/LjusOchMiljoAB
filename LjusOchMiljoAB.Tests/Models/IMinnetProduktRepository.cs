@@ -7,32 +7,42 @@ using LjusOchMiljoAB.Models;
 
 namespace LjusOchMiljoAB.Tests.Models
 {
-	/*
-	 * IMinnetProduktRepository implementerar IProdukterRepository.  Den används
-	 * som 'mock databas' eller lösas databas vid testning.  I att den implementerar
-	 * IProdukterRepository så kan en ProduktTjänst skapas som använder den
-	 * som databas kontakt.
-	 * 
-	 * Förhoppningsvis behövs det här inte alls om man kan förstå
-	 * MvcContrib.TestHelper bibliotek lite bättre.
-	 *
-	 * Grupp 2
-	 * Senast ändrat: 2014 11 04
-	 * Version: 0.19
-	 */
+	/// <summary>
+	/// IMinnetProduktRepository implementerar IProdukterRepository.  Den används
+	/// som 'mock databas' eller lösas databas vid testning.  I att den implementerar
+	/// IProdukterRepository så kan en objekt som implementera IProduktTjänst skapas
+	/// som använder den som databas kontakt.
+	/// 
+	/// -Metoder-
+	/// SparaÄndringar(Produkt produktAttUppdatera) - sparar ändringar till en produkt
+	///		i listan db	
+	///	Add - används för att lägga till en produkt till listan db
+	/// HämtaProduktMedID - hämtar en produkt i listan som har angiven id
+	/// SkapaProdukt - skapar en ny produkt med produktAttSkapa genom att anropa
+	///		metoden Add
+	/// HämtaProduktlista - hämtar listan av alla produkter i listan
+	/// TaBortProdukt - tar bort en produkt i listan som har angiven id
+	/// RedigeraProdukt - använder SparaÄndringar för att spara ändringar till en produkt
+	/// Förstör - sätt listan db till null
+	/// 
+	/// Version: 1.0
+	/// 2014-12-14
+	/// Grupp 2
+	/// </summary>
 	class IMinnetProduktRepository : IProduktRepository
 	{
 		//instansvariabler
 		//Listan db blir vår lösas databas
 		private List<Produkt> db = new List<Produkt>();
 
+		//En exception att kasta om man skulle testa för exceptioner.  Tyvärr
+		//används den inte än.
 		public Exception ExceptionToThrow { get; set; }
 
-		/*
-		 * SparaÄndringar sparar ändringar till en produkt till listan db
-		 * 
-		 * in: produktAttUppdatera är en produkt av objekttypen Produkt
-		 */
+		/// <summary>
+		/// SparaÄndringar sparar ändringar till en produkt i listan db.
+		/// </summary>
+		/// <param name="produktAttUppdatera">en produkt av objekttypen Produkt</param>
 		public void SparaÄndringar(Produkt produktAttUppdatera)
 		{
 			foreach (Produkt produkt in db)
@@ -48,95 +58,72 @@ namespace LjusOchMiljoAB.Tests.Models
 			}
 		}
 
-		/*
-		 * Add används för att lägga till produkter till listan db
-		 * 
-		 * in: produktAttTillägga är en produkt av objekttypen Produkt
-		 */
+		/// <summary>
+		/// Add används för att lägga till en produkt till listan db
+		/// </summary>
+		/// <param name="produktAttTillägga">en produkt av objekttypen Produkt</param>
 		public void Add(Produkt produktAttTillägga) {
 			db.Add(produktAttTillägga);
         }
 
-		/*
-		 * HämtaProduktMedID hittar en produkt i listan som har en ID lika med
-		 * strängen id, eller returnerar ett default värde om ingenting hittas.
-		 * 
-		 * in: strängen id som en ID av en produkt
-		 * ut: en produkt av objekttypen Produkt med given ID (eller default)
-		 */
+		/// <summary>
+		/// HämtaProduktMedID hämtar en produkt i listan som har en ID lika med
+		/// strängen id, eller returnerar ett default värde om ingenting hittas.
+		/// </summary>
+		/// <param name="id">en sträng som ska innehålla en unik id för en produkt</param>
+		/// <returns>Task för await och en Produkt objekt</returns>
 		public async Task<Produkt> HämtaProduktMedID(string id)
 		{
 			await Task.Delay(0);
             return db.FirstOrDefault(d => d.ID == id);
         }
 
-		/*
-		 * SkapaProdukt kastar en Exception om ExceptionToThrow är inte null.  Jag
-		 * vet inte riktigt varför den finns men det har något att göra med att
-		 * återskapa exceptionen som den riktiga applikationen kan kasta.
-		 * Annars den skapar en ny produkt med produktAttSkapa genom att kalla på
-		 * metoden Add.
-		 * 
-		 * in: produktAttSkapa är en produkt av objekttypen Produkter
-		 */
+		/// <summary>
+		/// SkapaProdukt skapar en ny produkt med produktAttSkapa genom att anropa
+		/// metoden Add.
+		/// </summary>
+		/// <param name="produktAttSkapa">en produkt av objekttypen Produkt</param>
 		public void SkapaProdukt(Produkt produktAttSkapa)
 		{
-            if (ExceptionToThrow != null)
-                throw ExceptionToThrow;
-
 			db.Add(produktAttSkapa);
         }
 
-		/*
-		 * SparaÄndringar är bara en återspegling för IProdukterRepository och
-		 * gör ingenting äv värde.
-		 */
-		public int SparaÄndringar()
-		{
-            return 1;
-        }
-
-		/*
-		 * HämtaProduktlista returnerar alla produkter.
-		 * 
-		 * ut: Task (för en await) och en IEnumerable<Produkter> som innehåller
-		 * alla produkter
-		 */
+		/// <summary>
+		/// HämtaProduktlista hämtar listan av alla produkter i listan.
+		/// </summary>
+		/// <returns>Task för async och en IEnumerable av Produkt objekt</returns>
 		public async Task<IEnumerable<Produkt>> HämtaProduktlista()
 		{
 			await Task.Delay(0);
             return db.ToList();
         }
 
-		/*
-		 * TaBortProdukt tar bort en produkt i listan som har en ID lika med
-		 * strängen id.
-		 * 
-		 * in: strängen id som en ID av en produkt
-		 */
+		/// <summary>
+		/// TaBortProdukt tar bort en produkt i listan som har en ID lika med
+		/// strängen id.
+		/// </summary>
+		/// <param name="id">strängen id som en ID av en produkt</param>
+		/// <returns>void async (ingen data returneras)</returns> 
 		public async void TaBortProdukt(string id)
 		{
 			db.Remove(await HämtaProduktMedID(id));
         }
 
-		/*
-		 * RedigeraProdukt är en återspegling för IProdukterRepository och
-		 * använder SparaÄndringar för att spara ändringar till produkten
-		 * produktAttÄndra.
-		 * 
-		 * in: produktAttÄndra är en produkt av objekttypen Produkter
-		 */
+		/// <summary>
+		/// RedigeraProdukt använder SparaÄndringar för att spara ändringar
+		/// till produkten produktAttÄndra.
+		/// </summary>
+		/// <param name="produktAttÄndra">Produkt objektet att ändra</param>
 		public void RedigeraProdukt(Produkt produktAttÄndra)
 		{
 			SparaÄndringar(produktAttÄndra);
 		}
 
-		/*
-		 * Förstör databasen för att fri upp minne (i det här fallet är databasen
-		 * listan db).
-		 * 
-		 * ut: Task för en await (behövs för async metoder)
-		 */
+		/// <summary>
+		/// Förstör databasen för att fria upp minne (i det här fallet är databasen
+		/// listan db).
+		/// </summary>
+		/// <returns>Task för async (ingen data returneras)</returns> 
 		public async Task Förstör()
 		{
 			await Task.Delay(0);

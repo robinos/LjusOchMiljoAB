@@ -19,6 +19,6 @@ namespace LjusOchMiljoAB.Models
         public string LosenordHash { get; set; }
         public string Roll { get; set; }
         public Nullable<int> Raknare { get; set; }
-        public Nullable<bool> Laste { get; set; }
+        public Nullable<bool> Last { get; set; }
     }
 }
