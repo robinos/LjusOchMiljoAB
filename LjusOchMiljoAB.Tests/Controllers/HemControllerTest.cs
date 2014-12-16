@@ -16,66 +16,85 @@ using System.Web.Helpers;
 
 namespace LjusOchMiljoAB.Tests.Controllers
 {
-	/*
-	 * HemControllerTest testar controllern till huvudsidan Hem, med undersidor 
-	 * Om, Kontakt, Inloggning och Utlåste.
-	 * 
-	 * Grupp 2
-	 * Senast ändrat: 2014 11 18
-	 * Version: 0.19
-	 */
+	/// <summary>
+	/// HemControllerTest testar controllern till huvudsidan Hem, med undersidor
+	/// Om, Kontakt, Inloggning, Utlåst och Kategorier.
+	/// 
+	/// Index metoden (hemsidan) testas av TestHemDefaultReturnerarIndexView
+	/// Kontakt metoden testas av TestHemKontaktHarDefaultText
+	/// Om metoden testas av TestHemOmHarDefaultText
+	/// Kategori metoden testas av TestHemKategoriReturnerarKategoriView
+	/// Inloggning metoden testas av TestHemInloggningReturnerarInloggningView,
+	///		TestHemInloggningLyckadesReturneraTillKategorierView och
+	///		TestHemInloggningMisslyckades5GångerSkickaTillUtlåstView
+	/// Utloggning metoden testas av TestHemUtloggningSkickarTillIndexView
+	/// 
+	/// Version: 1.0
+	/// 2014-12-10
+	/// Grupp 2
+	/// </summary>
 	[TestClass]
 	public class HemControllerTest
 	{
-		/*
-		 * Skapa en AnvändareTjänst
-		 */
+		/// <summary>
+		/// GetAnvändareTjänst är en static metod skapar en IMinnetAnvändareTjänst.
+		/// Det är en mock version av AnvändareTjänst som används vid testning.
+		/// </summary>
 		private static IAnvändareTjänst GetAnvändareTjänst()
 		{
 			IMinnetAnvändareTjänst användareTjänst = new IMinnetAnvändareTjänst();
 			return användareTjänst;
 		}
 
-		/*
-		 * Med TestControllerBuilder från MvcContrib.TestHelper är en mock
-		 * HemController autogenererad med alla Asp.Net implementation med som
-		 * Session, Response, Request, etc.
-		 */
+		/// <summary>
+		/// CreateController är en static metod som skapar en mock HemController
+		/// som sätts att använda en IAnvändareTjänst.
+		/// 
+		/// Mock HemController skapas med TestControllerBuilder från
+		/// MvcContrib.TestHelper och autogenereras med alla Asp.Net implementeringar
+		/// som Session, Response, Request, etc.
+		/// </summary>
+		/// <param name="användareTjänst">En IAnvändareTjänst</param>
 		private static HemController CreateController(IAnvändareTjänst användareTjänst)
 		{
 			TestControllerBuilder builder = new TestControllerBuilder();
 			return builder.CreateController<HemController>(användareTjänst);
 		}
 
-		/*
-		 * Default hämtning
-		 */
+		/// <summary>
+		/// HämtaAnvandare (utan parameter) skapar en default hämtning av en användare.
+		/// </summary>
 		Anvandare HämtaAnvandare()
 		{
 			return HämtaAnvandare(1, "kund", "password");
 		}
 
-		/*
-		 * Default användare att skapa nya med för testning
-		 */
-		Anvandare HämtaAnvandare(int id, string namn, string password)
+		/// <summary>
+		/// HämtaAnvandare skapar olika default användare för testning beroende på
+		/// parameter.
+		/// </summary>
+		/// <param name="id">En integer som användare id</param>
+		/// <param name="namn">En sträng som användarnamn</param>
+		/// <param name="lösenord">En sträng som lösenord</param>
+		Anvandare HämtaAnvandare(int id, string namn, string lösenord)
 		{
 			return new Anvandare
 			{
 				ID = id,
 				Anvandarnamn = namn,
-				LosenordHash = Crypto.HashPassword(password),
+				LosenordHash = Crypto.HashPassword(lösenord),
 				Roll = "kund",
 				Raknare = 0,
-				Laste = false
+				Last = false
 			};
 		}
 
-		/*
-		 * Testar att Index (huvudsidan) returnerar "Index" vyn.
-		 * 
-		 * AssertViewRendered kommer från MvcContrib.TestHelper
-		 */
+		/// <summary>
+		/// TestHemDefaultReturnerarIndexView testar att Index metoden för
+		/// huvudsidan visar "Index" vyn.
+		/// 
+		/// AssertViewRendered kommer från MvcContrib.TestHelper.
+		/// </summary>
 		[TestMethod]
 		public void TestHemDefaultReturnerarIndexView()
 		{
@@ -89,9 +108,10 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			result.AssertViewRendered().ForView("Index");
 		}
 
-		/*
-		 * Testar att Om-sidan returnerar default text om företaget/hemsidan
-		 */
+		/// <summary>
+		/// TestHemOmHarDefaultText testar att Om-sidan returnerar default text
+		/// om företaget och hemsidan.
+		/// </summary>
 		[TestMethod]
 		public void TestHemOmHarDefaultText()
 		{
@@ -105,9 +125,10 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			Assert.AreEqual("Om hemsidan och Ljus och Miljö AB", result.ViewBag.Message);
 		}
 
-		/*
-		 * Testar att Kontakt-sidan returnerar default text om företagkontakt
-		 */
+		/// <summary>
+		/// TestHemKontaktHarDefaultText testar att Kontakt-sidan returnerar default
+		/// text om företagkontakt.
+		/// </summary>
 		[TestMethod]
 		public void TestHemKontaktHarDefaultText()
 		{
@@ -121,12 +142,31 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			Assert.AreEqual("Kontaktsidan", result.ViewBag.Message);
 		}
 
-		/*
-		 * Testar att Inloggning (inloggningssidan) returnerar "Inloggning"
-		 * vyn vid [HttpGet].
-		 * 
-		 * AssertViewRendered kommer från MvcContrib.TestHelper
-		 */
+		/// <summary>
+		/// TestHemKategorierReturnerarKategorierView testar att Kategorier metoden
+		/// för kategorisidan visar "Kategorier" vyn.
+		/// 
+		/// AssertViewRendered kommer från MvcContrib.TestHelper
+		/// </summary>
+		[TestMethod]
+		public void TestHemKategorierReturnerarKategorierView()
+		{
+			// Arrange              
+			var controller = CreateController(GetAnvändareTjänst());
+
+			// Act
+			var result = controller.Kategorier();
+
+			// Assert
+			result.AssertViewRendered().ForView("Kategorier");
+		}
+
+		/// <summary>
+		/// TestHemInloggningReturnerarInloggningView testar att Inloggning
+		/// metoden vid HttpGet för inloggningssidan visar "Inloggning".
+		/// 
+		/// AssertViewRendered kommer från MvcContrib.TestHelper.
+		/// </summary>
 		[TestMethod]
 		public void TestHemInloggningReturnerarInloggningView()
 		{
@@ -141,15 +181,16 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			result.AssertViewRendered().ForView("Inloggning");
 		}
 
-		/*
-		 * Testar att Inlognning (inloggningssidan) gör en Redirect till
-		 * Index i HemController vid lyckade inloggning vid [HttpPost].
-		 * 
-		 * *För att använda Inloggning som är async använder man .Result i
-		 *		slutet och inte 'await'.
-		 * 
-		 * AssertViewRendered kommer från MvcContrib.TestHelper
-		 */
+		/// <summary>
+		/// TestHemInloggningLyckadesReturneraTillKategorierView testar att
+		/// Inloggning metoden vid HttpPost för inloggningssidan skickar
+		/// användaren till Kategorier i HemController vid lyckade inloggning.
+		/// 
+		/// För att använda Inloggning som är async använder man .Result i
+		/// slutet och inte 'await'.
+		/// 
+		/// AssertViewRendered kommer från MvcContrib.TestHelper
+		/// </summary>
 		[TestMethod]
 		public void TestHemInloggningLyckadesReturneraTillKategorierView()
 		{
@@ -170,12 +211,12 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			result.AssertActionRedirect().ToAction<HemController>(c => c.Kategorier());
 		}
 
-		/*
-		 * Testar att Utloggning (utloggningssidan) gör en Redirect till
-		 * Index i HemController.
-		 * 
-		 * AssertActionRedirect kommer från MvcContrib.TestHelper
-		 */
+		/// <summary>
+		/// TestHemUtloggningSkickarTillIndexView testar att Utloggning metoden vid
+		/// HttpPost för utloggningssidan skickar användaren till hemsidan (Index).
+		/// 
+		/// AssertActionRedirect kommer från MvcContrib.TestHelper.
+		/// </summary>
 		[TestMethod]
 		public void TestHemUtloggningSkickarTillIndexView()
 		{
@@ -189,17 +230,18 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			result.AssertActionRedirect().ToAction<HemController>(c => c.Index());
 		}
 
-		/*
-		 * Testar att Inlognning (inloggningssidan) gör en Redirect till
-		 * Utlåste i HemController vid 5:e+ misslyckade inloggning.
-		 * 
-		 * *För att använda Inloggning som är async använder man .Result i
-		 *		slutet och inte 'await'.
-		 * 
-		 * AssertViewRendered kommer från MvcContrib.TestHelper
-		 */
+		/// <summary>
+		/// TestHemInloggningMisslyckades5GångerSkickaTillUtlåstView testar att
+		/// Inloggning metoden vid HttpPost för inloggningssidan skickar användaren
+		/// till Utlåst i HemController vid 5:e+ misslyckade inloggning.
+		/// 
+		/// För att använda Inloggning som är async använder man .Result i
+		/// slutet och inte 'await'.
+		/// 
+		/// AssertViewRendered kommer från MvcContrib.TestHelper
+		/// </summary>
 		[TestMethod]
-		public void TestHemInloggningMisslyckades5GångerSkickaTillUtlåsteView()
+		public void TestHemInloggningMisslyckades5GångerSkickaTillUtlåstView()
 		{
 			// Arrange
 			IMinnetAnvändareTjänst användareTjänst = new IMinnetAnvändareTjänst();

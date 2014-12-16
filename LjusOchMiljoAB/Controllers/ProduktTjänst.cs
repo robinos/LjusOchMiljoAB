@@ -10,15 +10,34 @@ using System.Threading.Tasks;
 
 namespace LjusOchMiljoAB.Controllers
 {
-	/*
-	 * ProduktService är tjänsten som hantera kontakt med ProduktRepository
-	 * för att tar fram listan av produkter eller sök en produkt baserad på
-	 * ID.
-	 * 
-	 * Grupp 2
-	 * Senast ändrat: 2014 11 11
-	 * Version: 0.19
-	 */
+	/// <summary>
+	/// ProduktTjänst är tjänsten som hantera kontakt med ProduktRepository
+	/// för att tar fram listan av produkter eller sök en produkt baserad på
+	/// ID.
+	/// 
+	/// -Konstruktor-
+	/// ProduktTjänst - tom konstruktor som använder en ny ProduktRespository
+	///		som skickas till den andra konstruktor (används vid riktig körning).
+	///	ProduktTjänst(IProduktRepository repository) - tar emot en
+	///		IProduktRepository för initialisering
+	/// 
+	/// -Metoder-
+	/// HämtaProdukter - hämtar och returnerar en lista produkter från respository:n eller
+	///		en tom lista vid null från respository:n
+	/// HämtaValLista - hämtar listan av alla Typ namn som finns av produkter och en vald
+	///		produkttyp
+	/// HämtaFiltreradProduktlista - filtrerar angiven IEnumerable av produkter efter namn
+	///		och typ
+	/// HämtaOrdnadProduktlista - ändra ordning av angiven IEnumerable av Produkt objekt
+	///		baserad på en sträng som representera ordningstypen
+	/// HämtaSida - hämtar produkter i en IPagedList för en visningssida av produkter
+	/// HämtaProduktMedID - hämtar en produkt från repository:n men angiven id
+	/// Förstör - anropar Förstör i respositoryn:n för att fria upp minne 
+	/// 
+	/// Version: 1.0
+	/// 2014-12-14
+	/// Grupp 2
+	/// </summary>
 	public class ProduktTjänst : IProduktTjänst
 	{
 		//Hur många sidor som visas samtidigt utan att skapa en ny sida
@@ -37,28 +56,28 @@ namespace LjusOchMiljoAB.Controllers
 			this.repository = repository;
 		}
 
-		/*
-		 * HämtaProdukter får en lista produkter från respository:n och returnerar
-		 * listan.
-		 * 
-		 * ut: Task för await och en IEnumerable av Produkt objekt
-		 */
+		/// <summary>
+		/// HämtaProdukter hämtar en lista produkter från respository:n och returnerar
+		/// listan. Om listan skulle vara null hämtas en tom lista.
+		/// </summary>
+		/// <returns>Task för async och en IEnumerable av Produkt objekt</returns>
 		public async Task<IEnumerable<Produkt>> HämtaProdukter()
 		{
 			IEnumerable<Produkt> produkter = await repository.HämtaProduktlista();
 
+			if (produkter == null)
+				produkter = new List<Produkt>();
+
 			return produkter;
 		}
 
-		/*
-		 * HämtaValLista hämtar listan av alla Typ namn som finns av produkter med
-		 * en vald produkt typ (som kan vara "" vilket blir default ('All'))
-		 * 
-		 * in:	produkter: en IEnumerable av produkt objekt
-		 *		produktTyp: en sträng som ska innehålla en Typ av produkt
-		 * ut:	en SelectList som innehåller namn av produkt typer med produktTyp
-		 *		som vald produkt
-		 */
+		/// <summary>
+		/// HämtaValLista hämtar listan av alla Typ namn som finns av produkter och
+		/// en vald produkttyp (som kan vara "" vilket blir default ('All'))
+		/// </summary>
+		/// <param name="produkter">en IEnumerable av produkt objekt</param>
+		/// <param name="produktTyp">en sträng som ska innehålla en Typ av produkt</param>
+		/// <returns>En SelectList för en DropDownBox</returns>
 		public SelectList HämtaValLista(IEnumerable<Produkt> produkter, string produktTyp)
 		{
 			//En lista för att hålla typer för filtrering
@@ -75,16 +94,15 @@ namespace LjusOchMiljoAB.Controllers
 			return new SelectList(TypLst, produktTyp);
 		}
 
-		/*
-		 * HämtaFiltreradProduktlista filtrerar angiven IEnumerable av produkter
-		 * efter Typ och en sökning på Namn.
-		 * 
-		 * in:	produkter: en IEnumerable av produkt objekt
-		 *		produktTyp: en sträng som ska innehålla en Typ av produkt
-		 *		sökSträng: en sträng som ska innehålla en söksträng efter namn på
-		 *			en produkt
-		 * ut:	en IEnumerable av Produkt objekt
-		 */
+		/// <summary>
+		/// HämtaFiltreradProduktlista filtrerar angiven IEnumerable av produkter
+		/// efter Typ och en sökning på Namn.
+		/// </summary>
+		/// <param name="produkter">en IEnumerable av produkt objekt</param>
+		/// <param name="produktTyp">en sträng som ska innehålla en Typ av produkt</param>
+		///	<param name="produktTyp">en sträng som ska innehålla en söksträng efter namn på
+		///		en produkt</param> 
+		/// <returns>en IEnumerable av Produkt objekt</returns>
 		public IEnumerable<Produkt> HämtaFiltreradProduktlista(IEnumerable<Produkt> produkter, string produktTyp, string sökSträng)
 		{
 			//Gör en lista med alla produkter
@@ -108,14 +126,13 @@ namespace LjusOchMiljoAB.Controllers
 			return produkter;
 		}
 
-		/*
-		 * HämtaOrdnadProduktlista ändra ordning av angiven IEnumerable av Produkt objekt
-		 * baserad på en sträng som representera ordningstypen.  Default är A->Ö för Namn.
-		 * 
-		 * in:	produkter: en IEnumerable av produkt objekt
-		 *		ordning: en sträng som ska representera en ordningstyp
-		 * ut:	en IEnumerable av Produkt objekt
-		 */
+		/// <summary>
+		/// HämtaOrdnadProduktlista ändra ordning av angiven IEnumerable av Produkt objekt
+		/// baserad på en sträng som representera ordningstypen.  Default är A->Ö för Namn.
+		/// </summary>
+		/// <param name="produkter">en IEnumerable av produkt objekt</param>
+		/// <param name="ordning">en sträng som ska representera en ordningstyp</param>
+		/// <returns>en IEnumerable av Produkt objekt</returns>
 		public IEnumerable<Produkt> HämtaOrdnadProduktlista(IEnumerable<Produkt> produkter, string ordning)
 		{
 			//Hantera ordningen.  Det går fram och tillbaka mot ordningen
@@ -152,20 +169,21 @@ namespace LjusOchMiljoAB.Controllers
 			return produkter;
 		}
 
-
-		/*
-		 * ToPagedList är en speciell tillägg till IEnumerables bland annat
-		 * mha 'using PagedList och PagedList.Mvc'.  Den kopplar till en
-		 * css model (ser PagedList.css under Content mappen) som används i
-		 * vyn.  Den tar emot sin egen räkning på sidor och en definition
-		 * av hur många element att visa åt gången (definerad som instansvariabeln
-		 * antalProdukter i ProduktTjänst).
-		 * 
-		 * in:	produkter: en IEnumerable av produkt objekt
-		 *		sida: en int som representera nuvarande sidonummer
-		 * ut:	en IPagedList objekt som är en speciell IEnumerable eller Lista med
-		 *			egendefinerade sidor
-		 */
+		/// <summary>
+		/// HämtaSida hämtar produkter i en IPagedList för en visningssida av
+		/// produkter.
+		/// 
+		/// ToPagedList är en speciell tillägg till IEnumerables bland annat
+		/// mha 'using PagedList och PagedList.Mvc'.  Den kopplar till en
+		/// css model (ser PagedList.css under Content mappen) som används i
+		/// vyn.  Den tar emot sin egen räkning på sidor och en definition
+		/// av hur många element att visa åt gången (definerad som instansvariabeln
+		/// antalProdukter i ProduktTjänst).
+		/// </summary>
+		/// <param name="produkter">en IEnumerable av produkt objekt</param>
+		/// <param name="sida">en int som representera nuvarande sidonummer</param>
+		/// <returns>en IPagedList objekt som är en speciell IEnumerable eller Lista med
+		///		egendefinerade sidor</returns>
 		public IPagedList HämtaSida(IEnumerable<Produkt> produkter, int? sida)
 		{
 			//En variabel som PagedList sätter själv efter vilken sida man är på eller 1 
@@ -174,21 +192,21 @@ namespace LjusOchMiljoAB.Controllers
 			return produkter.ToPagedList(antalSidor, antalProdukter);
 		}
 
-		/*
-		 * HämtaProduktMedID hämtar en produkt från repository:n som har samma id som
-		 * den angiven.
-		 * 
-		 * in:	id: en sträng som ska innehålla en unik id för en produkt
-		 * ut:	Task för await och en Produkt objekt
-		 */
+		/// <summary>
+		/// HämtaProduktMedID hämtar en produkt från repository:n som har samma id som
+		/// den angiven.
+		/// </summary>
+		/// <param name="id">en sträng som ska innehålla en unik id för en produkt</param>
+		/// <returns>Task för await och en Produkt objekt</returns>
 		public async Task<Produkt> HämtaProduktMedID(string id)
 		{
-			return (await repository.HämtaProduktMedID(id));
+			return(await repository.HämtaProduktMedID(id)); 
 		}
 
-		/*
-		 * Förstör finns för att fria upp minnet när man avslutar.
-		 */
+		/// <summary>
+		/// Förstör finns för att fria upp minnet när man avslutar applikationen.
+		/// </summary>
+		/// <returns>Task för await (ingen data returneras)</returns>
 		public async Task Förstör()
 		{
 			await repository.Förstör();

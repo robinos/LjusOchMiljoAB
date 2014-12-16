@@ -216,22 +216,6 @@ namespace LjusOchMiljoAB.Tests.Controllers
 		}
 
 		/*
-		 * ProduktIndexNotNull testar att sidan är inte null.
-		 */
-		[TestMethod]
-		public void TestProduktControllerIndexNotNull()
-		{
-			// Arrange
-			ProduktController controller = GetProduktController(GetProduktTjänst(new IMinnetProduktRepository()));
-
-			// Act
-			ViewResult result = controller.Index("Namn_Ordning", "", "", "", "", 1).Result as ViewResult;
-
-			// Assert
-			Assert.IsNotNull(result);
-		}
-
-		/*
 		 * ProduktIndexHämtarVyn testar att sidan hämtar vyn mha text som
 		 * skickas från ProduktController för testning.
 		 */
@@ -271,30 +255,11 @@ namespace LjusOchMiljoAB.Tests.Controllers
 		}
 
 		/*
-		 * TestProduktControllerDetailsNotNull testar att sidan är inte null.
-		 */
-		[TestMethod]
-		public void TestProduktControllerDetailsNotNull()
-		{
-			// Arrange
-			Produkt produkt1 = HämtaProduktMedID("00000"); 
-			IMinnetProduktRepository repository = new IMinnetProduktRepository();
-			repository.Add(produkt1);
-			ProduktController controller = GetProduktController(GetProduktTjänst(repository));
-
-			// Act
-			ViewResult result = controller.Detaljer("00000").Result as ViewResult;
-
-			// Assert
-			Assert.IsNotNull(result);
-		}
-
-		/*
 		 * TestProduktControllerDetailsHämtarVyn testar att sidan hämtar vyn mha text
 		 * som skickas från ProdukterController för testning.
 		 */
 		[TestMethod]
-		public void TestProduktControllerDetailsHämtarVyn()
+		public void TestProduktControllerDetaljerHämtarVyn()
 		{
 			// Arrange
 			Produkt produkt1 = HämtaProduktMedID("00000");
@@ -314,7 +279,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 		 * hittas och visas och inte någon annan produkt.
 		 */
 		[TestMethod]
-		public void TestProduktControllerDetailsHämtarProdukt00000()
+		public void TestProduktControllerDetaljerHämtarProdukt00000()
 		{
 			// Arrange
 			Produkt produkt1 = HämtaProduktMedID("00000");
@@ -339,7 +304,7 @@ namespace LjusOchMiljoAB.Tests.Controllers
 		 * Error result blev inte väntad...behövs mer testning.
 		 */
 		[TestMethod]
-		public void TestProduktControllerDetailsHämtarInteObefintligProdukt()
+		public void TestProduktControllerDetaljerHämtarInteObefintligProdukt()
 		{
 			// Arrange
 			Produkt produkt1 = HämtaProduktMedID("00000");
@@ -354,22 +319,6 @@ namespace LjusOchMiljoAB.Tests.Controllers
 			Assert.IsNull(result);
 			//Assert.IsNotNull(result);
 			//Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
-		}
-
-		/*
-		 * TestProduktControllerPrislistaNotNull testar att sidan är inte null.
-		 */
-		[TestMethod]
-		public void TestProduktControllerPrislistaNotNull()
-		{
-			// Arrange
-			ProduktController controller = GetProduktController(GetProduktTjänst(new IMinnetProduktRepository()));
-
-			// Act
-			ViewResult result = controller.Prislista("Namn_Ordning", "", "", "", "", 1).Result as ViewResult;
-
-			// Assert
-			Assert.IsNotNull(result);
 		}
 
 		/*

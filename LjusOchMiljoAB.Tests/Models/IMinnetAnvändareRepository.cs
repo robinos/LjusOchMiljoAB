@@ -7,58 +7,64 @@ using LjusOchMiljoAB.Models;
 
 namespace LjusOchMiljoAB.Tests.Models
 {
-	/*
-	 * IMinnetAnvändareRepository implementerar IAnvändareRepository.  Den används
-	 * som 'mock databas' eller lösas databas vid testning.  I att den implementerar
-	 * IAnvändareRepository så kan en IAnvändareTjänst skapas som använder den
-	 * som databas kontakt.
-	 * 
-	 * Förhoppningsvis behövs det här inte alls om man kan förstå
-	 * MvcContrib.TestHelper bibliotek lite bättre.
-	 *
-	 * Grupp 2
-	 * Senast ändrat: 2014 11 18
-	 * Version: 0.19
-	 */
+	/// <summary>
+	/// IMinnetAnvändareRepository implementerar IAnvändareRepository.  Den används
+	/// som 'mock databas' eller lösas databas vid testning.  I att den implementerar
+	/// IAnvändareRepository så kan en objekt som implementera IAnvändareTjänst skapas
+	/// som använder den som databas kontakt.
+	/// 
+	/// -Metoder-
+	/// RedigeraAnvändare - använder SparaÄndringar för att spara ändringar till
+	///		angiven Anvandare objekt
+	/// HämtaAnvändareMedNamn - hittar en anvandare i listan som har användarnamnet
+	/// SparaÄndringar(Anvandare användareAttÄndra) - sparar ändringar till en
+	///		användare i listan db
+	/// SparaÄndringar - spegling av SparaÄndringar från IAnvändareRespository
+	/// Förstör - sätt listan db till null
+	/// SkapaAnvändare - lägga till användare till listan db
+	/// 
+	/// Version: 1.0
+	/// 2014-12-12
+	/// Grupp 2
+	/// </summary>
 	class IMinnetAnvändareRepository : IAnvändareRepository
 	{
 		//instansvariabler
 		//Listan db blir vår lösas databas
 		private List<Anvandare> db = new List<Anvandare>();
 
+		//En exception att kasta om man skulle testa för exceptioner.  Tyvärr
+		//används den inte än.
 		public Exception ExceptionToThrow { get; set; }
 
-		/*
-		 * RedigeraAnvändare använder SparaÄndringar för att spara ändringar
-		 * till användaren användareAttÄndra.
-		 * 
-		 * in: användareAttÄndra är en användare av objekttypen Anvandare
-		 * ut: Task för en await (behövs för async metoder)
-		 */
+		/// <summary>
+		/// RedigeraAnvändare använder SparaÄndringar för att spara ändringar
+		/// till användaren användareAttÄndra.
+		/// </summary>
+		/// <param name="användareAttÄndra">Anvandare objektet att ändra</param>
+		/// <returns>Task för async (ingen data returneras)</returns> 
 		public async Task RedigeraAnvändare(Anvandare användareAttÄndra)
 		{
 			await Task.Delay(0);
 			SparaÄndringar(användareAttÄndra);
 		}
 
-		/*
-		 * HämtaAnvandareMedNamn hittar en anvandare i listan som har ett namn lika
-		 * med strängen namn, eller returnerar ett default värde om ingenting hittas.
-		 * 
-		 * in: strängen användarnamn som en användarnamn av en användare
-		 * ut: en användare av objekttypen Anvandare med given Namn (eller default)
-		 */
+		/// <summary>
+		/// HämtaAnvändareMedNamn hittar en anvandare i listan som har ett namn lika 
+		/// med strängen namn, eller returnerar ett default värde om ingenting hittas.
+		/// </summary>
+		/// <param name="användarnamn">Sträng användarnamn som namn av en användare</param>
+		/// <returns>Task för async och Anvandare objektet som hittades eller default</returns>
 		public async Task<Anvandare> HämtaAnvändareMedNamn(string användarnamn)
 		{
 			await Task.Delay(0);
 			return db.FirstOrDefault(d => d.Anvandarnamn == användarnamn);
 		}
 
-		/*
-		 * SparaÄndringar sparar ändringar till en användare till listan db
-		 * 
-		 * in: användareAttÄndra är en användare av objekttypen Anvandare
-		 */
+		/// <summary>
+		/// SparaÄndringar sparar ändringar till en användare i listan db.
+		/// </summary>
+		/// <param name="användareAttÄndra">Anvandare objektet att ändra</param>
 		public void SparaÄndringar(Anvandare användareAttÄndra)
 		{
 			foreach (Anvandare användare in db)
@@ -74,35 +80,32 @@ namespace LjusOchMiljoAB.Tests.Models
 			}
 		}
 
-		/*
-		 * SparaÄndringar är bara en återspegling för IAnvändareRepository och
-		 * gör ingenting äv värde.
-		 * 
-		 * ut: Task för en await (behövs för async metoder) 
-		 */
+		/// <summary>
+		/// SparaÄndringar är bara en återspegling för IAnvändareRepository och
+		/// gör ingenting äv värde.
+		/// </summary>
+		/// <returns>Task för async och 1 som resultat av databasskrivning</returns>
 		public async Task<int> SparaÄndringar()
 		{
 			await Task.Delay(0);
 			return 1;
 		}
 
-		/*
-		 * Förstör databasen för att fri upp minne (i det här fallet är databasen
-		 * listan db).
-		 * 
-		 * ut: Task för en await (behövs för async metoder)
-		 */
+		/// <summary>
+		/// Förstör databasen för att fria upp minne (i det här fallet är databasen
+		/// listan db).
+		/// </summary>
+		/// <returns>Task för async (ingen data returneras)</returns> 
 		public async Task Förstör()
 		{
 			await Task.Delay(0);
 			db = null;
 		}
 
-		/*
-		 * SkapaAnvändare används för att lägga till användare till listan db
-		 * 
-		 * in: användareAttTillägga är en användare av objekttypen Anvandare
-		 */
+		/// <summary>
+		/// SkapaAnvändare används för att lägga till användare till listan db.
+		/// </summary>
+		/// <param name="användareAttTillägga">Anvandare objektet att lägga till</param>
 		public void SkapaAnvändare(Anvandare användareAttTillägga)
 		{
 			db.Add(användareAttTillägga);
